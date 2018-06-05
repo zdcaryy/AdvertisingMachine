@@ -1,0 +1,76 @@
+div,table,thead,tbody,td{
+	box-sizing: border-box;
+}
+.tableContainer{
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+.tableContainer>table{
+	width: 100%;
+}
+
+/*表头*/
+.tableContainer>table>thead{
+	background-color: #f9f9f9;
+	border: 1px solid #e0e0e0;
+}
+.tableContainer>table>thead>tr{
+	height: 60px;
+}
+.tableContainer>table>thead>tr>th{
+	text-align: center;
+	position: relative;
+}
+.tableContainer>table>thead>tr>th>div{
+	line-height: 30px;
+	border-right: 1px solid #e0e0e0;
+}
+.tableContainer>table>thead>tr>th:last-child>div{
+	border: 0;
+}
+/*表头中的二级菜单*/
+.secMenu{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	margin-top: 1px;
+	box-shadow: 0 0 5px 1px #dcdcdc;
+	background-color: #fafafa;
+}
+.secMenu>.menuTitle{
+	border-bottom: 1px solid #e0e0e0;
+}
+.secMenu>.menuTitle>span{
+	display: inline-block;
+	line-height: 60px;
+}
+.secMenu>.dropItem{
+	font-weight: normal;
+	cursor: pointer;
+}
+.secMenu>.dropItem:hover{
+	background-color: #e0e0e0;
+}
+
+
+
+
+/*表格内容*/
+.tableContainer>table>tbody>tr{
+	height: 50px;
+}
+
+
+/*表格中能够操作的元素，如删除、查看*/
+.canOper>span{
+	cursor: pointer;
+}
+.canOper>span:hover{
+	color: blue;
+}
+/*选中状态*/
+.secMenu .dropSelected{
+	background-color: #eeeeee;
+}

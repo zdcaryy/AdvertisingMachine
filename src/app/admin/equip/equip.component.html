@@ -8,6 +8,18 @@
       <button type="submit" class="btn query-btn">查找</button>
     </form>
   </div>
+
+  <app-table
+    [heads]="heads"
+    [bodys]="bodys"
+    [colorConfig]="colorConfig"
+    [textConfig]="textConfig"
+    (headEvent)="getHeadEvent($event)"
+    (bodyEvent)="getBodyEvent($event)"
+  ></app-table>
+
+  <hr>
+
   <div class="operation">
     <button class="btn" type="submit">批量处理</button>
     <button class="btn" type="submit">添加设备</button>

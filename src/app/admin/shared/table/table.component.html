@@ -1,0 +1,55 @@
+<div class="tableContainer">
+	<table>
+		<thead>
+			<tr>
+				<!-- 显示表头 -->
+				<th *ngFor="let head of heads" (click)="dropList=head.key;$event.stopPropagation();">
+					<!-- 传的数据中含有'child'，则代表有二级菜单 -->
+					<ng-template #noChild><div>{{head.name}}</div></ng-template>
+					<div *ngIf="head.child;else noChild">
+						<!-- 隐藏input,用来存选中的下拉 -->
+						<input #forSelect type="text" style="display: none;" [value]="head.child[0]">
+						<span>{{head.name}}({{forSelect.value}})</span>
+						<span style="position: absolute;right: 10%;">∨</span>
+						<!-- dropList判断显示谁的二级菜单 -->
+						<div class="secMenu" *ngIf="dropList==head.key" (click)="dropList='';$event.stopPropagation();">
+							<div class="menuTitle">
+								<span>{{head.name}}({{forSelect.value}})</span>
+								<span style="position: absolute;right: 10%;">∨</span>
+							</div>
+							<div class="dropItem" [class.dropSelected]="forSelect.value==child" *ngFor="let child of head.child" (click)="forSelect.value=child;headOper(head.key,child)">{{child}}</div>
+						</div>
+					</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- 显示内容 -->
+			<tr *ngFor="let body of bodys">
+				<!-- 根据表头的key来显示相对应的数据 -->
+																				<!-- 根据colorConfig配置颜色  -->
+				<td *ngFor="let head of heads">
+					<!-- 判断是否是可以操作的内容 -->  
+<!-- ↓↓↓↓↓↓↓↓↓  一般来说只有可点击操作的才会有多个，所以判断数组只写了可操作的  ↓↓↓↓↓↓↓↓↓ -->
+					<span *ngIf="head.canOper;else notOper" class="canOper">
+						<!-- 判断是否是数组 => 主要由于操作可能有多个时，传的是数组 -->
+						<!-- [style.color]根据colorconfig来设置颜色 -->
+						<span *ngIf="checkType(body[head.key],'string');else isArray" (click)="bodyOper(body[head.key],body)" 
+									[style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][body[head.key]]:'#000'">{{body[head.key]}}</span>
+						<!-- 是数组时 -->
+						<ng-template #isArray><span *ngFor="let item of body[head.key];let i=index" (click)="bodyOper(item,body)" 
+																				[style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][item]:'#000'">{{item}}
+																				<span *ngIf="i<item.length-1">&nbsp;</span></span>
+																	</ng-template>
+					</span>
+
+<!-- ↑↑↑↑↑↑↑  一般来说只有不可操作的普通内容需要替换文字，所以可操作的没写替换  ↑↑↑↑↑↑↑ -->
+	
+					<!-- 不可操作的普通内容 -->
+					<ng-template #notOper><span [style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][body[head.key]]:'#000'">
+																	{{textConfig&&textConfig[head.key]?textConfig[head.key][body[head.key]]:body[head.key]}}</span></ng-template>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

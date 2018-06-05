@@ -5,7 +5,7 @@
 }
 .search-container{
   padding:20px 50px;
-  border-width:1px 0 1px 0;
+  border-width:1px 0 0 0;
   border-color:#ccc;
   border-style:solid;
 }
@@ -19,6 +19,14 @@
 .query-btn{
   background:#119C9D;
   color:#fff;
+}
+.content hr{
+  padding:0;
+  width: 90%;
+  background:#e0e0e0;
+  height:1px;
+  margin:0 auto;
+  border:none;
 }
 .operation{
   padding:20px 50px;
