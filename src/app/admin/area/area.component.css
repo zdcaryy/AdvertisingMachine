@@ -1,0 +1,128 @@
+#areaModule{
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0
+}
+.areaLeft{
+    padding:5px;
+    height:50%;
+}
+.gaodemap-container{
+    height:100%;
+    box-shadow: 0 2px 2px #ddd;
+    border-radius: 5px;
+    outline: none
+}
+.areaRight{
+    padding:5px;
+    height:50%;
+}
+.areaSearch{
+    width:100%;
+    height:100%;
+    background: white;
+    box-shadow: 0 2px 2px #ddd;
+    border-radius: 5px;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    border-top:1px solid white;
+    overflow-y: auto
+}
+.areaSearch>li{
+    width:90%;
+}
+.areaSearchInput{
+    height:35px;
+    background:#f2f2f2;
+    margin:10px auto 0 auto
+}
+.areaSearchInput>input{
+    height:35px;
+    outline: none;
+    text-indent: 1em;
+    border:none;
+    background:#f2f2f2
+}
+.areaSearchTitle{
+    height:40px;
+    line-height: 40px;
+    color:black;
+    font-weight: bold;
+    font-size: 15px;
+    text-indent: 1em;
+    margin:5px auto
+}
+.areaSearchPresent,.areaSearchEquip{
+    height:30px;
+    line-height: 30px;
+    font-size: 15px;
+    color:#7e7e7e;
+    margin:0 auto
+}
+.equipNormal{
+    color:#109d90
+}
+.equipAnomaly{
+    color:#d73e3e
+}
+.areaBottom{
+    width:100%;
+    height:50%;
+    padding:5px;
+    border-radius: 5px
+}
+.areaList{
+    width:100%;
+    height:100%;
+    box-shadow: 0 2px 2px #ddd;
+    background:white;
+    position: relative;
+}
+.areaListTop{
+    width:100%;
+    height:50px;
+    border-bottom:1px solid #ddd;
+    background:#f9f9f9;
+    margin:0
+}
+.areaListTop>li{
+    padding:0;
+    text-align: center;
+    height:30px;
+    line-height: 30px;
+    margin:10px 0;
+    border-right: 1px solid #ddd;
+    cursor: pointer;
+}
+.areaListTop>li:last-child{
+    border-right: none
+}
+.areaListContent{
+    position: absolute;
+    top:52px;
+    bottom:50px;
+    width:96%;
+    left:2%;
+    overflow-y: auto
+}
+.areaListBottom{
+    position: absolute;
+    height:50px;
+    bottom:0;
+    left:4%;
+    width:92%;
+    border-top:2px solid #ddd;
+}
+.areaBatch{
+    width:70px;
+    height:30px;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    margin:10px auto;
+    background:#009688;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px #ddd;
+}

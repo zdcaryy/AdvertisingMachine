@@ -3,9 +3,9 @@
     <form class="form-inline">
       <div class="form-group">
         <label for="query-input" class="query-label">查找设备</label>
-        <input type="text" class="form-control" id="query-input" placeholder="请输入设备编号">
+        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="请输入设备编号" [(ngModel)]="searchNum">
       </div>
-      <button type="submit" class="btn query-btn">查找</button>
+      <button type="submit" class="btn query-btn"(click)="searchEquip()">查找</button>
     </form>
   </div>
 

@@ -8,3 +8,14 @@
 body{
     font-size: 14px
 }
+/* 隐藏高德logo */
+.amap-logo {
+    display: none;
+} 
+.amap-copyright {
+  bottom:-100px;
+   display: none;
+} 
+.amap-icon img{
+    width:40px
+}

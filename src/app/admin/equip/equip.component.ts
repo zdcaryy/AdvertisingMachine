@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import{EquipService} from '../server/equip.service';
 
 @Component({
   selector: 'app-equip',
@@ -7,7 +8,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class EquipComponent implements OnInit {
   
-  constructor() {
+  constructor(private equipService:EquipService) {
   }
   
   heads: object[];
@@ -15,7 +16,12 @@ export class EquipComponent implements OnInit {
   textConfig: object;
   colorConfig: object;
   
+  searchNum;//搜索的设备编号
+  
   ngOnInit() {
+    //初始化设备列表
+    // this.getEquip('getall');
+    
     this.heads = [{name: '设备编号', key: 'num'},
       {name: '设备位置', key: 'position'},
       {name: '设备运行状态', key: 'state', child: ['所有', '正常', '故障']},
@@ -26,7 +32,11 @@ export class EquipComponent implements OnInit {
     this.bodys = [
       {num: '9527', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 0, copy: 0, person: '泥巴', operate: ['查看', '修改']},
       {num: '9529', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 1, copy: 0, person: '泥巴', operate: ['查看', '修改']},
-      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']}
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
     ];
     
     this.textConfig = {state: {0: '已上传', 1: '待上传', 2: '上传中'}, copy: {0: '已上传', 1: '待上传', 2: '上传中'}};
@@ -43,5 +53,17 @@ export class EquipComponent implements OnInit {
   
   getHeadEvent(e) {
     console.log(e);
+  }
+  
+  //设备搜索
+  searchEquip():void{
+    this.getEquip('getEquip?num='+this.searchNum);
+  }
+  //获取设备信息
+  getEquip(route:string):void{
+    this.equipService.getData(route)
+      .subscribe(res=>{
+        console.log(res);
+      });
   }
 }
