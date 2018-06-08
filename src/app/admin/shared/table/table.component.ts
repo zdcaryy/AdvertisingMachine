@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-table',
@@ -7,23 +7,24 @@ import { Component, OnInit, ElementRef, Input, Output, EventEmitter, SimpleChang
 })
 export class TableComponent implements OnInit {
 
-  constructor(private el:ElementRef) { }
+  constructor() { }
  	@Input() heads:object[]; //表头数据
- 	@Input() bodys:object[]; //表格内容数据
- 	@Input() colorConfig:object; //表格内容颜色设置
-    @Input() textConfig:object; //表格内容文字替换
+  @Input() bodys:object[]; //表格内容数据
+  @Input() colorConfig:object; //表格内容颜色设置
+  @Input() textConfig:object; //表格内容文字替换
 
-	@Output() headEvent:EventEmitter<object> = new EventEmitter<object>(); //表头中的操作，主要是选中下拉框中的某一项触发
- 	@Output() bodyEvent:EventEmitter<object> = new EventEmitter<object>(); //表格内容中的操作，如删除、查看等
+  @Output() headEvent:EventEmitter<object> = new EventEmitter<object>(); //表头中的操作，主要是选中下拉框中的某一项触发
+  @Output() bodyEvent:EventEmitter<object> = new EventEmitter<object>(); //表格内容中的操作，如删除、查看等
 
- 	dropList:string = '';
-  showProgress:boolean = false;
+  selectedList:object[] = []; //选中的数据
+  // 双向绑定，数据后面加上 Change ，固定写法！！  ...这里不用双向绑定，仅弹射到父组件即可
+  @Output() selectedListChange:EventEmitter<any> = new EventEmitter<any>();
+
+  dropList:string = '';
   // 表格的滚动距离
   boxScrollY:number = 0;
   // 表格最大滚动距离
   maxScrollY:number;
-  // 滚动条初始位置
-  barScrollInit:number = 0;
   // 表格和进度条高度的比例
   scaleBoxBar:number = 1;
   canDrag:boolean = false;
@@ -53,22 +54,12 @@ export class TableComponent implements OnInit {
     }
   }
 
-  // ngDoCheck(){
-  //   if(this.bodysChange){
-  //     let bar = this.el.nativeElement.querySelector('.progressBase');
-  //     if(bar){
-
-  //     }
-  //   }
-  // }
-
-  private bodysChange = false;
-
-  ngOnChanges(changes: SimpleChanges){
-    console.log('------ngOnChanges-----');
+  // 传入数据改变时，清除已选择列表
+  ngOnChanges(changes){
+    console.log(changes);
     if(changes.bodys){
-      // body变化
-      this.bodysChange = true;
+      this.selectedList = [];
+      this.selectedListChange.emit(this.selectedList);
     }
   }
 
@@ -89,54 +80,44 @@ export class TableComponent implements OnInit {
   	this.bodyEvent.emit(toEmit);
   }
 
+  // 选择一个
+  selectOne(body,checked){
+    if(checked){
+      this.selectedList.push(body);
+    }else{
+      this.selectedList = this.selectedList.filter((item)=>{return item!=body});
+    }
+    this.selectedListChange.emit(this.selectedList);
+  }
+
+  // 全选
+  private ifSelectAll:boolean = false;
+  selectAll(checked){
+    // console.log(checked);
+    if(checked){
+      this.ifSelectAll = true;
+      this.selectedList = this.bodys;
+    }else{
+      this.ifSelectAll = false;
+      this.selectedList = [];
+    }
+    this.selectedListChange.emit(this.selectedList);
+  }
+
   // 检测数据类型
   checkType(data:any,type:string){
   	return typeof(data)==type;
   }
 
-  //  // 判断是否要显示进度条
-  // ifShowProgress(){
-  //   let tbody = this.el.nativeElement.querySelector('.tbody').clientHeight;
-  //   let scrollBox = this.el.nativeElement.querySelector('.scrollBox').clientHeight;
-  //   this.showProgress = tbody>scrollBox?true:false;
-  //   console.log('-----ifShowProgress-----');
-  //   console.log(this.showProgress);
-  // }
-
-  // fxxk 生命周期.....ngIf
-  // 初始化滚动条，设置scrollBox对应进度条的比例,及初始位置
-  // initProgress(){
-  //   console.log('-----initProgress-----');
-  //   let tbody = this.el.nativeElement.querySelector('.tbody').clientHeight;
-  //   let scrollBox = this.el.nativeElement.querySelector('.scrollBox').clientHeight;
-  //   // 初始位置
-  //   let initial = scrollBox/tbody;
-  //   let bar = this.el.nativeElement.querySelector('.progressBase');
-  //   // 生命周期
-  //   if(bar){
-  //     console.log('-----find bar-----');
-  //     this.barScrollInit = scrollBox/tbody*bar.clientHeight;
-  //     // 比例
-  //     this.scaleBoxBar = bar.clientHeight/tbody;
-  //     this.maxScrollY = tbody - scrollBox;
-  //     // init
-  //     this.boxScrollY = 0;
-  //   }
-  // }
-
-  setProgress(n){
-    let tbody = this.el.nativeElement.querySelector('.tbody').clientHeight;
-    let scrollBox = this.el.nativeElement.querySelector('.scrollBox').clientHeight;
-    this.maxScrollY = tbody - scrollBox;
-    this.scaleBoxBar = n;
+   // 设置滚动条最大拖动距离，以及拖动距离和body滚动距离的比例
+  setProgress(scrollBox,tbody,bar){
+    this.maxScrollY = tbody.clientHeight - scrollBox.clientHeight;
+    this.scaleBoxBar = bar.clientHeight/tbody.clientHeight;
   }
 
-  // div滚动同时进度条变化
-  // linkProgress(boxTop){
-  //   if(!this.showProgress){return}
-  //   // console.log(boxTop*this.scaleBoxBar);
-  //   // console.log(boxTop*this.scaleBoxBar);
-  //   this.boxScrollY = boxTop;
-  // }
+  // 计算滚动条的位置
+  barPosi(scrollBox,tbody,bar){
+    return scrollBox.clientHeight/tbody.clientHeight*bar.clientHeight+this.boxScrollY*bar.clientHeight/tbody.clientHeight+'px';
+  }
 
 }

@@ -3,6 +3,9 @@
 	<table class="thead">
 		<tbody>
 			<tr>
+				<!-- checkbox -->
+				<th class="forCheck"><input type="checkbox" #checkbox_all title="全选" [checked]="selectedList.length==bodys.length" (click)="selectAll(checkbox_all.checked)"></th>
+				<!-- 主体 -->
 				<th *ngFor="let head of heads" (click)="dropList=head.key;$event.stopPropagation();">
 					<!-- 传的数据中含有'child'，则代表有二级菜单 -->
 					<ng-template #noChild><div>{{head.name}}</div></ng-template>
@@ -21,21 +24,24 @@
 						</div>
 					</div>
 				</th>
+				<!-- 滚动条占位 -->
+				<th class="forProgress" [style.display]="tbody.clientHeight>scrollBox.clientHeight?'table-cell':'none'"></th>
 			</tr>
 		</tbody>
 	</table>
 	<!-- 显示内容 -->
 	<div class="outerBox">
-		<!-- scrollTop双向绑定，component中一直收到是 0 ？？ -->
-		<div class="scrollBox" #scrollBox [scrollTop]="boxScrollY" (scroll)="boxScrollY = scrollBox.scrollTop">
+		<div class="scrollBox" #scrollBox [scrollTop]="boxScrollY" (scroll)="boxScrollY=scrollBox.scrollTop">
 			<table class="tbody" #tbody>
 				<tbody>
 					<tr *ngFor="let body of bodys">
+						<!-- checkbox -->
+						<td class="forCheck"><input type="checkbox" #checkbox_one [checked]="selectedList.indexOf(body)>-1" (click)="selectOne(body,checkbox_one.checked)"></td>
 						<!-- 根据表头的key来显示相对应的数据 -->
 																						<!-- 根据colorConfig配置颜色  -->
 						<td *ngFor="let head of heads">
 							<!-- 判断是否是可以操作的内容 -->  
-						<!-- ↓↓↓↓↓↓↓↓↓  一般来说只有可点击操作的才会有多个，所以判断数组只写了可操作的  ↓↓↓↓↓↓↓↓↓ -->
+							<!-- ↓↓↓↓↓↓↓↓↓  一般来说只有可点击操作的才会有多个，所以判断数组只写了可操作的  ↓↓↓↓↓↓↓↓↓ -->
 							<span *ngIf="head.canOper;else notOper" class="canOper">
 								<!-- 判断是否是数组 => 主要由于操作可能有多个时，传的是数组 -->
 								<!-- [style.color]根据colorconfig来设置颜色 -->
@@ -48,20 +54,22 @@
 																			</ng-template>
 							</span>
 
-						<!-- ↑↑↑↑↑↑↑  一般来说只有不可操作的普通内容需要替换文字，所以可操作的没写替换  ↑↑↑↑↑↑↑ -->
+							<!-- ↑↑↑↑↑↑↑  一般来说只有不可操作的普通内容需要替换文字，所以可操作的没写替换  ↑↑↑↑↑↑↑ -->
 
 							<!-- 不可操作的普通内容 -->
 							<ng-template #notOper><span [style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][body[head.key]]:'#000'">
 																			{{textConfig&&textConfig[head.key]?textConfig[head.key][body[head.key]]:body[head.key]}}</span></ng-template>
 						</td>
+						<!-- 滚动条占位 -->
+						<td class="forProgress" [style.display]="tbody.clientHeight>scrollBox.clientHeight?'table-cell':'none'"></td>
 					</tr>
 				</tbody>
 			</table>
 																<!-- 生命周期和检测机制，会报错，c -->
 			<div class="progressBox" *ngIf="tbody.clientHeight>scrollBox.clientHeight">
 				<div class="progressBase" #bar>
-					<div class="progressBar" [style.top]="scrollBox.clientHeight/tbody.clientHeight*bar.clientHeight+boxScrollY*bar.clientHeight/tbody.clientHeight+'px'">
-						<div class="progressPoint" (mousedown)="$event.preventDefault();canDrag=true;setProgress(bar.clientHeight/tbody.clientHeight)"></div>
+					<div class="progressBar" [style.top]="barPosi(scrollBox,tbody,bar)">
+						<div class="progressPoint" (mousedown)="$event.preventDefault();canDrag=true;setProgress(scrollBox,tbody,bar)"></div>
 					</div>
 				</div>
 			</div>

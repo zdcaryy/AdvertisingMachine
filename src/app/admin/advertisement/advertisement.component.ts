@@ -11,8 +11,11 @@ export class AdvertisementComponent implements OnInit {
 
   heads: object[];
   bodys:object[];
+  selectedList:object[] = [];
   textConfig:object;
   colorConfig:object;
+  // 是否显示弹窗
+  popUp:boolean = null;
 
   ngOnInit() {
   	this.heads = [{name:"编号",key:'num'},
@@ -49,7 +52,12 @@ export class AdvertisementComponent implements OnInit {
   }
 
   getBodyEvent(e){
-  	console.log(e)
+  	console.log(e);
+    switch (e.key) {
+      case "删除":
+        confirm('确定要删除 "'+e.data.adName+'" ?')
+        break;
+    }
   }
   getHeadEvent(e){
   	console.log(e);
@@ -123,6 +131,17 @@ export class AdvertisementComponent implements OnInit {
                   ];
           break;
     }
+  }
+  getSelectedList(e){
+    this.selectedList = e;
+    console.log(this.selectedList);
+  }
+  delMul(){
+    console.log(this.selectedList);
+  }
+
+  addNew(){
+    
   }
 
 }

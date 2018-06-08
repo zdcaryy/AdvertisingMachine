@@ -1,10 +1,32 @@
-<div class="adver">
-	<app-table 
-		[heads]="heads" 
-		[bodys]="bodys" 
-		[colorConfig]="colorConfig" 
-		[textConfig]="textConfig" 
-		(headEvent)="getHeadEvent($event)" 
-		(bodyEvent)="getBodyEvent($event)"
-	></app-table>
+<div class="advertisement">
+	<div class="tableBox">
+		<app-table 
+			[heads]="heads" 
+			[bodys]="bodys"
+			[colorConfig]="colorConfig" 
+			[textConfig]="textConfig" 
+			(headEvent)="getHeadEvent($event)" 
+			(bodyEvent)="getBodyEvent($event)"
+			(selectedListChange)="getSelectedList($event)"
+		></app-table>
+	</div>
+	<div class="footer">
+		<div class="myBtn delMul" (click)="delMul()">批量删除</div>
+		<div class="myBtn addNew" (click)="popUp=true">添加项目</div>
+	</div>
+	<!-- 添加的box -->
+	<div class="cover" [class.pauseShadow]="popUp==null" [class.showShadow]="popUp" [class.hideShadow]="!popUp" (click)="popUp=false"></div>
+	<div class="addBox" [class.pauseShadow]="popUp==null" [class.showShadow]="popUp" [class.hideShadow]="!popUp">
+		<span class="close"></span>
+		<p class="title">添加项目</p>
+		<p>
+			<span>广告名：</span>
+			<input type="text" name="adName">
+		</p>
+		<p>
+			<span>上传文件：</span>
+			<input type="text" name="adName">
+		</p>
+	</div>
+
 </div>

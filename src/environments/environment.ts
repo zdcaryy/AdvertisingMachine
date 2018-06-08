@@ -5,5 +5,7 @@
 
 export const environment = {
   production: false,
-  areaUrl: 'http://localhost:3000'
+  areaUrl: 'http://localhost:3000',
+  tokenUrl: 'http://localhost:3000',
+  userUrl: 'http://localhost:3000',
 };

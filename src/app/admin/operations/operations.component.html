@@ -1,3 +1,16 @@
-<p>
-  operations works!
-</p>
+<div class="operations">
+	<div class="tableBox">
+		<app-table 
+			[heads]="heads" 
+			[bodys]="bodys"
+			[colorConfig]="colorConfig" 
+			[textConfig]="textConfig" 
+			(headEvent)="getHeadEvent($event)" 
+			(bodyEvent)="getBodyEvent($event)"
+		></app-table>
+	</div>
+	<div class="footer">
+		<div class="myBtn delMul" (click)="delMul()">批量删除</div>
+		<div class="myBtn addNew" (click)="addNew()">添加人员</div>
+	</div>
+</div>

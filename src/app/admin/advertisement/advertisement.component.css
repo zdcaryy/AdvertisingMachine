@@ -1,6 +1,84 @@
-.adver{
-	width: 80%;
-	margin: 0 auto;
-	border: 1px solid blue;
-	height: 700px;
+.advertisement{
+	height: calc(100% - 20px);
+	margin: 10px;
+	background-color: #fff;
+	box-shadow:  2px 2px 5px 1px #a7a7a7;
+}
+.tableBox{
+	width: 100%;
+	height: 90%;
+	padding-bottom: 15px;
+}
+
+.footer{
+	margin: 0px 30px;
+	padding: 20px 0px;
+	border-top:1px solid #e0e0e0;
+	text-align: center;
+}
+.myBtn{
+	display: inline-block;
+	width: 80px;
+	line-height: 30px;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 5px;
+}
+.delMul{
+	background-color: pink;
+	margin-right: 50px;
+}
+.addNew{
+	background-color: #009688;
+	color: #fff;
+}
+
+/*弹窗*/
+.cover{
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 998;
+	width: 100%;
+	height: 100%;
+	min-height: 500px;
+	background-color: rgba(0,0,0,0);
+}
+.addBox{
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 999;
+	width: 500px;
+	height: 300px;
+	background-color: #fff;
+	box-shadow: 1px 1px 5px 1px #e0e0e0;
+	border-top: 5px solid #009688;
+}
+
+/*动画*/
+@keyframes show{
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+@keyframes hide{
+	0% {opacity: 1;}
+	99% {opacity: 0;}
+	100% {opacity: 0;visibility: hidden;}
+}
+
+.showShadow{
+	visibility: visible;
+	animation: show 0.4s;
+}
+
+.hideShadow{
+	animation: hide 0.4s;
+	animation-fill-mode: forwards;
+}
+/*阻止第一次进页面时，动画的执行*/
+.pauseShadow{
+	animation-play-state:paused;
+	visibility: hidden;
 }

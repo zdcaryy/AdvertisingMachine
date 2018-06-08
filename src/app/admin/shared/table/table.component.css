@@ -21,8 +21,6 @@ div,table,thead,tbody,td{
 	z-index: 1;
 	cursor: default;
 }
-.tableContainer>.thead>tbody>tr{
-}
 .tableContainer>.thead>tbody>tr>th{
 	text-align: center;
 	position: relative;
@@ -31,7 +29,7 @@ div,table,thead,tbody,td{
 	line-height: 30px;
 	border-right: 1px solid #e0e0e0;
 }
-.tableContainer>.thead>tbody>tr>th:last-child>div{
+.tableContainer>.thead>tbody>tr>th:nth-last-child(2)>div{
 	border: 0;
 }
 /*表头中的二级菜单*/
@@ -60,9 +58,10 @@ div,table,thead,tbody,td{
 }
 
 
-
-
-/*表格内容*/
+/*表格内容，隐藏默认滚动条*/
+.tableContainer{
+	overflow: hidden;
+}
 .tableContainer .scrollBox{
 	width: calc(100% + 18px);
 	height: 100%;
@@ -72,21 +71,17 @@ div,table,thead,tbody,td{
 	height: 50px;
 }
 
-/*表格内容滚动*/
-.tableContainer{
-	overflow: hidden;
+/*滚动条*/
+.tableContainer table .forProgress{
+	width: 20px;
 }
-/*进度条*/
-/*.tableContainer table .forProgress{
-	width: 30px;
-}*/
 .tableContainer .outerBox{
 	width: 100%;
 	height: calc(100% - 60px);
 	position: relative;
 }
 .tableContainer .scrollBox>.progressBox{
-	width: 30px;
+	width: 20px;
 	/*height: 100%;*/
 	position: absolute;
 	right: 0;
@@ -99,7 +94,7 @@ div,table,thead,tbody,td{
 	background-color: #bdbdbd;
 	height: 100%;
 	width: 2px;
-	margin: 0 auto;
+	margin: 0;
 }
 /*用来遮住进度条，不用overflow:hidden是因为进度条的球也会被遮住一半*/
 .tableContainer .scrollBox>.progressBox>.progressBase:after{
@@ -133,6 +128,57 @@ div,table,thead,tbody,td{
 }
 .tableContainer .scrollBox .progressBox>.progressBase>.progressBar>.progressPoint:hover{
 	background-color: #00C7B5;
+}
+
+/*checkbox样式*/
+.forCheck{
+	width: 10px;
+}
+th.forCheck{
+	z-index: 2;
+}
+.forCheck>input{
+	transform: translateX(20px);
+}
+input[type=checkbox]{
+	/*清除默认样式*/
+	appearance:none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 16px;
+	height: 16px;
+	margin-bottom: -2px;
+	background-color: #fff;
+	border: 2px solid #c2c2c2;
+	outline: none;
+	box-sizing: border-box;
+	border-radius: 2px;
+}
+input[type=checkbox]:before{
+	content: '';
+	display: block;
+	width: 2px;
+	height: 4px;
+	background-color: #fff;
+	transform-origin: 0 0 0;
+	transform: translate(1px,7px) rotate(-50deg);
+}
+input[type=checkbox]:after{
+	content: '';
+	display: block;
+	width: 2px;
+	height: 9px;
+	background-color: #fff;
+	transform-origin: 0 0 0;
+	transform: translate(9px,-2px) rotate(38deg);
+
+}
+input[type=checkbox]:hover{
+	border-color: #999999;
+}
+input[type=checkbox]:checked{
+	background-color: #009688;
+	border-color: #009688;
 }
 
 /*表格中能够操作的元素，如删除、查看*/

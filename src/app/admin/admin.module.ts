@@ -23,7 +23,7 @@ import { CopyService } from './server/copy.service';
     AdminRoutingModule,
     FormsModule
   ],
-  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, CopyComponent,OperationsComponent],
+  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, CopyComponent, OperationsComponent],
   providers: [
     AreaService,
     EquipService,

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import{EquipService} from '../server/equip.service';
 
+
 @Component({
   selector: 'app-equip',
   templateUrl: './equip.component.html',
@@ -13,6 +14,7 @@ export class EquipComponent implements OnInit {
   
   heads: object[];
   bodys: object[];
+  selectedList:object[] = [];
   textConfig: object;
   colorConfig: object;
   
@@ -37,13 +39,24 @@ export class EquipComponent implements OnInit {
       {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
       {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
       {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
+      {num: '9533', position: '成都市双流区华阳街道999号时代奥特莱斯小区09幢', state: 2, copy: 0, person: '泥巴', operate: ['查看', '修改']},
     ];
     
     this.textConfig = {state: {0: '已上传', 1: '待上传', 2: '上传中'}, copy: {0: '已上传', 1: '待上传', 2: '上传中'}};
     this.colorConfig = {
       state: {0: 'red', 1: 'blue', 2: 'green'},
       copy: {0: 'red', 1: 'blue', 2: 'green'},
-      operate: {查看: 'purple', 修改: 'pink'}
+      operate: {查看: '#119C9D', 修改: '#119C9D'}
     };
   }
   
@@ -54,7 +67,10 @@ export class EquipComponent implements OnInit {
   getHeadEvent(e) {
     console.log(e);
   }
-  
+  getSelectedList(e){
+    this.selectedList = e;
+    console.log(this.selectedList);
+  }
   //设备搜索
   searchEquip():void{
     this.getEquip('getEquip?num='+this.searchNum);
@@ -65,5 +81,13 @@ export class EquipComponent implements OnInit {
       .subscribe(res=>{
         console.log(res);
       });
+  }
+  //添加页面
+  addView(){
+    document.querySelector('.add-equip')['style'].display='block';
+  }
+  //关闭添加页面
+  closeView(){
+    document.querySelector('.add-equip')['style'].display='none';
   }
 }

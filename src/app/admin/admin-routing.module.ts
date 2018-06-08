@@ -6,7 +6,7 @@ import { AreaComponent } from "./area/area.component";
 import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { CopyComponent } from './copy/copy.component';
-import { OperationsComponent } from './operations/operations.component'; 
+import { OperationsComponent } from './operations/operations.component';
 
 const routes:Routes=[
     {
@@ -31,12 +31,12 @@ const routes:Routes=[
                 component:AdvertisementComponent
             },
             {
-              path:'copy',
-              component:CopyComponent
+                path:'copy',
+                component:CopyComponent
             },
             {
-              path:'ops',
-              component:OperationsComponent
+                path:'ops',
+                component:OperationsComponent
             }
         ]
     }

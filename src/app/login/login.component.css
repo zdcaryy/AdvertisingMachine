@@ -1,0 +1,78 @@
+.login{
+    width:100%;
+    position: absolute;
+    top:0;
+    bottom:0;
+    background:url("../../assets/img/login-bd.png");
+    background-size: 100% 100%
+}
+.login-form{
+    width:400px;
+    height:350px;
+    background:rgba(255,255,255,0.4);
+    border-radius: 5px;
+    position: absolute;
+    left:50%;
+    top:50%;
+    margin:-175px 0 0 -200px
+}
+.form-title{
+    width:100%;
+    font-size: 24px;
+    text-align: center;
+    padding:30px 0 0 0;
+    color:white;
+    letter-spacing: 2px
+}
+.form-titleEn{
+    width:100%;
+    padding:5px 0 20px 0;
+    font-size: 12px;
+    color:white;
+    text-align: center
+}
+.login-div{
+    width:300px;
+    height:35px;
+    background:white;
+    margin:10px auto;
+    box-sizing: border-box;
+    border-left:3px solid #009788
+}
+.login-div>label{
+    width:40px;
+    float:left
+}
+.login-div>input{
+    border:none;
+    outline: none;
+    width:240px;
+    height:35px;
+    float:right;
+}
+.login-msg{
+    width:300px;
+    height:30px;
+    line-height: 30px;
+    margin: 0 auto;
+    color:red
+}
+.form-submit{
+    text-align: center
+}
+button[type="submit"]{
+    width:300px;
+    height:40px;
+    outline: none;
+    border:none;
+    background:#009788;
+    font-size: 18px;
+    color:white
+}
+.form-submit a{
+    color:white;
+    font-size: 14px;
+    letter-spacing: 2px;
+    display:inline-block;
+    margin:10px 0
+}

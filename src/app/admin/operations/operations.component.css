@@ -1,0 +1,34 @@
+.operations{
+	height: calc(100% - 20px);
+	margin: 10px;
+	background-color: #fff;
+	box-shadow:  2px 2px 5px 1px #a7a7a7;
+}
+.tableBox{
+	width: 100%;
+	height: 90%;
+	padding-bottom: 15px;
+}
+
+.footer{
+	margin: 0px 30px;
+	padding: 20px 0px;
+	border-top:1px solid #e0e0e0;
+	text-align: center;
+}
+.myBtn{
+	display: inline-block;
+	width: 80px;
+	line-height: 30px;
+	cursor: pointer;
+	text-align: center;
+	border-radius: 5px;
+}
+.delMul{
+	background-color: pink;
+	margin-right: 50px;
+}
+.addNew{
+	background-color: #009688;
+	color: #fff;
+}
