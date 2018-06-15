@@ -1,0 +1,148 @@
+<div class="content">
+  <div class="search-container">
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="query-input" class="query-label">查找用户</label>
+        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="姓名、证件号、电话号、公司或户主">
+      </div>
+      <button type="submit" class="btn query-btn">查找</button>
+    </form>
+  </div>
+
+  <div class="tablebox">
+    <app-table
+      [heads]="heads"
+      [bodys]="bodys"
+      (selectedListChange)="getSelectedList($event)"
+      [colorConfig]="colorConfig"
+      [textConfig]="textConfig"
+      (headEvent)="getHeadEvent($event)"
+      (bodyEvent)="getBodyEvent($event)"
+    ></app-table>
+  </div>
+
+  <hr>
+
+  <div class="operation">
+    <button class="btn useless-btn" type="button">批量删除</button>
+    <button class="btn useful-btn" type="button" (click)="addView();">添加用户</button>
+  </div>
+
+  <!--添加用户start-->
+  <div class="child-view" id="add_user">
+    <div class="close-btn" (click)=" closeAddView();"></div>
+    <h3>添加用户</h3>
+    <form action="" class="child-form">
+      <div class="form-item">
+        <label for="username">姓名：</label>
+        <input type="text" id="username" name="username" [(ngModel)]="addUser.username">
+      </div>
+      <div class="form-item">
+        <label for="pwd">密码：</label>
+        <input type="password" id="pwd" name="pwd" [(ngModel)]="addUser.pwd">
+      </div>
+      <div class="form-item">
+        <label for="email">邮箱：</label>
+        <input type="email" name="email" id="email" [(ngModel)]="addUser.email">
+      </div>
+      <div class="form-item">
+        <label>用户类型：</label>
+        <select [(ngModel)]="addUser.usertype" name="usertype">
+          <option value="1">业主</option>
+          <option value="2">管理员</option>
+          <option value="3">系统管理员</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="tel">电话号码：</label>
+        <input type="text" id="tel" name="tel" [(ngModel)]="addUser.tel">
+      </div>
+      <div class="form-item">
+        <label for="idcard">证件号码：</label>
+        <input type="text" id="idcard" name="idcard" [(ngModel)]="addUser.idcard">
+      </div>
+      <div class="form-item">
+        <label>用户权限：</label>
+        <select [(ngModel)]="addUser.power" name="power">
+          <option value="1">物业公司主管</option>
+          <option value="2">老百姓</option>
+          <option value="3">系统管理员</option>
+        </select>
+      </div>
+      <div class="operation">
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+      </div>
+    </form>
+  </div>
+  <!--添加用户end-->
+
+  <!--修改用户信息start-->
+  <div class="child-view" id="user_config">
+    <div class="close-btn" (click)="closeModifyView();"></div>
+    <h3>修改用户信息</h3>
+    <form action="" class="child-form">
+      <div class="form-item">
+        <label for="modifyname">姓名：</label>
+        <input type="text" id="modifyname" name="modifyname">
+      </div>
+      <div class="form-item">
+        <label for="modifypwd">密码：</label>
+        <input type="password" id="modifypwd" name="modifypwd">
+      </div>
+      <div class="form-item">
+        <label for="modifyemail">邮箱：</label>
+        <input type="password" id="modifyemail" name="modifypwd">
+      </div>
+      <div class="form-item">
+        <label>用户类型：</label>
+        <select name="modifytype">
+          <option value="1">业主</option>
+          <option value="2">管理员</option>
+          <option value="3">物业</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="modifytel">电话号码：</label>
+        <input type="text" id="modifytel" name="modifytel">
+      </div>
+      <div class="form-item">
+        <label for="modifyidcard">证件号码：</label>
+        <input type="text" id="modifyidcard" name="modifyidcard">
+      </div>
+      <div class="form-item">
+        <label>用户权限：</label>
+        <select name="modifypower">
+          <option value="1">物业公司主管</option>
+          <option value="2">物业员工</option>
+          <option value="3">业主</option>
+          <option value="3">公司管理员</option>
+          <option value="3">公司员工</option>
+        </select>
+      </div>
+      <div class="operation">
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="modify();">保存修改</button>
+      </div>
+    </form>
+  </div>
+  <!--修改用户信息end-->
+
+  <!--确认删除弹框start-->
+  <!--<div class="child-view del-confirm">-->
+    <!--<p style="text-align: center;padding:30px 0;">确认删除选中设备？</p>-->
+    <!--<div class="operation">-->
+      <!--<button class="btn useful-btn" type="button" (click)="del();">&nbsp;&nbsp;确认&nbsp;&nbsp;</button>-->
+      <!--<button class="btn useless-btn" type="button" (click)="cancel();">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--确认删除弹框end-->
+
+  <!--结果弹框start-->
+  <!--<div class="child-view" *ngIf="operationResult">-->
+    <!--<div class="result-dialog">-->
+      <!--<div class="tick"></div>-->
+      <!--<p style="text-align:center;padding-bottom:20px;letter-spacing: 3px;">{{dialogContent}}</p>-->
+      <!--<button class="btn useful-btn" type="button" (click)="operationResult=false;">&nbsp;完成&nbsp;</button>-->
+    <!--</div>-->
+  <!--</div>-->
+  <!--结果弹框end-->
+</div>

@@ -5,7 +5,7 @@ import { AdminComponent } from "./admin.component";
 import { AreaComponent } from "./area/area.component";
 import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
-import { CopyComponent } from './copy/copy.component';
+import { UserComponent } from './user/user.component';
 import { OperationsComponent } from './operations/operations.component';
 
 const routes:Routes=[
@@ -31,8 +31,8 @@ const routes:Routes=[
                 component:AdvertisementComponent
             },
             {
-                path:'copy',
-                component:CopyComponent
+                path:'user',
+                component:UserComponent
             },
             {
                 path:'ops',

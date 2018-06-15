@@ -15,6 +15,7 @@ import { AreaService } from "./server/area.service";
 import{FormsModule} from '@angular/forms';
 import { EquipService } from './server/equip.service';
 import { CopyService } from './server/copy.service';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { CopyService } from './server/copy.service';
     AdminRoutingModule,
     FormsModule
   ],
-  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, CopyComponent, OperationsComponent],
+  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, CopyComponent, OperationsComponent, UserComponent],
   providers: [
     AreaService,
     EquipService,

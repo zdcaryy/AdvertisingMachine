@@ -3,7 +3,7 @@
     <form class="form-inline">
       <div class="form-group">
         <label for="query-input" class="query-label">查找设备</label>
-        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="请输入设备编号" [(ngModel)]="searchNum">
+        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="请输入设备编号或物业信息" [(ngModel)]="searchNum">
       </div>
       <button type="submit" class="btn query-btn"(click)="searchEquip()">查找</button>
     </form>
@@ -24,26 +24,36 @@
   <hr>
 
   <div class="operation">
-    <button class="btn userless-btn" type="submit">批量处理</button>
-    <button class="btn useful-btn" type="submit"(click)="addView();">添加设备</button>
+    <button class="btn useless-btn" type="button" (click)="delMore();">批量删除</button>
+    <button class="btn useful-btn" type="button" (click)="addView();">添加设备</button>
   </div>
 
   <!--添加设备start-->
-  <div class="add-equip">
-    <div class="close-btn" (click)="closeView();"></div>
+  <div class="child-view" id="add_equip">
+    <div class="close-btn" (click)=" closeAddView();"></div>
     <h3>添加设备</h3>
-    <form action="" id="equip-form">
+    <form action="" class="child-form">
       <div class="form-item">
         <label for="equipNum">设备号：</label>
-        <input type="text" id="equipNum">
+        <input type="text" id="equipNum" name="equipNum" [(ngModel)]="addEquip.addNum">
       </div>
       <div class="form-item">
-        <label for="equipPosition">设备位置：</label>
-        <input type="text" id="equipPosition">
+        <label>设备位置：</label>
+        <span data-toggle="distpicker" class="form-inline distpicker">
+            <select  id="province1" name="province"></select>
+            <select  id="city1" name="city"></select>
+            <select  id="district1" name="district"></select>
+            <input type="text" name="equipPosition" id="equipPosition" [(ngModel)]="addEquip.quarter">
+        </span>
+        <!--<img src="#" (error)="onError()" style="display:none;">-->
       </div>
       <div class="form-item">
-        <label>运维人员：</label>
-        <select name="">
+        <label for="property">所属物业：</label>
+        <input type="text" name="property" id="property" [(ngModel)]="addEquip.property">
+      </div>
+      <div class="form-item">
+        <label>分配运维：</label>
+        <select [(ngModel)]="addEquip.opePerson" name="opePerson">
           <option value="1">二狗 18122223333</option>
           <option value="2">三狗 18122223333</option>
           <option value="3">四狗 18122223333</option>
@@ -51,8 +61,8 @@
         </select>
       </div>
       <div class="form-item">
-        <label for="equipNum">播放广告：</label>
-        <select name="" id="">
+        <label>播放广告：</label>
+        <select [(ngModel)]="addEquip.advertisement" name="advertisement">
           <option value="1">KFC夏季优惠促销活动 第一条</option>
           <option value="2">三狗 18122223333</option>
           <option value="3">四狗 18122223333</option>
@@ -60,10 +70,83 @@
         </select>
       </div>
       <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="add();">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
   <!--添加设备end-->
+
+  <!--修改设备信息start-->
+  <div class="child-view" id="equip_config">
+    <div class="close-btn" (click)="closeModifyView();"></div>
+    <h3>设备信息</h3>
+    <form action="" class="child-form">
+      <div class="form-item">
+        <label for="equipNum">设备号：</label>
+        <span>123456</span>
+      </div>
+      <div class="form-item">
+        <label for="equipPosition">运行状况：</label>
+        <span>正常运行</span>
+      </div>
+      <div class="form-item">
+        <label>设备位置：</label>
+        <span data-toggle="distpicker" class="form-inline distpicker">
+            <select  id="province2"></select>
+            <select  id="city2"></select>
+            <select  id="district2"></select>
+            <input type="text" value="xxxxxx小区">
+        </span>
+      </div>
+      <div class="form-item">
+        <label for="equipNum">运维人员：</label>
+        <select name="">
+          <option value="1">李二狗 18328810899</option>
+          <option value="1">李二狗 18328810899</option>
+          <option value="1">李二狗 18328810899</option>
+          <option value="1">李二狗 18328810899</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="equipNum">播放广告：</label>
+        <select name="">
+          <option value="1">KFC夏季优惠促销活动 第一条</option>
+          <option value="1">KFC夏季优惠促销活动 第一条</option>
+          <option value="1">KFC夏季优惠促销活动 第一条</option>
+          <option value="1">KFC夏季优惠促销活动 第一条</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <label for="equipNum">备份情况：</label>
+        <span>已备份</span>
+      </div>
+      <div class="operation">
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="modify();">保存修改</button>
+      </div>
+    </form>
+  </div>
+  <!--修改设备信息end-->
+
+  <!--确认删除弹框start-->
+  <div class="child-view del-confirm">
+    <p style="text-align: center;padding:30px 0;">确认删除选中设备？</p>
+    <div class="operation">
+      <button class="btn useful-btn" type="button" (click)="del();">&nbsp;&nbsp;确认&nbsp;&nbsp;</button>
+      <button class="btn useless-btn" type="button" (click)="cancel();">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+    </div>
+  </div>
+  <!--确认删除弹框end-->
+
+  <!--结果弹框start-->
+  <div class="child-view" *ngIf="operationResult">
+    <div class="result-dialog">
+      <div class="tick"></div>
+      <p style="text-align:center;padding-bottom:20px;letter-spacing: 3px;">{{dialogContent}}</p>
+      <button class="btn useful-btn" type="button" (click)="operationResult=false;">&nbsp;完成&nbsp;</button>
+    </div>
+  </div>
+  <!--结果弹框end-->
+
+
 </div>
 
