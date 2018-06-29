@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes,RouterModule } from "@angular/router";
+import { AuthGuard } from "../login/auth.guard";
 
 import { AdminComponent } from "./admin.component";
 import { AreaComponent } from "./area/area.component";
@@ -7,6 +8,7 @@ import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { UserComponent } from './user/user.component';
 import { OperationsComponent } from './operations/operations.component';
+import{PropertyComponent} from './property/property.component';
 
 const routes:Routes=[
     {
@@ -20,23 +22,31 @@ const routes:Routes=[
             },
             {
                 path:'equip',
-                component:EquipComponent
+                component:EquipComponent,
+                
             },
             {
                 path:'area',
-                component:AreaComponent
+                component:AreaComponent,
+                canActivate: [AuthGuard]
             },
             {
                 path:'adver',
-                component:AdvertisementComponent
+                component:AdvertisementComponent,
+                canActivate: [AuthGuard]
             },
             {
                 path:'user',
-                component:UserComponent
+                component:UserComponent,
             },
             {
                 path:'ops',
-                component:OperationsComponent
+                component:OperationsComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+              path:'property',
+              component:PropertyComponent
             }
         ]
     }

@@ -44,7 +44,7 @@ export class AreaComponent implements OnInit {
   }
   //获取坐标
   getCoord(){
-    this.areaService.getData('/coord')
+    this.areaService.getData('/village/findAllVillages')
       .subscribe(value => {
         console.log(value);
         this.areaCoord=value.dian;

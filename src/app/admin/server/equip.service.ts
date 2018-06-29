@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Observable';
 export class EquipService {
 
   constructor(private http:HttpClient) { }
-  private equipUrl="http://localhost:8080/";
+  private equipUrl="http://localhost:9062";
   getData(key:string):Observable<any>{
     return this.http.get<any>(this.equipUrl+key);
   }

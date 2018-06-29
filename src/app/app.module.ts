@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule} from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from './app.component';
@@ -13,6 +13,7 @@ import { RegisterComponent } from './register/register.component';
 
 import { AuthService } from "./login/auth.service";
 import { AuthGuard } from "./login/auth.guard";
+
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AuthGuard } from "./login/auth.guard";
     HttpModule,
     HttpClientModule,
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthService,AuthGuard],
   bootstrap: [AppComponent]

@@ -2,83 +2,304 @@
 	height: calc(100% - 20px);
 	margin: 10px;
 	background-color: #fff;
-	box-shadow:  2px 2px 5px 1px #a7a7a7;
+	box-shadow:  2px 2px 4px 0px #b0b0b0;
+	position: relative;
 }
-.tableBox{
+/**********头部************/
+.advertisement .header{
 	width: 100%;
-	height: 90%;
-	padding-bottom: 15px;
+	height: 50px;
+	background-color: #f9f9f9;
+	border: 1px solid #d0d0d0;
+	border-left: 0;
+	border-right: 0;
 }
-
-.footer{
-	margin: 0px 30px;
-	padding: 20px 0px;
-	border-top:1px solid #e0e0e0;
+.advertisement .header .type{
+	width: 120px;
 	text-align: center;
+	font-size: 15px;
+	cursor: default;
 }
-.myBtn{
-	display: inline-block;
+.advertisement .header .nowType{ 
+	background-color: #fff;
+	border-right: 1px solid #d0d0d0;
+	border-bottom: 1px solid #fff;
+}
+/* 项目分类，及其下拉菜单 */
+.advertisement .header .optType{ 
+	position: relative;
+}
+.advertisement .header .optType .glyphicon{ 
+	font-size: 12px;
+	color: #555555;
+	margin-left: 5px;
+}
+.advertisement .header .optType .typeBox{
+	position: absolute;
+	z-index: 2;
+	top: -1px;left: -2px;
+	width: 360px;
+	border-left: 2px solid #d0d0d0;
+	border-bottom: 2px solid #d0d0d0;
+} 
+.advertisement .header .optType .typeBox .typeBox_Title{
+	float: left;
+	width: 119px;
+	line-height: 48px;
+	height: 50px;
+	border-top: 1px solid #d0d0d0;
+	background-color: #fff;
+} 
+.advertisement .header .optType .typeBox .typeBox_Blank{
+	height: 50px;
+	margin-left: 119px;
+	border-left: 2px solid #d0d0d0;
+	border-bottom: 2px solid #d0d0d0;
+} 
+.advertisement .header .optType .typeBox .typeBox_Main{
+	background-color: #fff;
+	overflow: hidden;
+	padding: 30px 0px;
+	padding-left: 35px;
+	border-right: 2px solid #d0d0d0;
+} 
+.advertisement .header .optType .typeBox .typeBox_Main span{
+	float: left;
 	width: 80px;
-	line-height: 30px;
-	cursor: pointer;
-	text-align: center;
+	margin: 10px 0;
+	text-align: left;
+	color: #999;
+} 
+.advertisement .header .optType .typeBox .typeBox_Main span:hover{
+	text-decoration: underline;
+	color: #111;
+}
+	/* 搜索 */
+.advertisement .header .searchBox{ 
+	text-align: right;
+	padding-right: 35px;
+}
+.advertisement .header .searchBox input{
+	outline: none;
+	border: 1px solid #d7d7d7;
 	border-radius: 5px;
+	padding: 2px 10px;
+	margin-right: 20px;
 }
-.delMul{
-	background-color: pink;
-	margin-right: 50px;
-}
-.addNew{
+.advertisement .header .searchBox span{
+	display: inline-block;
+	padding: 4px 15px;
 	background-color: #009688;
 	color: #fff;
+	border-radius: 3px;
+	cursor: pointer;
+}
+/**********头部************/
+
+/***********主要内容，广告***************/
+.advertisement .main{
+	width: 100%;
+	position: absolute;
+	top: 50px;
+	bottom: 80px;
+	padding: 20px 0;
+	overflow: auto;
+}
+.advertisement .main .adBox{
+	/* 16:14 */
+	width: 90%;
+	height: 90%;
+	position: absolute;
+	top: 0;
+	left: 5%;
+	border: 1px solid #dfdfdf;
+}
+	/* 每个box上方的图片 -- hover 显示遮罩，操作等 */
+.advertisement .main .adBox .adv{
+	width: 100%;
+	height: 64.286%;
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-color: black;
+	position: relative;
+	overflow: hidden;
+}
+ /* 遮罩动画 */
+.advertisement .main .adBox .adv:hover .advOpers{
+	top: 0;
+}
+.advertisement .main .adBox .adv .advOpers{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background-color: rgba(0,0,0,0.6);
+	color: #d0d0d0;
+	text-align: center;
+	/* 遮罩动画 */
+	transition: top 150ms ease-out;
+}
+.advertisement .main .adBox .adv .advOpers ul li span{
+	transition: font-size 100ms;
+	display: inline-block;
+	padding: 1px 0px;
+}
+.advertisement .main .adBox .adv .advOpers ul li span:hover{
+	color: #fafafa;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+	/* 广告名 */
+.advertisement .main .adBox .advTitle{
+	height: 20.714%;
+	text-align: center;
+	font-size: 18px;
+	position: relative;
+}
+	/* 上传时间和checkbox */
+
+
+/* 卡片布局自适应 */
+.fitBox{
+	position: relative;
+	float: left;
+}
+@media screen and (max-width: 768px){
+	/* 16:14 */
+	.fitBox{
+		width: 50%;
+		height: 0;
+		padding-top: 43.75%;
+	}
+}
+@media screen and (min-width: 768px){
+	/* 16:14 */
+	.fitBox{
+		width: 33.33333%;
+		height: 0;
+		padding-top: 29.16667%;
+	}
+}
+@media screen and (min-width: 1200px){
+	/* 16:14 */
+	.fitBox{
+		width: 25%;
+		height: 0;
+		padding-top: 21.875%;
+	}
+}
+@media screen and (min-width: 1440px){
+	/* 16:14 */
+	.fitBox{
+		width: 20%;
+		height: 0;
+		padding-top: 17.5%;
+	}
 }
 
-/*弹窗*/
+/* 相对父元素垂直居中 ，内部文字水平居中*/
+.vertiMid{
+	width: 100%;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+}
+
+/***********主要内容，广告***************/
+
+
+/************底部，按钮**************/
+.advertisement .footer{
+	width: 100%;
+	height: 80px;
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid #d0d0d0;
+	text-align: center;
+	padding-top: 25px;
+	cursor: pointer;
+}
+.advertisement .footer .mybtn{
+	width: 90px;
+	line-height: 30px;
+	border-radius: 2px;
+	display: inline-block;
+	color: #fff;
+}
+.advertisement .footer .delMul{
+	background-color: #e0e0e0;
+	margin-right: 50px;
+}
+
+.advertisement .footer .addNew{
+	background-color: #009688;
+}
+/************底部，按钮**************/
+
+
+/*********** 弹窗--查看，添加等... *************/
 .cover{
-	position: fixed;
+	position: absolute;
 	left: 0;
 	top: 0;
 	z-index: 998;
 	width: 100%;
 	height: 100%;
-	min-height: 500px;
-	background-color: rgba(0,0,0,0);
+	/*background-color: rgba(255,255,255,0.4);*/
 }
-.addBox{
-	position: fixed;
+.modalBox{
+	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%,-50%);
 	z-index: 999;
-	width: 500px;
-	height: 300px;
+	width: 600px;
+	height: 400px;
 	background-color: #fff;
-	box-shadow: 1px 1px 5px 1px #e0e0e0;
+	box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.3);
 	border-top: 5px solid #009688;
+	transition: opacity 300ms;
+	text-align: left;
+	padding: 0 20px;
+}
+.modalBox .close{
+	font-size: 16px;
+	font-weight: normal;
+	margin: 7px -7px 0 0;
+}
+.modalBox .modal_title{
+	font-size: 18px;
+	letter-spacing: 2px;
+	margin: 20px 0;
+}
+.modalBox .modal_row{
+	margin-bottom: 10px;
+	padding-left: 20px; 
+}
+.modalBox .modal_row .row_val{
+	color: #666;
+}
+.modalBox .modal_foot{
+	margin-top: 30px;
+	text-align: center;
+}
+.modalBox .modal_btn{
+	display: inline-block;
+	width: 80px;
+	height: 30px;
+	background-color: #009688;
+	color: #fff;
+	line-height: 30px;
+	border-radius: 3px;
+	cursor: pointer;
 }
 
-/*动画*/
-@keyframes show{
-	from {opacity: 0;}
-	to {opacity: 1;}
-}
-@keyframes hide{
-	0% {opacity: 1;}
-	99% {opacity: 0;}
-	100% {opacity: 0;visibility: hidden;}
-}
+/*********** 弹窗--查看，添加等... *************/
 
-.showShadow{
-	visibility: visible;
-	animation: show 0.4s;
-}
-
-.hideShadow{
-	animation: hide 0.4s;
-	animation-fill-mode: forwards;
-}
-/*阻止第一次进页面时，动画的执行*/
-.pauseShadow{
-	animation-play-state:paused;
-	visibility: hidden;
+el-date-picker{
+	display: inline-block;
 }

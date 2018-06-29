@@ -10,7 +10,7 @@ export class AreaService {
   constructor(private http:HttpClient) { }
 
   getData(key:string): Observable<any>{
-  	return this.http.get<any>(`${environment.areaUrl}`+key);		
+  	return this.http.get<any>(`${environment.userUrl}`+key);		
   }
 
 }

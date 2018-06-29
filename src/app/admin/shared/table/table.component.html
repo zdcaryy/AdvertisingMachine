@@ -4,7 +4,7 @@
 		<tbody>
 			<tr>
 				<!-- checkbox -->
-				<th class="forCheck"><input type="checkbox" #checkbox_all title="全选" [checked]="selectedList.length==bodys.length" (click)="selectAll(checkbox_all.checked)"></th>
+				<th class="forCheck"><input type="checkbox" #checkbox_all title="全选" [checked]="selectedList.length&&selectedList.length==bodys.length" (click)="selectAll(checkbox_all.checked)"></th>
 				<!-- 主体 -->
 				<th *ngFor="let head of heads" (click)="dropList=head.key;$event.stopPropagation();">
 					<!-- 传的数据中含有'child'，则代表有二级菜单 -->
@@ -13,12 +13,12 @@
 						<!-- 隐藏input,用来存选中的下拉 -->
 						<input #forSelect type="text" style="display: none;" [value]="head.child[0]">
 						<span>{{head.name}}({{forSelect.value}})</span>
-						<span style="position: absolute;right: 10%;">∨</span>
+						<span style="font-size: 12px;font-weight: 700" class="glyphicon glyphicon-triangle-bottom"></span>
 						<!-- dropList判断显示谁的二级菜单 -->
 						<div class="secMenu" *ngIf="dropList==head.key" (click)="dropList='';$event.stopPropagation();">
 							<div class="menuTitle">
 								<span>{{head.name}}({{forSelect.value}})</span>
-								<span style="position: absolute;right: 10%;">∨</span>
+								<span style="font-size: 12px;font-weight: 700" class="glyphicon glyphicon-triangle-top"></span>
 							</div>
 							<div class="dropItem" [class.dropSelected]="forSelect.value==child" *ngFor="let child of head.child" (click)="forSelect.value=child;headOper(head.key,child)">{{child}}</div>
 						</div>
@@ -45,13 +45,13 @@
 							<span *ngIf="head.canOper;else notOper" class="canOper">
 								<!-- 判断是否是数组 => 主要由于操作可能有多个时，传的是数组 -->
 								<!-- [style.color]根据colorconfig来设置颜色 -->
-								<span *ngIf="checkType(body[head.key],'string');else isArray" (click)="bodyOper(body[head.key],body)" 
+								<span class="opers" *ngIf="checkType(body[head.key],'string');else isArray" (click)="bodyOper(body[head.key],body)" 
 											[style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][body[head.key]]:'#000'">{{body[head.key]}}</span>
 								<!-- 是数组时 -->
-								<ng-template #isArray><span *ngFor="let item of body[head.key];let i=index" (click)="bodyOper(item,body)" 
-																						[style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][item]:'#000'">{{item}}
-																						<span *ngIf="i<item.length-1">&nbsp;</span></span>
-																			</ng-template>
+								<ng-template #isArray><span *ngFor="let item of body[head.key];let i=index">
+																						<span class="opers" (click)="bodyOper(item,body)" [style.color]="colorConfig&&colorConfig[head.key]?colorConfig[head.key][item]:'#000'">{{item}}</span>
+																						<span class="sep" *ngIf="i<item.length-1"></span>
+								</span></ng-template>
 							</span>
 
 							<!-- ↑↑↑↑↑↑↑  一般来说只有不可操作的普通内容需要替换文字，所以可操作的没写替换  ↑↑↑↑↑↑↑ -->

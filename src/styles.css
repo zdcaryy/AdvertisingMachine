@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~element-angular/theme/index.css';
 *{
     margin:0;
     padding:0;
@@ -11,11 +12,33 @@ body{
 /* 隐藏高德logo */
 .amap-logo {
     display: none;
-} 
+}
 .amap-copyright {
   bottom:-100px;
    display: none;
-} 
+}
 .amap-icon img{
     width:40px
 }
+
+/*  ELE-UI插件样式覆盖 -- 日历 */
+/*.el-date-table td.available:hover{
+	color: #009688;
+}
+.el-date-table td.current:not(.disabled) span{
+	color: #fff;
+	background-color: #009688;
+}
+.el-date-table td.today span{
+	color: #009688;
+}
+.el-input__inner{
+  height: auto;
+  padding: 2px 10px;
+}
+.el-input__inner:focus{
+  border-color: #009688;
+}
+.el-input__icon{
+  line-height: normal;
+}*/

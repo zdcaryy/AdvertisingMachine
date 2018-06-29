@@ -9,17 +9,16 @@ export class AuthService {
     loginUrl: string;
     getUserUrl: string;
     loginHeader = new Headers({  
-        "Authorization": "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0"
+        "Authorization": "Basic QWR2ZXJ0aXNlV2ViOmNicG0yMDE4"
     })
 
     constructor(private http: Http) { }
 
-    
     // 登录
     login(user: string, pass: string){
         return this.http.request(new Request({
             method: RequestMethod.Post,
-            url: `${environment.tokenUrl}` + "/oauth/token?grant_type=password&username="+user+"&password="+pass,
+            url: `${environment.tokenUrl}` + "/advertiseAuth/oauth/token?grant_type=password&username="+user+"&password="+pass,
             body: {},
             headers:this.loginHeader
         }))
@@ -27,8 +26,8 @@ export class AuthService {
     // 获取登录用户的信息
     getUserInfo(){
         return this.http.get(
-            `${environment.userUrl}`+"/user/isexists",
-            {params:{userCode:localStorage.getItem('userCode'),access_token:localStorage.getItem('access_token')}}
+            `${environment.userUrl}`+"/user/findByPhoneNumber",
+            {params:{phoneNumber:localStorage.getItem('userCode'),access_token:localStorage.getItem('access_token')}}
         ).map(res => res.json())
     }
 }

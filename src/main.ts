@@ -7,6 +7,6 @@ import { environment } from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
-
+enableProdMode();//解决生产环境二次检查
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.log(err));

@@ -1,0 +1,91 @@
+<div class="content">
+  <div class="search-container">
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="query-input" class="query-label">查找物业</label>
+        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="请输入物业公司名">
+      </div>
+      <button type="submit" class="btn query-btn">查找</button>
+    </form>
+  </div>
+
+  <div class="tablebox">
+    <app-table
+      [heads]="heads"
+      [bodys]="bodys"
+      (selectedListChange)="getSelectedList($event)"
+      [colorConfig]="colorConfig"
+      [textConfig]="textConfig"
+      (headEvent)="getHeadEvent($event)"
+      (bodyEvent)="getBodyEvent($event)"
+    ></app-table>
+  </div>
+
+  <hr>
+
+  <div class="operation">
+    <button class="btn useless-btn" type="button" (click)="delMore();">批量删除</button>
+    <button class="btn useful-btn" type="button" (click)="addView();">添加项目</button>
+  </div>
+
+  <!--添加物业信息start-->
+  <div class="child-view" id="add_property" style="width:900px;">
+    <div class="close-btn" (click)=" closeAddView();"></div>
+    <h3>添加物业信息</h3>
+    <form action="" class="child-form">
+      <div class="form-item">
+        <label for="name">物业</label>：
+        <input type="text" id="name" name="name" [(ngModel)]="addProperty.name" #name="ngModel" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="name.invalid&&name.touched">物业名不能为空</i>
+      </div>
+      <div class="form-item">
+        <label for="leaderName">负责人</label>：
+        <input type="text" id="leaderName" name="leaderName" [(ngModel)]="addProperty.leaderName" #leaderName="ngModel" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="leaderName.invalid&&leaderName.touched">负责人不能为空</i>
+      </div>
+      <div class="form-item">
+        <label for="leaderIdentity">负责人证件号</label>：
+        <input type="text" id="leaderIdentity" name="leaderIdentity" [(ngModel)]="addProperty.leaderIdentity" #leaderIdentity="ngModel" pattern="^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="(leaderIdentity.value=='')&&leaderIdentity.touched">证件号不能为空</i>
+        <i  *ngIf="(leaderIdentity.value!='')&&leaderIdentity.invalid&&leaderIdentity.touched">证件号格式不正确</i>
+      </div>
+      <div class="form-item">
+        <label for="leaderPhoneNumber">负责人电话</label>：
+        <input type="text" id="leaderPhoneNumber" name="leaderPhoneNumber" [(ngModel)]="addProperty.leaderPhoneNumber" #leaderPhoneNumber="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="(leaderPhoneNumber.value=='')&&leaderPhoneNumber.touched">手机号不能为空</i>
+        <i  *ngIf="(leaderPhoneNumber.value!='')&&leaderPhoneNumber.invalid&&leaderPhoneNumber.touched">手机号格式不正确</i>
+      </div>
+      <div class="form-item">
+        <label for="linkManName">常用联系人</label>：
+        <input type="text" id="linkManName" name="linkManName" [(ngModel)]="addProperty.linkManName" #linkManName="ngModel" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="linkManName.invalid&&linkManName.touched">负责人不能为空</i>
+      </div>
+      <div class="form-item">
+        <label for="linkManPhoneNumber">常用联系人电话</label>：
+        <input type="text" id="linkManPhoneNumber" name="linkManPhoneNumber" [(ngModel)]="addProperty.linkManPhoneNumber" #linkManPhoneNumber="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="(linkManPhoneNumber.value=='')&&linkManPhoneNumber.touched">手机号不能为空</i>
+        <i  *ngIf="(linkManPhoneNumber.value!='')&&linkManPhoneNumber.invalid&&linkManPhoneNumber.touched">手机号格式不正确</i>
+      </div>
+      <div class="operation">
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(name.valid&&leaderName.valid&&leaderIdentity.valid&&leaderPhoneNumber.valid&&linkManName.valid&&linkManPhoneNumber.valid)?add():0">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+      </div>
+    </form>
+  </div>
+  <!--添加物业信息end-->
+
+  <!--结果弹框start-->
+  <div class="child-view" *ngIf="operationResult">
+    <div class="result-dialog">
+      <div class="tick"></div>
+      <p style="text-align:center;padding-bottom:20px;letter-spacing: 3px;">{{dialogContent}}</p>
+      <button class="btn useful-btn" type="button" (click)="operationResult=false;dialog=false;">&nbsp;完成&nbsp;</button>
+    </div>
+  </div>
+  <!--结果弹框end-->
+</div>

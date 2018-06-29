@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
         this.auth.login(this.username, this.password)
             .subscribe(response => {
               console.log(response);
-              this.router.navigateByUrl("/userlist");
+              this.router.navigateByUrl("/admin/equip");
               localStorage.setItem('access_token',response.json().access_token);
               localStorage.setItem('userCode',this.username);
             },error => {

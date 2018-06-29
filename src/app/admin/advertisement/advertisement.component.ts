@@ -1,147 +1,90 @@
 import { Component, OnInit } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 @Component({
   selector: 'app-advertisement',
   templateUrl: './advertisement.component.html',
-  styleUrls: ['./advertisement.component.css']
+  styleUrls: ['./advertisement.component.css'],
+  animations: [
+    trigger('adCover',[
+      state('show',style({
+        opacity:1,
+      })),
+      state('hide',style({
+        opacity:0,
+      })),
+      transition('hide => show',animate('200ms ease-in')),
+      transition('show => hide',animate('200ms ease-out'))
+    ])
+  ]
 })
 export class AdvertisementComponent implements OnInit {
 
   constructor() { }
 
-  heads: object[];
-  bodys:object[];
-  selectedList:object[] = [];
-  textConfig:object;
-  colorConfig:object;
-  // 是否显示弹窗
-  popUp:boolean = null;
+  // 广告数据列表
+  adver:any[] = [];
+  // 是否显示下拉菜单  --  项目分类
+  showTypes:boolean = false;
+  types:string[];
+  // 显示弹窗 & 动画
+  showModal:boolean = false;
+  animeState:boolean = false;
+  // 弹窗类型
+  modalType:string = '';
+  // 弹窗内容
+  viewInfo:any[] = [];  
+  modifyAD:any[] = [];  
 
   ngOnInit() {
-  	this.heads = [{name:"编号",key:'num'},
-  								{name:"广告名",key:'adName'},
-  								{name:"视频源",key:'origin',child:['所有','已上传','待上传','上传中']},
-  								{name:"上传时间",key:'time'},
-  								{name:"操作",key:'operate',canOper:true}];
-
-  	this.bodys = [{num:'9527',adName:'advertisement1',origin:0,time:'2018-06-02 12:30',operate:'删除'},
-  								{num:'9529',adName:'advertisement2',origin:1,time:'2018-06-02 12:33',operate:'删除'},
-  								{num:'9533',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'9534',adName:'advertisement3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'9535',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'9536',adName:'advertisement3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'9537',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'9538',adName:'advertisement3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'9539',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'245235',adName:'advertisement3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'234234',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'953533',adName:'advertisement3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'765334',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'234378',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'95398763',adName:'advertisement3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'97653',adName:'advertisement3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'2358786546',adName:'advertisement3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'27854346',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'97456363',adName:'advertisement3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'4376457',adName:'advertisement3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								{num:'646846',adName:'advertisement3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-  								];
-
-  	this.textConfig = {origin:{0:'已上传',1:'待上传',2:'上传中'}};
-  	this.colorConfig = {origin:{0:'red',1:'blue',2:'green'},operate:{查看:'purple',删除:'pink'}};
-  }
-
-  getBodyEvent(e){
-  	console.log(e);
-    switch (e.key) {
-      case "删除":
-        confirm('确定要删除 "'+e.data.adName+'" ?')
-        break;
+  	this.adver = [
+      {id:34564,name:"隔壁超市的薯片半价！1",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！2",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！3",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！4",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！5",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！6",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！7",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！8",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！9",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！10",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！11",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！12",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！13",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+      {id:34564,name:"隔壁超市的薯片半价！14",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
+    ];
+    this.types = ['餐饮','服装','电商','时尚','化妆品','车辆','旅游','公益','haha'];
+    window.onclick = ()=>{
+      this.showTypes = false;
     }
   }
-  getHeadEvent(e){
-  	console.log(e);
-    switch (e.data) {
-      case "已上传":
-        this.bodys = [{num:'9527',adName:'哈哈哈哈哈哈哈1',origin:0,time:'2018-06-02 12:30',operate:'删除'},
-                  {num:'9529',adName:'爱手工法是否IPO结算单2',origin:1,time:'2018-06-02 12:33',operate:'删除'},
-                  {num:'9533',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9534',adName:'爱手工法是否IPO结算单3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9535',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9536',adName:'爱手工法是否IPO结算单3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9537',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'爱手工法是否IPO结算单3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9539',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'245235',adName:'爱手工法是否IPO结算单3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'234234',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'953533',adName:'爱手工法是否IPO结算单3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'765334',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'234378',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'95398763',adName:'爱手工法是否IPO结算单3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'97653',adName:'爱手工法是否IPO结算单3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'2358786546',adName:'爱手工法是否IPO结算单3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'27854346',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'97456363',adName:'爱手工法是否IPO结算单3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'4376457',adName:'爱手工法是否IPO结算单3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'646846',adName:'爱手工法是否IPO结算单3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  ];
-        break;
-      case '待上传':
-        this.bodys = [{num:'9527',adName:'哈哈哈哈哈哈哈1',origin:0,time:'2018-06-02 12:30',operate:'删除'},
-                  {num:'9529',adName:'哈哈哈哈哈哈哈2',origin:1,time:'2018-06-02 12:33',operate:'删除'},
-                  {num:'9533',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9534',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9535',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9536',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9537',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9539',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'245235',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'234234',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'953533',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'765334',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'234378',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'95398763',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'97653',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'2358786546',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'27854346',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'97456363',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'4376457',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'646846',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  ];
-          break;
-          case '上传中':
-        this.bodys = [{num:'9527',adName:'哈哈哈哈哈哈哈1',origin:0,time:'2018-06-02 12:30',operate:'删除'},
-                  {num:'9529',adName:'哈哈哈哈哈哈哈2',origin:1,time:'2018-06-02 12:33',operate:'删除'},
-                  {num:'9533',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9534',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9535',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9536',adName:'哈哈哈哈哈哈哈3',origin:1,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9537',adName:'哈哈哈哈哈哈哈3',origin:2,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']},
-                  {num:'9538',adName:'哈哈哈哈哈哈哈3',origin:0,time:'2018-06-02 12:33',operate:['查看','删除']}
-                  ];
-          break;
-    }
+
+  // 选择分类
+  chooseType(type){
+    console.log(type);
   }
-  getSelectedList(e){
-    this.selectedList = e;
-    console.log(this.selectedList);
-  }
+
+  // 批量删除
   delMul(){
-    console.log(this.selectedList);
+
   }
 
+  // 添加，显示弹窗
+  showAdd(){
+    this.showModal = true;
+  }
+  // 确认添加
   addNew(){
-    
+
+  }
+
+  test(ads){
+    ads.state='hide';
+    console.log(this.adver);
+  }
+
+  handle(e){
+    console.log(e);
   }
 
 }

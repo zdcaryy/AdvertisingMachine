@@ -3,7 +3,7 @@
     <form class="form-inline">
       <div class="form-group">
         <label for="query-input" class="query-label">查找用户</label>
-        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="姓名、证件号、电话号、公司或户主">
+        <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="输入姓名或电话号">
       </div>
       <button type="submit" class="btn query-btn">查找</button>
     </form>
@@ -24,125 +24,123 @@
   <hr>
 
   <div class="operation">
-    <button class="btn useless-btn" type="button">批量删除</button>
+    <button class="btn useless-btn" type="button" (click)="delMore();">批量删除</button>
     <button class="btn useful-btn" type="button" (click)="addView();">添加用户</button>
   </div>
 
   <!--添加用户start-->
-  <div class="child-view" id="add_user">
+  <div class="child-view" id="add_user" style="width:900px;">
     <div class="close-btn" (click)=" closeAddView();"></div>
     <h3>添加用户</h3>
     <form action="" class="child-form">
       <div class="form-item">
         <label for="username">姓名：</label>
-        <input type="text" id="username" name="username" [(ngModel)]="addUser.username">
+        <input type="text" id="username" name="username" [(ngModel)]="addUser.name" #username="ngModel" pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required>
+        <span style="color:red;">*</span>
+        <span *ngIf="username.invalid">请输入汉字姓名</span>
       </div>
       <div class="form-item">
         <label for="pwd">密码：</label>
-        <input type="password" id="pwd" name="pwd" [(ngModel)]="addUser.pwd">
+        <input type="password" id="pwd" name="pwd" [(ngModel)]="addUser.pwd" #pwd="ngModel"
+               pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$" required>
+        <span style="color:red;">*</span>
+        <i *ngIf="pwd.invalid">密码由8至16位字符数字组成</i>
       </div>
       <div class="form-item">
         <label for="email">邮箱：</label>
-        <input type="email" name="email" id="email" [(ngModel)]="addUser.email">
+        <input type="email" name="email" id="email" [(ngModel)]="addUser.email" #email="ngModel" pattern="[\w]+?@[\w]+?\.[a-z]+?">
+        <i *ngIf="email.invalid">请输入正确的邮箱格式</i>
       </div>
       <div class="form-item">
         <label>用户类型：</label>
-        <select [(ngModel)]="addUser.usertype" name="usertype">
-          <option value="1">业主</option>
-          <option value="2">管理员</option>
-          <option value="3">系统管理员</option>
+        <select [(ngModel)]="addUser.userLevel" name="usertype">
+          <option value="0">系统管理员</option>
+          <option value="1">管理员</option>
+          <option value="2">业主</option>
         </select>
+        <span style="color:red;">*</span>
       </div>
       <div class="form-item">
         <label for="tel">电话号码：</label>
-        <input type="text" id="tel" name="tel" [(ngModel)]="addUser.tel">
+        <input type="text" id="tel" name="tel" [(ngModel)]="addUser.phoneNumber" #tel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="tel.invalid">请输入正确格式的手机号</i>
       </div>
       <div class="form-item">
         <label for="idcard">证件号码：</label>
-        <input type="text" id="idcard" name="idcard" [(ngModel)]="addUser.idcard">
-      </div>
-      <div class="form-item">
-        <label>用户权限：</label>
-        <select [(ngModel)]="addUser.power" name="power">
-          <option value="1">物业公司主管</option>
-          <option value="2">老百姓</option>
-          <option value="3">系统管理员</option>
-        </select>
+        <input type="text" id="idcard" name="idcard" [(ngModel)]="addUser.identity" #idcard="ngModel" pattern="^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="idcard.invalid">请输入正确格式的身份证号</i>
       </div>
       <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(username.valid&&pwd.valid&&tel.valid&&idcard.valid)?add():0">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
   <!--添加用户end-->
 
   <!--修改用户信息start-->
-  <div class="child-view" id="user_config">
+  <div class="child-view" id="user_config" >
     <div class="close-btn" (click)="closeModifyView();"></div>
     <h3>修改用户信息</h3>
     <form action="" class="child-form">
       <div class="form-item">
         <label for="modifyname">姓名：</label>
-        <input type="text" id="modifyname" name="modifyname">
-      </div>
-      <div class="form-item">
-        <label for="modifypwd">密码：</label>
-        <input type="password" id="modifypwd" name="modifypwd">
+        <input type="text" id="modifyname" name="modifyname"[(ngModel)]="modifyUser.name" #modifyname="ngModel" pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="modifyname.invalid">请输入汉字姓名</i>
       </div>
       <div class="form-item">
         <label for="modifyemail">邮箱：</label>
-        <input type="password" id="modifyemail" name="modifypwd">
+        <input type="text" id="modifyemail" name="modifyemail" [(ngModel)]="modifyUser.email" #modifyemail="ngModel" pattern="[\w]+?@[\w]+?\.[a-z]+?">
+        <i  *ngIf="modifyemail.invalid">请输入正确格式的邮箱</i>
       </div>
       <div class="form-item">
         <label>用户类型：</label>
-        <select name="modifytype">
-          <option value="1">业主</option>
-          <option value="2">管理员</option>
-          <option value="3">物业</option>
+        <select name="modifytype"  [(ngModel)]="modifyUser.userLevel">
+          <option value="0">业主</option>
+          <option value="1">管理员</option>
+          <option value="2">物业</option>
+          <option value="3">系统管理员</option>
         </select>
+        <span style="color:red;">*</span>
       </div>
       <div class="form-item">
         <label for="modifytel">电话号码：</label>
-        <input type="text" id="modifytel" name="modifytel">
+        <input type="text" id="modifytel" name="modifytel" [(ngModel)]="modifyUser.phoneNumber" #modifytel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="modifytel.invalid">请输入正确格式的手机号</i>
       </div>
       <div class="form-item">
         <label for="modifyidcard">证件号码：</label>
-        <input type="text" id="modifyidcard" name="modifyidcard">
-      </div>
-      <div class="form-item">
-        <label>用户权限：</label>
-        <select name="modifypower">
-          <option value="1">物业公司主管</option>
-          <option value="2">物业员工</option>
-          <option value="3">业主</option>
-          <option value="3">公司管理员</option>
-          <option value="3">公司员工</option>
-        </select>
+        <input type="text" id="modifyidcard" name="modifyidcard"  [(ngModel)]="modifyUser.identity" #modifyidcard="ngModel" pattern="^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]" required>
+        <span style="color:red;">*</span>
+        <i  *ngIf="modifyidcard.invalid">请输入正确格式的身份证号</i>
       </div>
       <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="modify();">保存修改</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(modifyname.valid&&modifytel.valid&&modifyidcard.valid)?modify():0">保存修改</button>
       </div>
     </form>
   </div>
   <!--修改用户信息end-->
 
   <!--确认删除弹框start-->
-  <!--<div class="child-view del-confirm">-->
-    <!--<p style="text-align: center;padding:30px 0;">确认删除选中设备？</p>-->
-    <!--<div class="operation">-->
-      <!--<button class="btn useful-btn" type="button" (click)="del();">&nbsp;&nbsp;确认&nbsp;&nbsp;</button>-->
-      <!--<button class="btn useless-btn" type="button" (click)="cancel();">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>-->
-    <!--</div>-->
-  <!--</div>-->
+  <div class="child-view del-confirm">
+    <p style="text-align: center;padding:30px 0;">确认删除选中用户？</p>
+    <div class="operation">
+      <button class="btn useful-btn" type="button" (click)="del();">&nbsp;&nbsp;确认&nbsp;&nbsp;</button>
+      <button class="btn useless-btn" type="button" (click)="cancel();">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+    </div>
+  </div>
   <!--确认删除弹框end-->
 
   <!--结果弹框start-->
-  <!--<div class="child-view" *ngIf="operationResult">-->
-    <!--<div class="result-dialog">-->
-      <!--<div class="tick"></div>-->
-      <!--<p style="text-align:center;padding-bottom:20px;letter-spacing: 3px;">{{dialogContent}}</p>-->
-      <!--<button class="btn useful-btn" type="button" (click)="operationResult=false;">&nbsp;完成&nbsp;</button>-->
-    <!--</div>-->
-  <!--</div>-->
+  <div class="child-view" *ngIf="operationResult">
+    <div class="result-dialog">
+      <div class="tick"></div>
+      <p style="text-align:center;padding-bottom:20px;letter-spacing: 3px;">{{dialogContent}}</p>
+      <button class="btn useful-btn" type="button" (click)="operationResult=false;dialog=false;">&nbsp;完成&nbsp;</button>
+    </div>
+  </div>
   <!--结果弹框end-->
 </div>

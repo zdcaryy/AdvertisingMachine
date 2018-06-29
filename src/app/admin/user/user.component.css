@@ -62,6 +62,7 @@
   display:none;
 }
 .child-view{
+  z-index:99;
   position:absolute;
   left:50%;
   top:50%;
@@ -96,19 +97,6 @@
   text-align-last:justify;
   /*text-align:justify;*/
   width:100px;
-}
-/*.add-equip #equip-form .form-item label::after {*/
-/*content:'\2724';*/
-/*width:100%;*/
-/*display: inline-block;*/
-/*height:20px;*/
-/*}*/
-.distpicker>input,
-.distpicker>select{
-  border:1px solid #e0e0e0;
-  border-radius:4px;
-  padding:2px;
-  outline:none;
 }
 .child-view .child-form .form-item>input,
 .child-view .child-form .form-item>select{

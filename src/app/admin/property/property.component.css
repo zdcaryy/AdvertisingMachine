@@ -59,8 +59,8 @@
 }
 /*子view样式style*/
 #add_equip,#equip_config,.del-confirm{
-   display:none;
- }
+  display:none;
+}
 .child-view{
   z-index:99;
   position:absolute;
@@ -96,13 +96,13 @@
   display:inline-block;
   text-align-last:justify;
   /*text-align:justify;*/
-  width:100px;
+  width:120px;
 }
 /*.add-equip #equip-form .form-item label::after {*/
-  /*content:'\2724';*/
-  /*width:100%;*/
-  /*display: inline-block;*/
-  /*height:20px;*/
+/*content:'\2724';*/
+/*width:100%;*/
+/*display: inline-block;*/
+/*height:20px;*/
 /*}*/
 .distpicker>input,
 .distpicker>select{

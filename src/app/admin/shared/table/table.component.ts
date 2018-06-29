@@ -9,7 +9,7 @@ export class TableComponent implements OnInit {
 
   constructor() { }
  	@Input() heads:object[]; //表头数据
-  @Input() bodys:object[]; //表格内容数据
+  @Input() bodys:object[] = []; //表格内容数据
   @Input() colorConfig:object; //表格内容颜色设置
   @Input() textConfig:object; //表格内容文字替换
 
@@ -48,7 +48,7 @@ export class TableComponent implements OnInit {
            this.boxScrollY = this.maxScrollY;
            return;
          }
-         console.log(this.scaleBoxBar)
+         // console.log(this.scaleBoxBar);
          this.boxScrollY += e.movementY/this.scaleBoxBar;
       }
     }
