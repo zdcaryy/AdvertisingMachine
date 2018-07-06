@@ -1,12 +1,15 @@
 <div class="row" id="areaModule">
-    <div class="col-lg-8 areaLeft">
+    <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12 areaLeft">
       <div id="gaodemap-container" class="gaodemap-container" tabindex="0"></div>
     </div>
-    <div class="col-lg-4 areaRight">
+    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 areaRight">
       <ul class="areaSearch">
         <li class="areaSearchInput">
-          <div class="col-lg-1"></div>
-          <input class="col-lg-11" type="text" placeholder="查找区域、设备编号">
+          <div (click)="searchVillage()"></div> 
+          <input type="text" placeholder="查找区域、设备编号" [(ngModel)]="activeInput" (change)="dimVillage()">
+          <ol>
+            <li *ngFor="let hero of heroes"></li>
+          </ol>                
         </li>
         <li class="areaSearchTitle">当前区域</li>
         <li class="areaSearchPresent">地区 : {{this.area}}</li>

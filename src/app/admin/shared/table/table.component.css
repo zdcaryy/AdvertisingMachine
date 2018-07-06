@@ -12,7 +12,7 @@ div,table,thead,tbody,td{
 }
 
 /*表头*/
-.tableContainer>.thead{
+.tableContainer .thead{
 	background-color: #f9f9f9;
 	border-top: 1px solid #e0e0e0;
 	border-bottom: 1px solid #e0e0e0;
@@ -21,15 +21,15 @@ div,table,thead,tbody,td{
 	z-index: 1;
 	cursor: default;
 }
-.tableContainer>.thead>tbody>tr>th{
+.tableContainer .thead tbody tr th{
 	text-align: center;
 	position: relative;
 }
-.tableContainer>.thead>tbody>tr>th>div{
+.tableContainer .thead tbody tr th div{
 	line-height: 30px;
 	border-right: 1px solid #e0e0e0;
 }
-.tableContainer>.thead>tbody>tr>th:nth-last-child(2)>div{
+.tableContainer .thead tbody tr th:nth-last-child(2) div{
 	border: 0;
 }
 /*表头中的二级菜单*/
@@ -42,18 +42,18 @@ div,table,thead,tbody,td{
 	box-shadow: 0 0 5px 1px #dcdcdc;
 	background-color: #fafafa;
 }
-.secMenu>.menuTitle{
+.secMenu .menuTitle{
 	border-bottom: 1px solid #e0e0e0;
 }
-.secMenu>.menuTitle>span{
+.secMenu .menuTitle span{
 	display: inline-block;
 	line-height: 60px;
 }
-.secMenu>.dropItem{
+.secMenu .dropItem{
 	font-weight: normal;
 	cursor: pointer;
 }
-.secMenu>.dropItem:hover{
+.secMenu .dropItem:hover{
 	background-color: #e0e0e0;
 }
 
@@ -62,17 +62,18 @@ div,table,thead,tbody,td{
 .tableContainer{
 	overflow: hidden;
 }
-.tableContainer .scrollBox{
+.tableContainer .viewBox{
 	width: calc(100% + 18px);
 	height: 100%;
 	overflow-y: scroll;
+	/*overflow: hidden;*/
 }
-.tableContainer .scrollBox>.tbody>tbody>tr{
+.tableContainer .viewBox .tbody tbody tr{
 	height: 50px;
 }
 
 /*滚动条*/
-.tableContainer table .forProgress{
+.tableContainer table .forScroll{
 	width: 20px;
 }
 .tableContainer .outerBox{
@@ -80,42 +81,29 @@ div,table,thead,tbody,td{
 	height: calc(100% - 60px);
 	position: relative;
 }
-.tableContainer .scrollBox>.progressBox{
+.tableContainer .viewBox .scrollBox{
 	width: 20px;
-	/*height: 100%;*/
 	position: absolute;
 	right: 0;
 	top: 20px;
 	bottom: 20px;
-	/*overflow: hidden;*/
 }
-.tableContainer .scrollBox>.progressBox>.progressBase{
+.tableContainer .viewBox .scrollBox .scrollBase{
 	position: relative;
 	background-color: #bdbdbd;
 	height: 100%;
 	width: 2px;
 	margin: 0;
 }
-/*用来遮住进度条，不用overflow:hidden是因为进度条的球也会被遮住一半*/
-.tableContainer .scrollBox>.progressBox>.progressBase:after{
-	content: '';
-	display: block;
-	width: 100%;
-	height: 20px;
-	background-color: red;
+.tableContainer .viewBox .scrollBox .scrollBase .scrollBar{
 	position: absolute;
 	bottom: 0;
-	transform: translateY(100%);
-	background-color: #fff;
-}
-.tableContainer .scrollBox>.progressBox>.progressBase>.progressBar{
-	position: absolute;
-	top: 0;
 	width: 100%;
-	height: 100%;
+	height: 0;
 	background-color: #009688;
+	/*transition: height 0.05s;*/
 }
-.tableContainer .scrollBox>.progressBox>.progressBase>.progressBar>.progressPoint{
+.tableContainer .viewBox .scrollBox .scrollBase .scrollBar .scrollPoint{
 	background-color: #009688;
 	width: 12px;
 	height: 12px;
@@ -125,9 +113,14 @@ div,table,thead,tbody,td{
 	top: -5px;
 	left: -5px;
 	cursor: pointer;
+	transition: width 0.2s,height 0.2s,top 0.2s,left 0.2s;
 }
-.tableContainer .scrollBox .progressBox>.progressBase>.progressBar>.progressPoint:hover{
+.tableContainer .viewBox .scrollBox .scrollBase .scrollBar .scrollPoint:hover{
 	background-color: #00C7B5;
+	width: 16px;
+	height: 16px;
+	top: -7px;
+	left: -7px;
 }
 
 /*checkbox样式*/
@@ -137,7 +130,7 @@ div,table,thead,tbody,td{
 th.forCheck{
 	z-index: 2;
 }
-.forCheck>input{
+.forCheck input{
 	transform: translateX(20px);
 }
 input[type=checkbox]{

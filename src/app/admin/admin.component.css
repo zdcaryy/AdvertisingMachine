@@ -1,19 +1,63 @@
 #header{
     width:100%;
-    height:50px;
+    height:60px;
     background: url("../../assets/img/title_bg.png");
     background-size: 100% 100%;
     color:white;
-    font-size:24px;
     text-indent: 1em;
-    line-height:50px;
     font-weight: 500;
     letter-spacing: 2px
+}
+.header-floder{
+    width: 30px;
+    cursor:pointer;
+    float:left;
+    color:white
+}
+.header-title{
+    float:left;
+    height:60px;
+    padding:0 10px;
+    line-height: 60px;
+    font-size:24px;
+}
+.header-option{
+    float:right;
+    padding:0 10px;
+    font-size: 15px;
+}
+.header-option>p,ul{
+    height:30px;
+    margin-bottom:0;
+    line-height:30px;
+}
+.header-option>p{
+    text-align:right
+}
+.header-option li{
+    cursor:pointer;
+    float:right;
+    margin-left:20px
+}
+.header-option span{
+    display:block;
+    height:30px;
+    float:left
+}
+.header-refresh{
+    width:30px;
+    height:30px;
+    background:url("../../assets/img/icon_sprite@1x.png") -237px 4px
+}
+.header-msg{
+    width:30px;
+    height:30px;
+    background:url("../../assets/img/icon_sprite@1x.png") -200px 10px
 }
 #nav{
     position:absolute;
     width:200px;
-    top:50px;
+    top:60px;
     bottom:0;
     border-right:1px solid #ddd
 }
@@ -34,7 +78,7 @@
 }
 #section{
     position: absolute;
-    top:50px;
+    top:60px;
     left:200px;
     bottom:0;
     right:0;

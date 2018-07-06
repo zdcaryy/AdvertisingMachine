@@ -8,7 +8,9 @@ import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { UserComponent } from './user/user.component';
 import { OperationsComponent } from './operations/operations.component';
-import{PropertyComponent} from './property/property.component';
+import { VillageComponent } from './village/village.component';
+import {PropertyComponent} from './property/property.component';
+import{PersonComponent} from './person/person.component';
 
 const routes:Routes=[
     {
@@ -23,30 +25,40 @@ const routes:Routes=[
             {
                 path:'equip',
                 component:EquipComponent,
-                
+                // canActivate: [AuthGuard]
             },
             {
                 path:'area',
                 component:AreaComponent,
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path:'adver',
                 component:AdvertisementComponent,
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
                 path:'user',
                 component:UserComponent,
+                // canActivate: [AuthGuard]
             },
             {
                 path:'ops',
                 component:OperationsComponent,
-                canActivate: [AuthGuard]
+                // canActivate: [AuthGuard]
             },
             {
-              path:'property',
-              component:PropertyComponent
+                path:'village',
+                component:VillageComponent,
+                // canActivate: [AuthGuard]
+            },
+            {
+                path:'property',
+                component:PropertyComponent
+            },
+            {
+              path:'person',
+              component:PersonComponent
             }
         ]
     }

@@ -8,9 +8,16 @@ import { Observable } from 'rxjs/Observable';
 export class AreaService {
 
   constructor(private http:HttpClient) { }
-
-  getData(key:string): Observable<any>{
-  	return this.http.get<any>(`${environment.userUrl}`+key);		
+  //获取小区
+  getVillage(key:string): Observable<any>{
+  	return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode')}});		
   }
-
+  //获取小区
+  searchVillage(key:string,village:string): Observable<any>{
+    return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),ViliiageName:village}});		
+  }
+  //小区模糊搜索
+  dimVillage(key:string,village:string): Observable<any>{
+    return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),villageName:village}});		
+  }
 }

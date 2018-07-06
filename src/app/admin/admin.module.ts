@@ -16,8 +16,13 @@ import { FormsModule } from '@angular/forms';
 import { EquipService } from './server/equip.service';
 import { UserComponent } from './user/user.component';
 import { UserService } from './server/user.service';
-import { PropertyComponent } from './property/property.component';
+import { AdverService } from './server/adver.service';
+import { VillageComponent } from './village/village.component';
+import { SelectVillageComponent } from './shared/select-village/select-village.component';
+import{PropertyComponent} from './property/property.component';
 import {PropertyService} from './server/property.service';
+import { PersonComponent } from './person/person.component';
+import { AdmachineService } from './server/admachine.service';
 
 
 @NgModule({
@@ -25,14 +30,16 @@ import {PropertyService} from './server/property.service';
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    ElModule.forRoot()
+    ElModule.forRoot(),
   ],
-  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, OperationsComponent, UserComponent, PropertyComponent],
+  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, OperationsComponent, UserComponent, VillageComponent, SelectVillageComponent,PropertyComponent, PersonComponent],
   providers: [
     AreaService,
     EquipService,
     UserService,
-    PropertyService
+    AdverService,
+    PropertyService,
+    AdmachineService
   ]
 })
 export class AdminModule { }

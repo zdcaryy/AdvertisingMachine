@@ -1,15 +1,15 @@
 <div class="login">
   <div class="login-form">
       <div class="form-title">人脸识别广告机后台管理系统</div>
-      <div class="form-titleEn">Face recognition advertising machine background management system</div>
+      <div class="form-titleEn">background management system for face recognition advertising</div>
       <form novalidate #form="ngForm" (ngSubmit)="login(form)">
           <div class="login-div">
-              <label></label>
+              <label class="user-bcd"></label>
               <input type="text" name="username" 
               [(ngModel)]="username" required />
           </div>
           <div class="login-div">
-              <label></label>
+              <label class="psd-bcd"></label>
               <input type="password" name="password" 
               [(ngModel)]="password" required />
           </div>

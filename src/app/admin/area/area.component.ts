@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AreaService } from "../server/area.service";
-declare var AMap:any 
+declare var AMap:any ;
 
 @Component({
   selector: 'app-area',
@@ -18,12 +18,15 @@ export class AreaComponent implements OnInit {
   equipAnomaly:number;
   imgUrl:string;
   areaCoord=[];
+  activeInput:string;
   map;
 
-  constructor(private areaService:AreaService) { }
+  constructor(
+    private areaService:AreaService
+  ) { }
 
   ngOnInit() {
-    this.getCoord();
+    this.getVillage();
     this.map = new AMap.Map('gaodemap-container');
     this.map.plugin('AMap.Geolocation', () => {
         let geolocation = new AMap.Geolocation({
@@ -42,38 +45,56 @@ export class AreaComponent implements OnInit {
         this.map.addControl(geolocation);
     });
   }
-  //获取坐标
-  getCoord(){
-    this.areaService.getData('/village/findAllVillages')
+  //获取全部小区
+  getVillage(){
+    this.areaService.getVillage('/village/getAllVillagesAndMachinesByCompany')
       .subscribe(value => {
         console.log(value);
-        this.areaCoord=value.dian;
-        this.area=value.dq;
-        this.street=value.jd;
-        this.plot=value.xq;
-        this.property=value.wy;
-        this.equipAll=value.dian.length;
-        this.equipNormal=value.tur;
-        this.equipAnomaly=value.fal;
+        this.areaCoord=value;
         this.point(this.areaCoord);
       })
   }
-  //描点
-  point(str){
-    console.log(str.length);
-    for(let i=0;i<str.length;i++){
-      if(str[i].z==0){
+  //地图描点
+  point(param){
+    for(let i=0;i<param.length;i++){
+      if(param[i].unusualCount==0){
         this.imgUrl="../../../assets/img/icon_1.png"
       }else{
         this.imgUrl="../../../assets/img/icon_2.png"
       }
-      this.map.add(
-        new AMap.Marker({
-          icon:this.imgUrl,
-          position: [str[i].x,str[i].y],
-          title: str[i].position
-        })
-      );
+      let marker=new AMap.Marker({
+        icon:this.imgUrl,
+        position: [param[i].village.ptLoc.x,param[i].village.ptLoc.y],
+        title: param[i].village.name
+      })
+      marker.on('click',()=>{
+        this.activeInput=marker.G.title;
+        this.searchVillage()
+      })
+      this.map.add(marker);
     }
+  }
+
+  //查询小区信息
+  searchVillage(){
+    this.areaService.searchVillage('/village/getDetailByVillage',this.activeInput)
+      .subscribe(value => {
+        console.log(value);
+        this.area=value.vliiageAndCount.village.province+''+value.vliiageAndCount.village.city;
+        this.street=value.vliiageAndCount.village.region;
+        this.plot=value.vliiageAndCount.village.name;
+        this.property=value.vliiageAndCount.village.propertyComName;
+        this.equipAll=value.vliiageAndCount.machineCount;
+        this.equipNormal=value.vliiageAndCount.normalCount;
+        this.equipAnomaly=value.vliiageAndCount.unusualCount;
+        this.areaCoord=value.machines;
+      })
+  }
+  //小区模糊搜索
+  dimVillage(){
+    this.areaService.dimVillage('/village/fuzzySearchVillage',this.activeInput)
+      .subscribe(value => {
+        console.log(value);
+      })
   }
 }

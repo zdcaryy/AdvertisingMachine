@@ -11,12 +11,12 @@ export class AuthGuard {
     ) { }
 
     canActivate(){
-        this.auth.getUserInfo().subscribe(Response => {
-            console.log('token验证成功')
+        this.auth.getUserInfo().subscribe(response => {
+            //console.log(response);
+            localStorage.setItem('name',response.name)
         },error => {
             this.router.navigate(['/login']);
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('userCode')
+            localStorage.clear()
         });
         return true
     }

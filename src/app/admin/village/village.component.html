@@ -1,0 +1,22 @@
+<div class="village">
+	<div class="header"></div>
+	<div class="main">
+		<selectVillage [allVillage]="villInfo" [showLevel]="5" [init]="initVill" (handle)="selectVillage($event)"></selectVillage>
+		<app-table 
+			[checkBox]="true"
+			[heads]="heads" 
+			[bodys]="villInfo"
+			[colorConfig]="myColorConfig" 
+			[textConfig]="myTextConfig" 
+			(dropdownEvent)="getDropdownEvent($event)" 
+			(operateEvent)="getOperateEvent($event)" 
+			(selectedListChange)="getSelectedList($event)"
+		></app-table>
+	</div>
+	<div class="footer">
+		<div class="mybtn delMul" (click)="delMul()" [class.disBtn]="!selectedVill.length">批量删除</div>
+		<div class="mybtn addNew" (click)="showModal=true;modalType='add';ifNewType=false;initAdd()">添加项目</div>
+		<button (click)="test()">short</button>
+		<button (click)="testLong()">long</button>
+	</div>
+</div>

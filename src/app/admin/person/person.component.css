@@ -58,8 +58,8 @@
   padding:5px 10px;
 }
 /*子view样式style*/
-#add_user,#user_config,.del-confirm{
-  display:none;
+#add_equip,#equip_config,.del-confirm{
+  /*display:none;*/
 }
 .child-view{
   z-index:99;
@@ -92,16 +92,16 @@
 .child-view .child-form .form-item{
   margin-bottom:20px;
 }
-.child-view .child-form .form-item label{
-  font-weight:normal;
-  display:inline-block;
-  text-align-last:justify;
-  /*text-align:justify;*/
-  width:100px;
+.distpicker>input,
+.distpicker>select{
+  border:1px solid #e0e0e0;
+  border-radius:4px;
+  padding:2px;
+  outline:none;
 }
 .child-view .child-form .form-item>input,
 .child-view .child-form .form-item>select{
-  width:400px;
+  width:200px;
   border:1px solid #e0e0e0;
   border-radius:4px;
   padding:2px;
@@ -145,3 +145,4 @@
 .background-red{
   background:#d81e06;
 }
+

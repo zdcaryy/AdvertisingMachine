@@ -2,14 +2,17 @@
 
 	<table class="header">
 		<tr>
-			<td class="type nowType">所有项目</td>
+			<td class="type nowType">{{nowType}}</td>
 			<td class="type optType" (click)="showTypes=true;$event.stopPropagation()">项目分类<i class="glyphicon glyphicon-triangle-bottom"></i>
-				<div class="typeBox" *ngIf="showTypes" (click)="showTypes=false;$event.stopPropagation()">
-					<div>
+				<div class="typeBox" *ngIf="showTypes">
+					<div (click)="showTypes=false;$event.stopPropagation()">
 						<div class="typeBox_Title">项目分类<i class="glyphicon glyphicon-triangle-top"></i></div>
 						<div class="typeBox_Blank"></div>
 					</div>
-					<div class="typeBox_Main"><span class="types" *ngFor="let t of types" (click)="chooseType(t)">{{t}}</span></div>
+					<div class="typeBox_Main">
+						<span class="types"><span (click)="chooseType('all');$event.stopPropagation()">所有</span></span>	
+						<span class="types" *ngFor="let t of types"><span (click)="chooseType(t);$event.stopPropagation()">{{t}}</span></span>
+					</div>
 				</div>
 			</td>
 			<td class="searchBox"><input type="text" placeholder="请输入项目名称或分类"><span>查找</span></td>
@@ -23,25 +26,25 @@
 				<div class="adv" [style.backgroundImage]="'url('+ad.imgUrls+')'">
 					<div class="advOpers">
 						<ul class="vertiMid">
-							<li><span (click)="showModal=true;modalType='info';viewInfo=ad">查看信息</span></li>
-							<li><span (click)="showModal=true;modalType='preview'">播放预览</span></li>
-							<li><span>投放广告</span></li>
-							<li><span>投放管理</span></li>
+							<li><span (click)="showModal=true;modalType='info';currentAD=ad">查看信息</span></li>
+							<li><span (click)="modalType='preview';currentAD=ad">播放预览</span></li>
+							<li><span (click)="showModal=true;modalType='launch';currentAD=ad;getLaunchedArea(ad.name)">投放广告</span></li>
+							<li><span (click)="showModal=true;modalType='launchManage';currentAD=ad;getLaunchedArea(ad.name)">投放管理</span></li>
 						</ul>
 					</div>
 				</div>
-				<div class="advTitle"><span class="vertiMid">{{ad.name}}</span></div>
-				<div class="advDesc">
-					<span>上传时间:{{ad.addedDate}}</span>
-					<input type="checkbox">
+				<div class="advTitle" (click)="checkAD.click()"><span class="vertiMid">{{ad.name}}</span></div>
+				<div class="advDesc" (click)="checkAD.click()">
+					<span>上传时间:{{ad.addedDate | date:'yyyy-MM-dd'}}</span>
+					<input type="checkbox" #checkAD (click)="$event.stopPropagation()" (change)="chooseAD(ad.name,checkAD.checked)">
 				</div>
 			</div>
 		</div>	
 	</div>
 
 	<div class="footer">
-		<div class="mybtn delMul" (click)="delMul()">批量删除</div>
-		<div class="mybtn addNew" (click)="showModal=true;modalType='add'">添加项目</div>
+		<div class="mybtn delMul" (click)="delMul()" [class.disBtn]="!selectedADs.length">批量删除</div>
+		<div class="mybtn addNew" (click)="showModal=true;modalType='add';ifNewType=false;initAdd()">添加项目</div>
 	</div>
 
 	<!-- 弹窗 -->
@@ -49,31 +52,136 @@
 										 [style.display]="showModal||animeState?'block':'none'" (click)="showModal=false">
 		<div class="modalBox" (click)="$event.stopPropagation()" [ngSwitch]="modalType"> -->
 	<div class="cover" [@adCover]="showModal?'show':'hide'" (@adCover.start)="animeState=true" (@adCover.done)="animeState=false" 
-										 [style.display]="showModal||animeState?'block':'none'" (click)="showModal=false">
-		<div class="modalBox" (click)="$event.stopPropagation()" [ngSwitch]="modalType">
-			<span class="close glyphicon glyphicon-remove" (click)="showModal=false"></span>
+										 [style.display]="showModal||animeState?'block':'none'">
+		<div class="modalBox" [ngSwitch]="modalType">
+			<span class="close el-icon-close" (click)="showModal=false"></span>
+			
 			<!--    查看信息    -->
 			<div *ngSwitchCase="'info'">
 				<p class="modal_title">广告信息</p>
-				<p class="modal_row"><span>广&ensp;告&ensp;名：</span><span class="row_val">{{viewInfo.name}}</span></p>
-				<p class="modal_row"><span>分&emsp;&emsp;类：</span><span class="row_val">{{viewInfo.type}}</span></p>
-				<p class="modal_row"><span>上传日期：</span><span class="row_val">{{viewInfo.addedDate}}</span></p>
-				<p class="modal_row"><span>失效日期：</span><span class="row_val">{{viewInfo.expiredDate}}</span></p>
-				<p class="modal_row"><span>视频文件：</span><span class="row_val">xxxxx</span></p>
-				<p class="modal_foot"><span class="modal_btn" (click)="modalType='modify'">修改信息</span></p>
+				<p class="modal_row"><span class="row_left">广&ensp;告&ensp;名：</span><span class="row_right">{{currentAD.name}}</span></p>
+				<p class="modal_row"><span class="row_left">分&emsp;&emsp;类：</span><span class="row_right">{{currentAD.category}}</span></p>
+				<p class="modal_row"><span class="row_left">上传日期：</span><span class="row_right">{{currentAD.addedDate | date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+				<p class="modal_row"><span class="row_left">生效日期：</span><span class="row_right">{{currentAD.validateDate | date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+				<p class="modal_row"><span class="row_left">失效日期：</span><span class="row_right">{{currentAD.expiredDate | date:'yyyy-MM-dd HH:mm:ss'}}</span></p>
+				<p class="modal_row"><span class="row_left">视频文件：</span><span class="row_right">{{currentAD.videoName}}</span></p>
+				<p class="modal_foot"><span class="modal_btn" (click)="modalType='modify';ifNewType=false;initModify(currentAD)">修改信息</span></p>
 			</div>
+			
 			<!--    修改信息    -->
 			<div *ngSwitchCase="'modify'">
 				<p class="modal_title">修改信息</p>
-				<p class="modal_row"><span>广&ensp;告&ensp;名：</span><input type="text" [value]="viewInfo.name"></p>
-				<p class="modal_row"><span>选择分类：</span><select><option *ngFor="let t of types" [selected]="t==viewInfo.type">{{t}}</option></select></p>
+				<p class="modal_row"><span class="row_left">广&ensp;告&ensp;名：</span><span class="row_right"><input type="text" [(ngModel)]="modifyAD.name"></span></p>
 				<p class="modal_row">
-					<span>失效日期：</span>
-					<el-date-picker (modelChange)="handle($event)" (clear-click)="handle($event)"></el-date-picker>
+					<span class="row_left">选择分类：</span>
+					<span class="row_right">
+						<el-select *ngIf="!ifNewType" [(model)]="modifyAD.category" size="mini">
+						  <el-option *ngFor="let t of types"
+						    [label]="t"
+						    [value]="t">
+						  </el-option>
+						</el-select>
+						<input type="text" class="addType" *ngIf="ifNewType" placeholder="请输入分类" [(ngModel)]="modifyAD.category">
+						<span class="modal_oper" (click)="ifNewType=!ifNewType;modifyAD.category=null">{{ifNewType?'选择分类':'添加分类'}}</span>
+					</span>
 				</p>
-				<p class="modal_row"><span>视频文件：</span></p>
+				<p class="modal_row">
+					<span class="row_left">生效日期：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="modifyAD.validateDate">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">失效日期：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="modifyAD.expiredDate">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">上传文件：</span>
+					<span class="row_right">
+						<input type="text" [value]="modifyAD.videoName||currentAD.videoName" disabled [class.disable]="modifyAD.videoName==currentAD.videoName||modifyAD.videoName==null">
+						<input type="file" #videoModify (change)="modifyVideo(videoModify)" style="display: none;">
+						<span class="modal_oper" (click)="videoModify.click()"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;选择文件</span>
+					</span>
+				</p>
+				<p class="modal_foot"><span class="modal_btn" (click)="modify()">确认修改</span></p>
 			</div>
+			
+			<!--   添加广告   -->
+			<div *ngSwitchCase="'add'">
+				<p class="modal_title">添加项目</p>
+				<p class="modal_row"><span class="row_left">广&ensp;告&ensp;名：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.name"></span></p>
+				<p class="modal_row">
+					<span class="row_left">选择分类：</span>
+					<span class="row_right">
+						<el-select *ngIf="!ifNewType" [(model)]="addAD.category" placeholder="请选择" >
+						  <el-option *ngFor="let t of types"
+						    [label]="t"
+						    [value]="t">
+						  </el-option>
+						</el-select>
+						<!-- <select #selectType (change)="addAD.category=selectType.value"><option value="0" selected>--请选择--</option><option *ngFor="let t of types" [value]="t">{{t}}</option></select> -->
+						<input type="text" class="addType" placeholder="请输入分类" *ngIf="ifNewType" [(ngModel)]="addAD.category">
+						<span class="modal_oper" (click)="ifNewType=!ifNewType;addAD.category=null">{{ifNewType?'选择分类':'添加分类'}}</span>
+					</span>
+				</p>
+				<p class="modal_row"><span class="row_left">生效日期：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.validateDate"></span>
+				<p class="modal_row"><span class="row_left">失效日期：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.expiredDate"></span>
+					<!-- <el-date-picker (modelChange)="handle($event)" (clear-click)="handle($event)"></el-date-picker> -->
+				</p>
+				<p class="modal_row">
+					<span class="row_left">上传文件：</span>
+					<span class="row_right">
+						<input type="text" [class.disable]="video.files.length<=0" [value]="video.files.length?video.files[0]['name']:''" placeholder="请选择文件" disabled>
+						<input type="file" #video (change)="addVideo(video)" style="display: none;">
+						<span class="modal_oper" (click)="video.click()"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;选择文件</span>
+					</span>
+				</p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addNew()">添加</span></p>
+			</div>
+			
+			<!--   投放广告   -->
+			<div *ngSwitchCase="'launch'">
+				<p class="modal_title">投放广告</p>
+				<p class="modal_row"><span class="row_left">广&ensp;告&ensp;名：</span><span class="row_right">{{currentAD.name}}</span></p>
+				<p class="modal_row">、
+					<span class="row_left">已投放区域：</span>
+					<span class="row_right">
+						<span>{{launchedArea.length}}</span>
+						<span class="modal_oper" *ngIf="launchedArea.length>0" (click)="modalType='launchManage'">查看</span>
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">选择投放地区：</span>
+					<span class="row_right">
+						<selectVillage (handle)="selectVillage($event)"></selectVillage>
+					</span>
+				</p>
+				<p class="modal_row"><span class="row_left">失效日期：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.expiredDate"></span>
+					<!-- <el-date-picker (modelChange)="handle($event)" (clear-click)="handle($event)"></el-date-picker> -->
+				</p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addNew()">增加投放</span></p>
+			</div>
+
+			<!--   投放管理   -->
+			<div *ngSwitchCase="'launchManage'">
+				<p class="modal_title">投放管理</p>
+				<p class="modal_row"><span class="row_left">广&ensp;告&ensp;名：</span><span class="row_right">{{currentAD.name}}</span></p>
+				<p class="modal_row">
+					<span class="row_left">已投放区域：</span>
+					<span class="row_right">{{launchedArea.length}}个</span>
+				</p>
+				
+				<p class="modal_foot"><span class="modal_btn" (click)="showModal=false">确定</span></p>
+			</div>
+
 		</div>
+	</div>
+	
+	<!--   视频预览   -->
+	<div class="previewBox" *ngIf="modalType=='preview'">
+		<video controls [src]="currentAD.videoUrl" style="max-width: 100%;max-height: 400px;"></video>
 	</div>
 	
 

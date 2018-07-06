@@ -63,16 +63,17 @@
 	padding-left: 35px;
 	border-right: 2px solid #d0d0d0;
 } 
-.advertisement .header .optType .typeBox .typeBox_Main span{
+.advertisement .header .optType .typeBox .typeBox_Main .types{
 	float: left;
 	width: 80px;
 	margin: 10px 0;
 	text-align: left;
 	color: #999;
 } 
-.advertisement .header .optType .typeBox .typeBox_Main span:hover{
+.advertisement .header .optType .typeBox .typeBox_Main .types span:hover{
 	text-decoration: underline;
 	color: #111;
+	cursor: pointer;
 }
 	/* 搜索 */
 .advertisement .header .searchBox{ 
@@ -157,8 +158,12 @@
 	text-align: center;
 	font-size: 18px;
 	position: relative;
+	padding: 0 15px;
 }
 	/* 上传时间和checkbox */
+.advertisement .main .adBox .advDesc{
+	padding: 0 15px;
+}
 
 
 /* 卡片布局自适应 */
@@ -221,17 +226,22 @@
 	border-top: 1px solid #d0d0d0;
 	text-align: center;
 	padding-top: 25px;
-	cursor: pointer;
 }
 .advertisement .footer .mybtn{
+	cursor: pointer;
 	width: 90px;
 	line-height: 30px;
 	border-radius: 2px;
 	display: inline-block;
 	color: #fff;
 }
-.advertisement .footer .delMul{
+.advertisement .footer .mybtn.disBtn{
 	background-color: #e0e0e0;
+	pointer-events: none;
+	cursor: not-allowed;
+}
+.advertisement .footer .delMul{
+	background-color: #d02b2b;
 	margin-right: 50px;
 }
 
@@ -267,21 +277,30 @@
 	padding: 0 20px;
 }
 .modalBox .close{
-	font-size: 16px;
-	font-weight: normal;
+	font-size: 18px;
+	font-weight: bold;
 	margin: 7px -7px 0 0;
+	opacity: 0.4;
+}
+.modalBox .close:hover{
+	opacity: 0.7;
 }
 .modalBox .modal_title{
 	font-size: 18px;
 	letter-spacing: 2px;
-	margin: 20px 0;
+	margin: 25px 0;
 }
 .modalBox .modal_row{
-	margin-bottom: 10px;
+	margin-bottom: 16px;
 	padding-left: 20px; 
 }
-.modalBox .modal_row .row_val{
-	color: #666;
+/*消除span换行空格*/
+.modalBox .modal_row{
+	font-size: 0;
+}
+.modalBox .modal_row .row_left,.row_right{
+	/*font-size: 1rem;*/
+	font-size: 14px;
 }
 .modalBox .modal_foot{
 	margin-top: 30px;
@@ -297,9 +316,116 @@
 	border-radius: 3px;
 	cursor: pointer;
 }
+.modalBox .modal_oper{
+	cursor: pointer;
+	color: #009688;
+}
+.modalBox input[type=text]{
+	border: 1px solid #d0d0d0;
+	border-radius: 5px;
+	outline: none;
+	padding: 2px 8px;
+	width: 180px;
+	color: #5a5e66;
+	background-color: #fff;
+}
+.modalBox input[type=text]:focus{
+	border-color: #009688;
+}
+.modalBox input[type=text].disable{
+	background-color: #eaeaea;
+}
+.modalBox .addType{
+	width: 100px !important;
+}
 
-/*********** 弹窗--查看，添加等... *************/
+/*视频预览*/
+.previewBox{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 999;
 
-el-date-picker{
+}
+/*********** 弹窗--查看，添加等...over *************/
+
+
+
+/* checkbox样式 */
+input[type=checkbox]{
+	float: right;
+	/*清除默认样式*/
+	appearance:none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 16px;
+	height: 16px;
+	margin-bottom: -2px;
+	background-color: #fff;
+	border: 2px solid #c2c2c2;
+	outline: none;
+	box-sizing: border-box;
+	border-radius: 2px;
+	overflow: hidden;
+}
+input[type=checkbox]:before{
+	content: '\2713';
+  display: block;
+	font-size: 12px;
+	font-weight: 600;
+	transform: translate(6%,-14%);
+	color: #fff;
+}
+input[type=checkbox]:hover{
+	border-color: #999999;
+}
+input[type=checkbox]:checked{
+	background-color: #009688;
+	border-color: #009688;
+}
+
+
+/* placeholder */
+input::-webkit-input-placeholder{
+	color: #bfbfbf;
+}
+input:-moz-placeholder{
+	color: #bfbfbf; /* ff 4 to 18 */
+}
+input::-moz-placeholder{
+	color: #bfbfbf; /* ff 19+ */
+}
+input:-ms-input-placeholder{
+	color: #bfbfbf;
+}
+
+
+/*  ele-ui  */
+el-select{
 	display: inline-block;
+}
+::ng-deep .el-input__inner{
+  border: 1px solid #d0d0d0;
+  width: 100px !important;
+	height: auto !important;
+	line-height: 20px !important;
+  font-size: 14px;
+  padding: 2px 8px;
+}
+::ng-deep .el-input__inner:focus{
+	border-color: #009688 !important;
+}
+::ng-deep .el-select-dropdown{
+	min-width: 100px !important;
+}
+::ng-deep .el-select-dropdown__item{
+	height: auto !important;
+	line-height: 24px !important;
+}
+::ng-deep .el-select-dropdown__item span{
+	line-height: 24px !important;
+}
+::ng-deep .el-select-dropdown__item.selected{
+	color: #009688;
 }

@@ -1,0 +1,36 @@
+<div style="display: inline-block;vertical-align:middle;">
+	
+	<table>
+		<tr>
+			<td id="province" *ngIf="showLevel>=1" (click)="show=='pro'?show='':show='pro';$event.stopPropagation()" [class.disabled]="provinceList.length==0">
+				<input [value]="chooseRes.province?chooseRes.province:''" type="text" readonly placeholder="省份">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='pro'">&#60;</span>
+				<ul *ngIf="show=='pro'"><li (click)="hasSelect('province',pro)" *ngFor="let pro of provinceList">{{pro}}</li></ul>
+			</td>
+			<td id="city" *ngIf="showLevel>=2" (click)="show=='ci'?show='':show='ci';$event.stopPropagation()" [class.disabled]="cityList.length==0">
+				<input [value]="chooseRes.city?chooseRes.city:''" type="text" readonly placeholder="市">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='ci'">&#60;</span>
+				<ul *ngIf="show=='ci'"><li (click)="hasSelect('city',ci)" *ngFor="let ci of cityList">{{ci}}</li></ul>
+			</td>
+			<td id="region" *ngIf="showLevel>=3" (click)="show=='reg'?show='':show='reg';$event.stopPropagation()" [class.disabled]="regionList.length==0">
+				<input [value]="chooseRes.region?chooseRes.region:''" type="text" readonly placeholder="区/县">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='reg'">&#60;</span>
+				<ul *ngIf="show=='reg'"><li (click)="hasSelect('region',reg)" *ngFor="let reg of regionList">{{reg}}</li></ul>
+			</td>
+			<td id="village" *ngIf="showLevel>=4" (click)="show=='vil'?show='':show='vil';$event.stopPropagation()" [class.disabled]="villageList.length==0">
+				<input [value]="chooseRes.village?chooseRes.village:''" type="text" readonly placeholder="小区">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='vil'">&#60;</span>
+				<ul *ngIf="show=='vil'"><li (click)="hasSelect('village',vil)" *ngFor="let vil of villageList">{{vil.name}}</li></ul>
+			</td>
+			<td id="building" *ngIf="showLevel>=5" (click)="show=='buil'?show='':show='buil';$event.stopPropagation()" [class.disabled]="buildingList.length==0">
+				<input [value]="chooseRes.building?chooseRes.building+' 栋':''" type="text" readonly placeholder="楼栋">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='buil'">&#60;</span>
+				<ul *ngIf="show=='buil'">
+					<li class="disabled" *ngIf="buildingList[0]=='no'">暂无信息</li>
+					<li (click)="hasSelect('building',buil.serialNum)" *ngFor="let buil of buildingList">{{buil.serialNum?buil.serialNum+' 栋':''}}</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+</div>

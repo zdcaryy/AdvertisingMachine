@@ -3,15 +3,15 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
-export class EquipService {
+export class AdmachineService {
   
   constructor(private http:HttpClient) { }
-  private equipUrl="http://localhost:9062";
+  private adMachineUrl="http://localhost:9062";
   getData(key:string):Observable<any>{
-    return this.http.get<any>(this.equipUrl+key);
-  }
+    return this.http.get<any>(this.adMachineUrl+key);
+  };
   postData(key:string,data):Observable<any>{
-    return this.http.post<any>(this.equipUrl+key,data);
-  }
+    return this.http.post<any>(this.adMachineUrl+key,data);
+  };
   
 }

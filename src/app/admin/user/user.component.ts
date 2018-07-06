@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import{UserService} from '../server/user.service';
+import{ UserService } from '../server/user.service';
 
 declare var $:any;
 
@@ -25,9 +25,10 @@ export class UserComponent implements OnInit {
     name:'',
     pwd:'',
     email:'',
-    userLevel:'1',
+    userLevel:'',
     phoneNumber:'',
     identity:'',
+    ownerNames:[]
   };
   //修改的用户对象
   modifyUser={
@@ -38,43 +39,47 @@ export class UserComponent implements OnInit {
   dialogContent:string;//提示框内容
   delItem:object[];//需要删除的用户信息
   
+  success:boolean=true;//判断添加和修改是否成功
+  
+  searchConfig:string;//搜索条件
+  
   ngOnInit() {
     this.getUsers();
-    this.heads = [{name: '用户姓名', key: 'name'},
-      {name: '证件号', key: 'identity'},
-      {name: '手机号', key: 'phoneNumber'},
-      {name:'所属公司或户主名', key: 'ownerNames'},
-      {name: '类型', key: 'userLevel'},
-      {name: '操作', key: 'operate', canOper: true}];
+    this.heads = [{label: '用户姓名', field: 'name'},
+      {label: '证件号', field: 'identity'},
+      {label: '手机号', field: 'phoneNumber'},
+      {label:'所属公司或户主名', field: 'ownerNames'},
+      {label: '类型', field: 'userLevel',child:['系统管理员','管理员','业主']},
+      {label: '操作', field:'caozuo',width:'25%',operate:true,operations:['修改','删除']}];
   
     this.bodys = [
     ];
   
-    this.textConfig = {userLevel: {0: '系统管理员', 1: '物业公司主管', 2: '物业员工',3:'业主'}};
+    this.textConfig = {userLevel: {0: '系统管理员', 1: '管理员', 2: '业主'}};
     this.colorConfig = {
-      state: {0: 'red', 1: 'blue', 2: 'green'},
-      copy: {0: 'red', 1: 'blue', 2: 'green'},
-      operate: {修改: '#119C9D', 删除: '#d73e3e'}
+      userLevel: {0: 'red', 1: 'blue', 2: 'green'},
+      caozuo: {修改: '#119C9D', 删除: '#d73e3e'}
     };
   }
   
-  getBodyEvent(e) {
-    switch (e.key) {
+  getOperateEvent(e) {
+    switch (e.option) {
       case "删除":
         this.delView(e.data);
         break;
       case "修改":
         if(!this.dialog){
           this.dialog=true;
-          this.modifyUser=e.data;
+          this.modifyUser=JSON.parse(JSON.stringify(e.data));
           $('#user_config').fadeIn();
         }
         break;
     }
   }
   
-  getHeadEvent(e) {
+  getDropdownEvent(e){
     console.log(e);
+    //switch(e)...
   }
   
   getSelectedList(e){
@@ -107,21 +112,30 @@ export class UserComponent implements OnInit {
     }
   }
   //关闭添加用户弹框
-  closeAddView(){
+  closeAddView(form){
     let that=this;
     $('#add_user').fadeOut(function(){
       that.dialog=false;
+      form.reset();//添加成功重置表单
     });
   }
   //添加用户
-  add(){
+  add(form){
     $('#add_user').fadeOut();
     this.userService.postData('/user/add',this.addUser).subscribe(res=>{
-      this.operationResult=true;
-      this.dialogContent='添加成功';
-      this.addUser['operate']=['修改', '删除'];
-      this.getUsers();//重新请求一次数据
-      // this.bodys.push(this.addUser);
+      if(res.status==0){
+        this.operationResult=true;
+        this.dialogContent='添加成功';
+        // this.addUser['operate']=['修改', '删除'];
+        this.getUsers();//重新请求一次数据
+        this.success=true;
+        form.reset();
+      }
+      if(res.status==1){
+        this.operationResult=true;
+        this.dialogContent=res.msg;
+        this.success=false;
+      }
     });
   }
   
@@ -135,12 +149,22 @@ export class UserComponent implements OnInit {
   
   //修改用户信息
   modify(){
+    if(!(this.modifyUser['ownerNames'] instanceof Array)){
+      this.modifyUser['ownerNames']=[this.modifyUser['ownerNames']];
+    }
     this.userService.postData('/user/modify',this.modifyUser).subscribe(res=>{
       if(res.status==0){
         $('#user_config').fadeOut();
         this.operationResult=true;
         this.dialogContent='修改成功';
         this.getUsers();
+        this.success=true;
+      }
+      if(res.status==1){
+        $('#user_config').fadeOut();
+        this.operationResult=true;
+        this.dialogContent=res.msg;
+        this.success=false;
       }
     })
   }
@@ -171,18 +195,20 @@ export class UserComponent implements OnInit {
   del(){
     let that=this;
     if(this.delItem.length){
+      let delArr=[];
       this.delItem.map(function (item){
-        let delArr=[];
         delArr.push(item['id']);
-        that.userService.postData('/user/delete',delArr).subscribe(res=>{
-          if(res.status==0){
+      });
+      this.userService.postData('/user/delete',delArr).subscribe(res=>{
+        if(res.status==0){
+          this.delItem.map(function (item){
             that.bodys=that.bodys.filter(user=>user!==item);
-            $('.del-confirm').fadeOut();
-            //删除成功，弹出提示框
-            that.operationResult=true;
-            that.dialogContent='删除成功';
-          }
-        });
+          });
+          $('.del-confirm').fadeOut();
+          //删除成功，弹出提示框
+          this.operationResult=true;
+          this.dialogContent='删除成功';
+        }
       });
     }
     else{
@@ -199,5 +225,26 @@ export class UserComponent implements OnInit {
       });
     }
   }
+  
+  //搜索
+  search():void{
+    let reg=/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+    if(reg.test(this.searchConfig)){
+      this.bodys=[];
+      this.userService.getData('/user/findByPhoneNumber?phoneNumber='+this.searchConfig).subscribe(res=>{
+        res['operate'] =  ['修改', '删除'];
+        this.bodys.push(res);
+      })
+    }
+    else{
+      this.userService.getData('/user/findByName?name='+this.searchConfig).subscribe(res=>{
+        this.bodys = res.map(function (item) {
+          item['operate'] =  ['修改', '删除'];
+          return item;
+        });
+      })
+    }
+  }
+  
   
 }

@@ -1,0 +1,82 @@
+
+<app-table 
+		[checkBox]="true"   // true or false , 是否显示 CheckBox , 默认false
+		[heads]="yourHeads"  //表头,必须
+		[bodys]="yourBodys"  //表格内容，必须
+		[colorConfig]="yourColorConfig" //替换颜色，可选
+		[textConfig]="yourTextConfig" //替换文字，可选
+		(dropdownEvent)="getDropdownEvent($event)"  //下拉菜单事件，可选
+		(operateEvent)="getOperateEvent($event)" //操作事件，可选
+		(selectedListChange)="getSelectedList($event)" //CheckBox选中事件，可选
+></app-table>
+
+	
+	yourHeads:object[];  -- 表头
+		[{
+			label:'姓名',  -- 即表头显示的文字  *必须*
+			field:'name',    -- 这一列所对应的[bodys]里的属性名  *必须*
+			width:'80px',  -- 这一列的宽度，也可以是百分比，没有设置宽度的列，均分剩余的宽度   *非必须*
+			child:['所有','已分配','待分配'],  -- 当有这个属性时，这个表头会拥有下拉菜单  *非必须*
+			operate:true, operations:['查看','删除']  -- 两个属性必须同时存在，此时这一列用于'操作'，'operations'即你的选项
+																								-- 此时field不会对应body中的属性，只用于颜色配置，如果不用颜色可以不写field
+		}]
+
+	yourBodys:object[];  -- 表格内容
+		[{
+			id:'9527',name:'小明',sex:0
+		}]
+
+	yourTextConfig:object;  -- 替换文字，只能替换整体，一般用于权限、状态等，将0、1、2替换为相应的文字
+
+		{status:{0:'状态0',1:'状态1',2:'状态2'}}  -- 同样是以field为key，在此字段下，以需要替换的内容为key
+
+	yourColorConfig:object;  -- 替换颜色，规则类似替换文字
+
+		{status:{0:'red',1:'blue',2:'#666666'},caozuo:{查看:'purple',删除:'pink'}};
+
+
+--------例------------例------------例------------例-----------例-----------例-----------例-----------例-----------
+
+<app-table 
+		[checkBox]="true"
+		[heads]="myHeads" 
+		[bodys]="myBodys"
+		[colorConfig]="myColorConfig" 
+		[textConfig]="myTextConfig" 
+		(dropdownEvent)="getDropdownEvent($event)" 
+		(operateEvent)="getOperateEvent($event)" 
+		(selectedListChange)="getSelectedList($event)"
+></app-table>
+
+
+
+		this.myHeads = [{label:"编号",field:'num',width:'15%'},
+						{label:"姓名",field:'name',width:'20%'},
+						{label:"联系方式",field:'tel',width:'25%'},
+						{label:"调配状态",field:'status',width:'15%',child:['所有','已分配','待分配']},
+						{label:"操作",field:'caozuo',width:'25%',operate:true,operations:['查看','删除']}];
+
+	 	this.myBodys = [{id:'9527',name:'小明',tel:'13200000000',status:0},
+						{id:'9529',name:'小红',tel:'13200000001',status:1},
+						{id:'9533',name:'小刚',tel:'13200000002',status:0},
+						{id:'9534',name:'小丽',tel:'13200000003',status:1},
+						{id:'9535',name:'小茂',tel:'13200000004',status:0}
+					];
+
+  	this.myTextConfig = {status:{0:'已分配',1:'待分配'},name:{小明:'滚出去'}};	// status字段中，0显示为'已分配'，1 ....
+
+    this.myColorConfig = {status:{0:'red',1:'#009688'},caozuo:{查看:'purple',删除:'pink'}};
+
+
+	  getDropdownEvent(e){
+	    console.log(e);
+	    //switch(e)...
+	  }
+	  getOperateEvent(e){
+	    console.log(e);
+	    //switch(e)...
+	  }
+    getSelectedList(e){
+    	console.log(e);
+    	//this.selectedList = e;
+	  }

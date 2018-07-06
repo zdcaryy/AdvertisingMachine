@@ -11,7 +11,7 @@ declare var $:any;
 export class PropertyComponent implements OnInit {
 
   constructor(private propertyService:PropertyService) { }
-  
+
   heads: object[];
   bodys: object[];
   selectedList:object[] = [];
@@ -21,7 +21,11 @@ export class PropertyComponent implements OnInit {
   dialog:boolean=false;
   operationResult:boolean=false;
   dialogContent:string;
+  success:boolean=true;
   delItem:object[];
+  propertyList=[];
+  
+  searchName:string;//查询所需的物业公司名
   
   addProperty={
     name:'',
@@ -32,39 +36,52 @@ export class PropertyComponent implements OnInit {
     linkManPhoneNumber:''
   }
   
+  modifyProperty={};
+  
   ngOnInit() {
-    this.heads = [{name: '物业', key: 'name'},
-      {name: '负责人', key: 'leaderName'},
-      {name: '负责人证件号', key: 'leaderIdentity'},
-      {name: '负责人电话', key: 'leaderPhoneNumber'},
-      {name: '常用联系人', key: 'linkManName'},
-      {name: '常用联系人电话',key:'linkManPhoneNumber'},
-      {name: '操作', key: 'operate', canOper: true}];
+
+    this.heads = [{label: '物业',field: 'name'},
+      {label: '负责人', field: 'leaderName'},
+      {label: '负责人证件号', field: 'leaderIdentity'},
+      {label: '负责人电话', field: 'leaderPhoneNumber'},
+      {label: '常用联系人', field: 'linkManName'},
+      {label: '常用联系人电话',field:'linkManPhoneNumber'},
+      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除']}];
   
     this.bodys = [
     ];
   
     // this.textConfig = {status: {0: '正常', 1: '故障'}};
     this.colorConfig = {
-      status: {0: 'blue', 1: 'red'},
-      operate: {修改: '#119C9D', 删除: '#d73e3e'}
+      caozuo: {修改: '#119C9D', 删除: '#d73e3e'}
     };
     this.getProperty('/property/findAll');
   }
-  getBodyEvent(e) {
-    switch (e.key) {
+  getOperateEvent(e) {
+    switch (e.option) {
       case "删除":
-        console.log(e);
-   
+        this.delView(e.data);
         break;
       case "修改":
-        
+        if(!this.dialog){
+          this.dialog=true;
+          this.modifyProperty=JSON.parse(JSON.stringify(e.data));//对象的赋值实质是内存区，这样列表中的值和修改弹框中的值都双向绑定在一个内存空间
+          console.log(this.modifyProperty);
+          $('#property_config').fadeIn();
+        }
         break;
     }
   }
   
-  getHeadEvent(e) {
-    console.log(e);
+  getDropdownEvent(e) {
+    switch(e.option){
+      case '系统管理员':
+        break;
+      case '管理员':
+        break;
+      case '业主':
+        break;
+    }
   }
   
   getSelectedList(e){
@@ -86,6 +103,7 @@ export class PropertyComponent implements OnInit {
           item['operate'] =  ['修改', '删除'];
           return item;
         });
+        this.propertyList=this.bodys;
       });
   }
   
@@ -97,24 +115,129 @@ export class PropertyComponent implements OnInit {
     }
   }
   //添加物业信息
-  add(){
+  add(form){
+    this.addProperty.name=$.trim(this.addProperty.name);//去掉空格
     this.propertyService.postData('/property/addProperty',this.addProperty).subscribe(res=>{
-      console.log(res);
       if(res.status==0){
         $('#add_property').fadeOut();
         this.operationResult=true;
         this.dialogContent='添加成功';
-        this.addProperty['operate']=['修改', '删除'];
+        // this.addProperty['operate']=['修改', '删除'];
         this.getProperty('/property/findAll');//重新请求一次数据
+        this.success=true;
+        form.reset();//添加成功后，重置表单
       }
+      if(res.status==1){
+        $('#add_property').fadeOut();
+        this.operationResult=true;
+        this.dialogContent=res.msg;
+        this.success=false;
+      }
+    });
+  }
+  //修改物业信息
+  modify(){
+    this.propertyService.postData('/property/modifyProperty',this.modifyProperty).subscribe(res=>{
+      if(res.status==0){
+        $('#property_config').fadeOut();
+        this.operationResult=true;
+        this.dialogContent='修改成功';
+        this.getProperty('/property/findAll');
+        this.success=true;
+      }
+      if(res.status==1){
+        $('#property_config').fadeOut();
+        this.operationResult=true;
+        this.dialogContent='该信息已存在';
+        this.getProperty('/property/findAll');
+        this.success=false;
+      }
+    })
+  }
+  //关闭修改用户信息弹框
+  closeModifyView(){
+    let that=this;
+    $('#property_config').fadeOut(function(){
+      that.dialog=false;
     });
   }
   
   //关闭添加物业信息弹框
-  closeAddView(){
+  closeAddView(form){
     let that=this;
     $('#add_property').fadeOut(function(){
       that.dialog=false;
+      form.reset();
     });
+  }
+  
+  //打开删除设备弹框
+  delView(data){
+    if(!this.dialog){
+      this.delItem=data;
+      this.dialog=true;
+      $('.del-confirm').fadeIn();
+    }
+  }
+  //关闭删除设备弹框
+  cancel(){
+    let that=this;
+    $('.del-confirm').fadeOut(function(){
+      that.dialog=false;
+    });
+  }
+  
+  //删除用户
+  delMore() {
+    let data = this.selectedList;
+    if (data.length != 0) {
+      this.delView(data);
+    }
+  }
+  del(){
+    let that=this;
+    if(this.delItem.length){
+      let delArr=[];
+      this.delItem.map(function (item){
+        delArr.push(item['id']);
+      });
+      this.propertyService.postData('/property/deleteProperty',delArr).subscribe(res=>{
+        if(res.status==0){
+          this.delItem.map(function (item){
+            that.bodys=that.bodys.filter(property=>property!==item);
+          });
+          this.propertyList=this.bodys;
+          $('.del-confirm').fadeOut();
+          //删除成功，弹出提示框
+          this.operationResult=true;
+          this.dialogContent='删除成功';
+        }
+      });
+    }
+    else{
+      let delArr=[];
+      delArr.push(this.delItem['id']);
+      this.propertyService.postData('/property/deleteProperty',delArr).subscribe(res=>{
+        if(res.status==0){
+          this.bodys=this.bodys.filter(property=>property!==this.delItem);
+          this.propertyList=this.bodys;
+          $('.del-confirm').fadeOut();
+          //删除成功，弹出提示框
+          this.operationResult=true;
+          this.dialogContent='删除成功';
+        }
+      });
+    }
+  }
+  
+  //按照物业公司名搜索
+  search():void{
+    this.searchName=$.trim(this.searchName);
+    this.propertyService.getData('/property/findByName?name='+this.searchName).subscribe(res=>{
+      this.bodys = res.map(function (item) {
+        item['operate'] =  ['修改', '删除'];
+        return item;
+      });
+    })
   }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "./auth.service";
+declare var $:any;
+
 
 @Component({
   selector: 'app-login',
@@ -20,6 +22,12 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    $('.login-div').find('input').focus(function(){
+      $(this).parent().css("border-left","3px solid #009788")
+    });
+    $('.login-div').find('input').blur(function(){
+      $(this).parent().css("border-left","3px solid white")
+    })
   }
 
   login(form: NgForm) {
@@ -32,11 +40,10 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('userCode',this.username);
             },error => {
               console.log(error);
-              this.errorMessage = "登录失败";
+              this.errorMessage = "账号或密码错误";
           })
     } else {
         this.errorMessage = "账号或密码错误";
     }
-}
-
+  }
 }

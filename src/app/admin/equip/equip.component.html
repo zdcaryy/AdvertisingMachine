@@ -11,13 +11,15 @@
 
   <div class="tablebox">
     <app-table
+      [checkBox]="true"
       [heads]="heads"
       [bodys]="bodys"
       (selectedListChange)="getSelectedList($event)"
       [colorConfig]="colorConfig"
       [textConfig]="textConfig"
-      (headEvent)="getHeadEvent($event)"
-      (bodyEvent)="getBodyEvent($event)"
+      (dropdownEvent)="getDropdownEvent($event)"
+      (operateEvent)="getOperateEvent($event)"
+      (selectedListChange)="getSelectedList($event)"
     ></app-table>
   </div>
 
@@ -32,51 +34,39 @@
   <div class="child-view" id="add_equip" style="width:900px;">
     <div class="close-btn" (click)=" closeAddView();"></div>
     <h3>添加设备</h3>
-    <form action="" class="child-form">
+    <form action="" class="child-form" #f="ngForm">
       <div class="form-item">
-        <label for="equipName">广告机名称：</label>
+        <label for="equipName">广告机名称</label>：
         <input type="text" id="equipName" name="equipName" [(ngModel)]="addEquip.machineName" #machineName="ngModel" required>
       </div>
       <div class="form-item">
-        <label for="equipNum">设备号：</label>
+        <label for="equipNum">设备号</label>：
         <input type="text" id="equipNum" name="equipNum" [(ngModel)]="addEquip.mac" #mac="ngModel" required>
       </div>
       <div class="form-item">
-        <label for="netWork">网卡值：</label>
+        <label for="netWork">网卡值</label>：
         <input type="text" id="netWork" name="netWork" [(ngModel)]="addEquip.netWork" #netWork="ngModel" required>
       </div>
       <div class="form-item">
-        <label for="models">广告机型号：</label>
+        <label for="models">广告机型号</label>：
         <input type="text" id="models" name="models" [(ngModel)]="addEquip.models" #models="ngModel" required>
       </div>
       <div class="form-item">
-        <label>设备位置：</label>
-        <span data-toggle="distpicker" class="form-inline distpicker">
-            <select  id="province1" name="province" (change)="getVillage();"></select>
-            <select  id="city1" name="city" (change)="getVillage();"></select>
-            <select  id="district1" name="district" (change)="getVillage();"></select>
-            <select name="village" [(ngModel)]="addEquip.villageName" (change)="getBuildingAndProperty();">
-              <option *ngFor="let v of village">{{v.name}}</option>
-              <!--默认option的value值等于option标签对中的内容-->
-            </select>
-            <select name="building" [(ngModel)]="addEquip.buildingNum">
-              <option *ngFor="let b of building" [value]="b.serialNum">{{b.serialNum}}栋</option>
-            </select>
-        </span>
-        <!--<img src="#" (error)="onError()" style="display:none;">-->
+        <label>设备位置</label>：
+        <selectVillage *ngIf="addIf"
+          (handle)="selectPosition($event);"
+          [allVillage]="allvillage"
+          [showLevel]="5"
+        ></selectVillage>
       </div>
       <div class="form-item">
-        <label for="property">所属物业：</label>
-        <input type="text" name="property" id="property" [value]="addEquip.property">
-      </div>
-      <div class="form-item">
-        <label>分配运维：</label>
+        <label>分配运维</label>：
         <select [(ngModel)]="addEquip.accendantName" name="opePerson">
           <option *ngFor="let m of maintainer;" [value]="m">{{m}}</option>
         </select>
       </div>
       <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(machineName.valid&&mac.valid&&netWork.valid&&models.valid)?add():0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(machineName.valid&&mac.valid&&netWork.valid&&models.valid)?add(f):0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
@@ -88,47 +78,46 @@
     <h3>设备信息</h3>
     <form action="" class="child-form">
       <div class="form-item">
-        <label for="modifyName">广告机名字：</label>
+        <label for="modifyName">广告机名字</label>：
         <input type="text" id="modifyName" name="modifyName" [(ngModel)]="modifyEquip.machineName">
       </div>
       <div class="form-item">
-        <label for="equipNum">设备号：</label>
+        <label>设备号</label>：
         <span>{{modifyEquip.mac}}</span>
       </div>
       <div class="form-item">
-        <label for="equipNum">网卡值：</label>
+        <label>网卡值</label>：
         <span>{{modifyEquip.netWork}}</span>
       </div>
       <div class="form-item">
-        <label for="equipNum">广告机型号：</label>
+        <label>广告机型号</label>：
         <span>{{modifyEquip.models}}</span>
       </div>
       <div class="form-item">
-        <label>运行状况：</label>
+        <label>运行状况</label>：
         <span>{{(modifyEquip.status==0)?'正常':'存在故障'}}</span>
       </div>
       <div class="form-item">
-        <label>设备位置：</label>
-        <span data-toggle="distpicker" class="form-inline distpicker">
-            <select  id="province2" name="province" (change)="getEquipPosition(null);"></select>
-            <select  id="city2" name="city" (change)="getEquipPosition(null);"></select>
-            <select  id="district2" name="district" (change)="getEquipPosition(null);"></select>
-            <select name="village" [(ngModel)]="modifyEquip.villageName" (change)="getEquipBuilding(null);">
-              <option *ngFor="let v of modifyVillage" [value]="v.name">{{v.name}}</option>
-            </select>
-            <select name="building" [(ngModel)]="modifyEquip.buildingNum">
-              <option *ngFor="let b of modifyBuilding" [value]="b.serialNum">{{b.serialNum}}栋</option>
-            </select>
-        </span>
+        <label>设备位置</label>：
+        <selectVillage *ngIf="modifyIf"
+                       (handle)="modifyPosition($event);"
+                       [allVillage]="allvillage"
+                       [showLevel]="5"
+                       [init]="initVill"
+        ></selectVillage>
       </div>
       <div class="form-item">
-        <label for="equipNum">运维人员：</label>
+        <label>物业信息</label>：
+        <span>{{property}}</span>
+      </div>
+      <div class="form-item">
+        <label for="equipNum">运维人员</label>：
         <select name="accendantName" [(ngModel)]="modifyEquip['accendantName']">
           <option *ngFor="let m of maintainer" [value]="m">{{m}}</option>
         </select>
       </div>
       <div class="form-item">
-        <label for="equipNum">备份情况：</label>
+        <label>备份情况</label>：
         <span>已备份</span>
       </div>
       <div class="operation">
@@ -149,11 +138,14 @@
   <!--确认删除弹框end-->
 
   <!--结果弹框start-->
-  <div class="child-view" *ngIf="operationResult">
-    <div class="result-dialog">
-      <div class="tick"></div>
+  <div class="child-view" *ngIf="operationResult" [class.border-red]="!success" style="width:410px;">
+    <div class="result-dialog" style="text-align:center;">
+      <!--显示对钩-->
+      <div class="tick" *ngIf="success"></div>
+      <!--显示感叹号-->
+      <div class="exclamatory" *ngIf="!success"></div>
       <p style="text-align:center;padding-bottom:20px;letter-spacing: 3px;">{{dialogContent}}</p>
-      <button class="btn useful-btn" type="button" (click)="operationResult=false;dialog=false;">&nbsp;完成&nbsp;</button>
+      <button class="btn useful-btn" type="button" (click)="operationResult=false;dialog=false;"[class.background-red]="!success">&nbsp;完成&nbsp;</button>
     </div>
   </div>
   <!--结果弹框end-->

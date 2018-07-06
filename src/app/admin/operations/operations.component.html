@@ -1,12 +1,14 @@
 <div class="operations">
 	<div class="tableBox">
 		<app-table 
+			[checkBox]="true"
 			[heads]="heads" 
 			[bodys]="bodys"
 			[colorConfig]="colorConfig" 
 			[textConfig]="textConfig" 
-			(headEvent)="getHeadEvent($event)" 
-			(bodyEvent)="getBodyEvent($event)"
+			(dropdownEvent)="getDropdownEvent($event)" 
+			(operateEvent)="getOperateEvent($event)"
+			(selectedListChange)="getSelectedList($event)"
 		></app-table>
 	</div>
 	<div class="footer">

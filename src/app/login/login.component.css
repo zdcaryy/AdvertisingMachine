@@ -7,14 +7,14 @@
     background-size: 100% 100%
 }
 .login-form{
-    width:400px;
+    width:380px;
     height:350px;
     background:rgba(255,255,255,0.4);
     border-radius: 5px;
     position: absolute;
     left:50%;
     top:50%;
-    margin:-175px 0 0 -200px
+    margin:-175px 0 0 -190px
 }
 .form-title{
     width:100%;
@@ -37,11 +37,19 @@
     background:white;
     margin:10px auto;
     box-sizing: border-box;
-    border-left:3px solid #009788
+    border-left:3px solid white
 }
 .login-div>label{
     width:40px;
-    float:left
+    height:35px;
+    margin-bottom:0;
+    float:left;
+}
+.user-bcd{
+    background:url("../../assets/img/icon_sprite@1x.png") 6px 3px
+}
+.psd-bcd{
+    background:url("../../assets/img/icon_sprite@1x.png") -31px 3px
 }
 .login-div>input{
     border:none;
@@ -55,7 +63,7 @@
     height:30px;
     line-height: 30px;
     margin: 0 auto;
-    color:red
+    color:#ff5151
 }
 .form-submit{
     text-align: center
