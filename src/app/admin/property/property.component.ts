@@ -46,15 +46,11 @@ export class PropertyComponent implements OnInit {
       {label: '负责人电话', field: 'leaderPhoneNumber'},
       {label: '常用联系人', field: 'linkManName'},
       {label: '常用联系人电话',field:'linkManPhoneNumber'},
-      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除']}];
+      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除'],colorConfig:{修改: '#119C9D', 删除: '#d73e3e'}}];
   
     this.bodys = [
     ];
-  
-    // this.textConfig = {status: {0: '正常', 1: '故障'}};
-    this.colorConfig = {
-      caozuo: {修改: '#119C9D', 删除: '#d73e3e'}
-    };
+    
     this.getProperty('/property/findAll');
   }
   getOperateEvent(e) {

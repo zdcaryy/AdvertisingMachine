@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+declare var $:any ;
 
 @Component({
   selector: 'app-admin',
@@ -15,9 +15,18 @@ export class AdminComponent implements OnInit {
   constructor(private router:Router) { }
 
   ngOnInit() {
-    if(document.documentElement.clientWidth<=992){
-      this.floder=true
-    }
+    $('.header-floder').click(function(){
+      $('#nav').slideDown()
+    });
+    $('body').click(function(){
+      let w = document.documentElement.clientWidth || document.body.clientWidth;
+      if(w<970){
+        $('#nav').slideUp()
+      }  
+    })
+    $('body').on('click', '#nav,.header-floder', function(event){
+        event.stopPropagation();  // 或 return false;
+    });
   }
   
   logout(){

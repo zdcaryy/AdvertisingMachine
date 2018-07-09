@@ -7,7 +7,7 @@ import { AdminComponent } from './admin.component';
 import { AreaComponent } from './area/area.component';
 import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
-import { OperationsComponent } from './operations/operations.component';
+
 
 import { TableComponent } from './shared/table/table.component';
 
@@ -19,8 +19,8 @@ import { UserService } from './server/user.service';
 import { AdverService } from './server/adver.service';
 import { VillageComponent } from './village/village.component';
 import { SelectVillageComponent } from './shared/select-village/select-village.component';
-import{PropertyComponent} from './property/property.component';
-import {PropertyService} from './server/property.service';
+import { PropertyComponent} from './property/property.component';
+import { PropertyService} from './server/property.service';
 import { PersonComponent } from './person/person.component';
 import { AdmachineService } from './server/admachine.service';
 
@@ -32,7 +32,7 @@ import { AdmachineService } from './server/admachine.service';
     FormsModule,
     ElModule.forRoot(),
   ],
-  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent, OperationsComponent, UserComponent, VillageComponent, SelectVillageComponent,PropertyComponent, PersonComponent],
+  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent,UserComponent, VillageComponent, SelectVillageComponent,PropertyComponent, PersonComponent],
   providers: [
     AreaService,
     EquipService,

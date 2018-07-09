@@ -10,16 +10,24 @@
 }
 .header-floder{
     width: 30px;
+    height:30px;
+    margin:18px 0 0 15px;
     cursor:pointer;
     float:left;
     color:white
 }
+.header-floder>span{
+    display:block;
+    width:100%;
+    height:3px;
+    margin-bottom:8px;
+    border-radius:2px;
+    background:white
+}
 .header-title{
     float:left;
     height:60px;
-    padding:0 10px;
     line-height: 60px;
-    font-size:24px;
 }
 .header-option{
     float:right;
@@ -46,41 +54,91 @@
 }
 .header-refresh{
     width:30px;
-    height:30px;
-    background:url("../../assets/img/icon_sprite@1x.png") -237px 4px
+    background:url("../../assets/img/icon_sprite@1x.png") -158px -38px
 }
 .header-msg{
     width:30px;
-    height:30px;
-    background:url("../../assets/img/icon_sprite@1x.png") -200px 10px
+    background:url("../../assets/img/icon_sprite@1x.png") -37px -114px
 }
 #nav{
     position:absolute;
-    width:200px;
     top:60px;
-    bottom:0;
-    border-right:1px solid #ddd
+    background:white;
+    border-right:1px solid #ddd;
+    z-index:1000
+}
+#nav ul{
+    width:100%;
+    padding-bottom:1px
 }
 #nav li{
     width: 100%;
-    height: 50px;
-    line-height: 50px;
     text-align: center;
     letter-spacing: 2px;
-    font-size: 16px;
     cursor: pointer;
     font-weight: 500;
     color:#a2a2a2;
-}
-.activePage{
-    border-left:5px solid #009587;
-    color:#009587;
+    float:left
 }
 #section{
     position: absolute;
     top:60px;
-    left:200px;
     bottom:0;
-    right:0;
     background:#f9fffe
+}
+@media screen and (min-width: 970px) {
+    .header-floder{
+        display:none
+    }
+    .header-title{
+        font-size:24px;
+    }
+    #nav{
+        width:200px;
+        bottom:0;
+    }
+    #nav li{
+        height: 50px;
+        line-height: 50px;
+        font-size: 16px;
+    }
+    .activePage{
+        border-left:5px solid #009587;
+        color:#009587;
+    }
+    #section{
+        left:200px;
+        right:0;
+    }
+}
+@media screen and (max-width: 969px) {
+    #header{
+        position: fixed;
+        top:0;
+        z-index:100
+    }
+    .header-floder{
+        display:block
+    }
+    .header-title{
+        font-size:18px;
+    }
+    #nav{
+        width:150px;
+        display:none;
+        box-shadow:2px 2px 2px #ddd;
+    }
+    #nav::after{
+        clear:both;
+        display:block;
+        content: ''
+    }
+    #nav li{
+        height: 40px;
+        line-height: 40px;
+        font-size: 15px;
+    }
+    #section{
+        width:100%;     
+    }
 }

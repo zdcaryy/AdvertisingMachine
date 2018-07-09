@@ -2,7 +2,7 @@
   <div class="search-container">
     <form class="form-inline">
       <div class="form-group">
-        <label for="query-input" class="query-label">查找设备</label>
+        <label for="query-input" class="query-label">查找人员</label>
         <input type="text" class="form-control" id="query-input" name="searchNum" placeholder="姓名、证件号、电话号">
       </div>
       <button type="submit" class="btn query-btn">查找</button>
@@ -15,8 +15,6 @@
       [heads]="heads"
       [bodys]="bodys"
       (selectedListChange)="getSelectedList($event)"
-      [colorConfig]="colorConfig"
-      [textConfig]="textConfig"
       (dropdownEvent)="getDropdownEvent($event)"
       (operateEvent)="getOperateEvent($event)"
       (selectedListChange)="getSelectedList($event)"
@@ -27,7 +25,7 @@
 
   <div class="operation">
     <button class="btn useless-btn" type="button">批量删除</button>
-    <button class="btn useful-btn" type="button" (click)="addDialogStateShow();">添加设备</button>
+    <button class="btn useful-btn" type="button" (click)="addDialogStateShow();">添加人员</button>
   </div>
 
   <!--添加人员信息start-->
@@ -36,38 +34,59 @@
     <h3>添加人员</h3>
     <form action="" class="child-form" #f="ngForm">
       <div class="form-item">
-        <label>姓名:</label><input type="text">
-        <label>联系电话:</label><input type="text">
+        <label>姓名：</label><input type="text">
+        <span style="color:red;margin-right:100px;">*</span>
+        <label>联系电话：</label><input type="text">
+        <span style="color:red;">*</span>
       </div>
       <div class="form-item">
-        <label>类型:</label><input type="text">
-        <label>人脸特征数据:</label><input type="text">
+        <label>类型：</label><select name="" id=""></select>
+        <span style="color:red;margin-right:100px;">*</span>
+        <label>人脸特征数据：</label>
+        <div class="upload-container">
+          <input type="file" name="upload" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*"/>
+        </div>
+        <label for="fileToUpload" style="color:#119C9D;">选择照片</label>
+        <a href="javascript:;">显示详情</a>
       </div>
       <div class="form-item">
-        <label>所属公司(户主):</label><input type="text">
+        <label>所属公司(户主)：</label><input type="text">
+        <span style="color:red;">*</span>
       </div>
       <div class="form-item">
-        <label>房间</label>
-        <table border= "1"   width="500">
+        <label>房间：</label>
+        <table width="500">
           <tr>
-            <td colspan="2"><label>业主：</label><input type="text"></td>
+            <td colspan="2">业主：<input type="text"></td>
             <td colspan="2">电话：<input type="text"></td>
           </tr>
           <tr>
             <td colspan="4">小区：<input type="text"></td>
           </tr>
           <tr>
-            <td><label>楼栋号：</label><input type="text" style="width:50px;"></td>
+            <td>楼栋号：<input type="text"></td>
             <td>单元号：<input type="text"></td>
             <td>楼层：<input type="text"></td>
             <td>房间：<input type="text"></td>
           </tr>
         </table>
         <div class="form-item">
-          <label>入住日期:</label><input type="text">
+          <label>入住日期：</label>
+          <el-date-picker
+            (modelChange)="handle($event)"
+            (clear-click)="0"
+            size="mini"
+          ></el-date-picker>
         </div>
         <div class="form-item">
-          <label>失效日期:</label><input type="text">
+          <label>失效日期：</label>
+          <el-date-picker
+            (modelChange)="handle($event)"
+            (clear-click)="0"
+            size="mini"
+          >
+          </el-date-picker>
+          <span style="color:red;">*</span>
         </div>
       </div>
       <div class="operation">

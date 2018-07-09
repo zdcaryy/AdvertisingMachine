@@ -3,15 +3,19 @@
       <div class="form-title">人脸识别广告机后台管理系统</div>
       <div class="form-titleEn">background management system for face recognition advertising</div>
       <form novalidate #form="ngForm" (ngSubmit)="login(form)">
-          <div class="login-div">
+          <div class="login-div" [style.border-left]="userBorder?'3px solid #009788':'3px solid white'">
               <label class="user-bcd"></label>
-              <input type="text" name="username" 
-              [(ngModel)]="username" required />
+              <div class="input-div">
+                <input type="text" name="username" 
+                [(ngModel)]="username" required (focus)="focus('user')" (blur)="blur('user')"/>
+              </div>             
           </div>
-          <div class="login-div">
+          <div class="login-div" [style.border-left]="psdBorder?'3px solid #009788':'3px solid white'">
               <label class="psd-bcd"></label>
-              <input type="password" name="password" 
-              [(ngModel)]="password" required />
+              <div class="input-div">
+                <input type="password" name="password" 
+                [(ngModel)]="password" required (focus)="focus('psd')" (blur)="blur('psd')"/>
+              </div>             
           </div>
           <div class="login-msg">{{errorMessage}}</div>
           <div class="form-group form-submit">
@@ -19,5 +23,9 @@
             <a routerLink="/register">没有账号？前往注册</a>
           </div>
       </form>
+  </div>
+  <div class="login-bottom">
+    技术支持:中钞信达成都研发中心<br/>
+    Copyright &copy; 2016-2020 cbpm-xinda,All Rights Reserved
   </div>
 </div>

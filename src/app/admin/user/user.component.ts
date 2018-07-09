@@ -49,17 +49,12 @@ export class UserComponent implements OnInit {
       {label: '证件号', field: 'identity'},
       {label: '手机号', field: 'phoneNumber'},
       {label:'所属公司或户主名', field: 'ownerNames'},
-      {label: '类型', field: 'userLevel',child:['系统管理员','管理员','业主']},
-      {label: '操作', field:'caozuo',width:'25%',operate:true,operations:['修改','删除']}];
+      {label: '类型', field: 'userLevel',child:['系统管理员','管理员','业主'],textConfig:{0: '系统管理员', 1: '管理员', 2: '业主'},colorConfig:{0: 'red', 1: 'blue', 2: 'green'}},
+      {label: '操作', field:'caozuo',width:'25%',operate:true,operations:['修改','删除'],colorConfig:{修改: '#119C9D', 删除: '#d73e3e'}}
+      ];
   
     this.bodys = [
     ];
-  
-    this.textConfig = {userLevel: {0: '系统管理员', 1: '管理员', 2: '业主'}};
-    this.colorConfig = {
-      userLevel: {0: 'red', 1: 'blue', 2: 'green'},
-      caozuo: {修改: '#119C9D', 删除: '#d73e3e'}
-    };
   }
   
   getOperateEvent(e) {

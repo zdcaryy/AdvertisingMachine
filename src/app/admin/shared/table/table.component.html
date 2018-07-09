@@ -6,7 +6,7 @@
 				<!-- checkbox -->
 				<th *ngIf="checkBox" class="forCheck"><input type="checkbox" #checkbox_all title="全选" [checked]="selectedList.length&&selectedList.length==bodys.length" (click)="selectAll(checkbox_all.checked)"></th>
 				<!-- 主体 -->
-				<th *ngFor="let head of heads" [style.width]="head.width?head.width:''" (click)="dropList=head.field;$event.stopPropagation();">
+				<th class="headers" [class.lastHeader]="i==heads.length-1" *ngFor="let head of heads;index as i" [style.width]="head.width?head.width:''" (click)="dropList=head.field;$event.stopPropagation();">
 					<!-- 传的数据中含有'child'，则代表有二级菜单 -->
 					<ng-template #noChild><div>{{head.label}}</div></ng-template>
 					<div *ngIf="head.child;else noChild">
@@ -38,13 +38,12 @@
 						<!-- checkbox -->
 						<td *ngIf="checkBox" class="forCheck"><input type="checkbox" #checkbox_one [checked]="selectedList.indexOf(body)>-1" (click)="selectOne(body,checkbox_one.checked)"></td>
 						<!-- 根据表头的key来显示相对应的数据 -->
-																						<!-- 根据colorConfig配置颜色  -->
 						<td *ngFor="let head of heads" [style.width]="head.width?head.width:''">
 							<!-- 判断是否是可以操作的内容 -->  
 							<span *ngIf="head.operate;else notOper" class="canOper">
 								<!-- [style.color]根据colorconfig来设置颜色 -->
 								<span *ngFor="let opers of head.operations;let i=index">
-									<span class="opers" (click)="bodyOper(head.field,opers,body)" [style.color]="colorConfig&&colorConfig[head.field]?colorConfig[head.field][opers]:''">{{opers}}</span>
+									<span class="opers" (click)="bodyOper(head.field,opers,body)" [style.color]="head.colorConfig&&head.colorConfig.hasOwnProperty(opers)?head.colorConfig[opers]:''">{{opers}}</span>
 									<span class="sep" *ngIf="i<head.operations.length-1"></span>
 								</span>
 							</span>
@@ -52,8 +51,8 @@
 
 							<!-- 不可操作的普通内容 -->
 							<!-- ↓↓↓↓  普通内容可以替换文字  ↓↓↓↓↓  -->
-							<ng-template #notOper><span [style.color]="colorConfig&&colorConfig[head.field]?colorConfig[head.field][body[head.field]]:''">
-																			{{textConfig&&textConfig[head.field]?textConfig[head.field][body[head.field]]:body[head.field]}}</span></ng-template>
+							<ng-template #notOper><span [style.color]="head.colorConfig&&head.colorConfig.hasOwnProperty([body[head.field]])?head.colorConfig[body[head.field]]:''">
+																			{{head.textConfig&&head.textConfig.hasOwnProperty([body[head.field]])?head.textConfig[body[head.field]]:body[head.field]}}</span></ng-template>
 						</td>
 						<!-- 滚动条占位 -->
 						<td class="forScroll" *ngIf="showScroll"></td>

@@ -1,13 +1,17 @@
 <div class="village">
-	<div class="header"></div>
+	<div class="header">
+		<tr>
+			<td>
+				<span class="labels">区域：</span>
+				<selectVillage [allVillage]="villInfo" [showLevel]="3" [init]="initVillHeader" (handle)="selectRegion($event)"></selectVillage>
+			</td>
+		</tr>
+	</div>
 	<div class="main">
-		<selectVillage [allVillage]="villInfo" [showLevel]="5" [init]="initVill" (handle)="selectVillage($event)"></selectVillage>
 		<app-table 
 			[checkBox]="true"
 			[heads]="heads" 
-			[bodys]="villInfo"
-			[colorConfig]="myColorConfig" 
-			[textConfig]="myTextConfig" 
+			[bodys]="showVillInfo"
 			(dropdownEvent)="getDropdownEvent($event)" 
 			(operateEvent)="getOperateEvent($event)" 
 			(selectedListChange)="getSelectedList($event)"
@@ -15,8 +19,30 @@
 	</div>
 	<div class="footer">
 		<div class="mybtn delMul" (click)="delMul()" [class.disBtn]="!selectedVill.length">批量删除</div>
-		<div class="mybtn addNew" (click)="showModal=true;modalType='add';ifNewType=false;initAdd()">添加项目</div>
-		<button (click)="test()">short</button>
-		<button (click)="testLong()">long</button>
+		<div class="mybtn addNew" (click)="showModal=true;modalType='add'">添加项目</div>
+	</div>
+
+	<div class="cover" [@adCover]="showModal?'show':'hide'" (@adCover.start)="animeState=true" (@adCover.done)="animeState=false" 
+										 [style.display]="showModal||animeState?'block':'none'">
+		<div class="modalBox" [ngSwitch]="modalType">
+			<span class="close el-icon-close" (click)="showModal=false"></span>
+			
+			<!--    添加小区    -->
+			<div *ngSwitchCase="'add'">
+				<p class="modal_title">添加小区</p>
+				<p class="modal_row"><span class="row_left">小区：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.name"></span></p>
+				<p class="modal_row"><span class="row_left">物业：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.propertyComName"></span></p>
+				<p class="modal_row"><span class="row_left">物业电话：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.phoneNumber"></span></p>
+				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.priceTag"></span></p>
+				<p class="modal_row">
+					<span class="row_left">位置：</span>
+					<span class="row_right">
+						<selectVillage [allVillage]="villInfo" [showLevel]="3" (handle)="selectVillageAdd($event)"></selectVillage>
+					</span>
+				</p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addNew()">添加</span></p>
+			</div>
+			
+		</div>
 	</div>
 </div>

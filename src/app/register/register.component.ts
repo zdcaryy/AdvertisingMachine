@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
+  formWidth:number;
+  formHeight:number;
+
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

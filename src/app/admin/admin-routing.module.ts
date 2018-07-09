@@ -7,7 +7,6 @@ import { AreaComponent } from "./area/area.component";
 import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { UserComponent } from './user/user.component';
-import { OperationsComponent } from './operations/operations.component';
 import { VillageComponent } from './village/village.component';
 import {PropertyComponent} from './property/property.component';
 import{PersonComponent} from './person/person.component';
@@ -40,11 +39,6 @@ const routes:Routes=[
             {
                 path:'user',
                 component:UserComponent,
-                // canActivate: [AuthGuard]
-            },
-            {
-                path:'ops',
-                component:OperationsComponent,
                 // canActivate: [AuthGuard]
             },
             {

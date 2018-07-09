@@ -4,19 +4,11 @@
     margin:0;
     padding:0
 }
-.areaLeft{
-    padding:5px;
-    height:50%;
-}
 .gaodemap-container{
     height:100%;
     box-shadow: 0 2px 2px #ddd;
     border-radius: 5px;
     outline: none
-}
-.areaRight{
-    padding:5px;
-    height:50%;
 }
 .areaSearch{
     width:100%;
@@ -38,13 +30,21 @@
     margin:10px auto 0 auto;
     position: relative;
 }
-.areaSearchInput>div{
+.areaSearchInput>div:first-child{
     height:35px;
     width:35px;
     cursor:pointer;
-    float:right
+    float:right;
+    background:url("../../../assets/img/icon_sprite@1x.png") -200px -40px
 }
-.areaSearchInput>input{
+.areaSearchInput>div:nth-child(2){
+    position: absolute;
+    height:35px;
+    left:0;
+    right:35px;
+}
+.areaSearchInput input{
+    width:100%;
     height:35px;
     outline: none;
     text-indent: 1em;
@@ -76,12 +76,6 @@
 }
 .equipAnomaly{
     color:#d73e3e
-}
-.areaBottom{
-    width:100%;
-    height:50%;
-    padding:5px;
-    border-radius: 5px
 }
 .areaList{
     width:100%;
@@ -125,6 +119,11 @@
     width:92%;
     border-top:2px solid #ddd;
 }
+.tablebox{
+    width:100%;
+    height:100%;
+    overflow-y:auto
+}
 .areaBatch{
     width:70px;
     height:30px;
@@ -136,4 +135,49 @@
     cursor: pointer;
     border-radius: 2px;
     box-shadow: 0 2px 2px #ddd;
+}
+@media screen and (min-width: 970px) {
+    .areaLeft{
+        position: absolute;
+        padding:5px;
+        height:50%;
+        left:0;
+        right:400px
+    }
+    .areaRight{
+        position: absolute;
+        padding:5px;
+        height:50%;
+        width:400px;
+        right:0
+    }
+    .areaBottom{
+        width:100%;
+        height:50%;
+        position: absolute;
+        bottom:0;
+        padding:5px;
+        border-radius: 5px
+    }
+}
+@media screen and (max-width: 969px) {
+    .areaLeft{
+        height:40%;
+        width:100%;
+    }
+    .areaRight{
+        width:100%;
+        height:60px;
+        overflow:hidden;
+        position: absolute;
+        top:0;
+        z-index:50;
+    }
+    .areaBottom{
+        width:100%;
+        padding:2px;
+        height:58%;
+        position: absolute;
+        top:40%;
+    }
 }

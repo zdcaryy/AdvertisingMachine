@@ -11,8 +11,8 @@ export class TableComponent implements OnInit {
   @Input() checkBox:boolean = false; //是否需要选中
  	@Input() heads:object[]; //表头数据
   @Input() bodys:object[] = []; //表格内容数据
-  @Input() colorConfig:object; //表格内容颜色设置
-  @Input() textConfig:object; //表格内容文字替换
+  // @Input() colorConfig:object; //表格内容颜色设置
+  // @Input() textConfig:object; //表格内容文字替换
 
   @Output() dropdownEvent:EventEmitter<object> = new EventEmitter<object>(); //表头中的操作，主要是选中下拉框中的某一项触发
   @Output() operateEvent:EventEmitter<object> = new EventEmitter<object>(); //表格内容中的操作，如删除、查看等
@@ -50,8 +50,6 @@ export class TableComponent implements OnInit {
       this.dragScrollBar(e);
     });
   }
-  
-
 
   // 传入数据改变时，清除已选择列表
   ngOnChanges(changes){

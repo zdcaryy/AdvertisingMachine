@@ -1,15 +1,15 @@
 <div class="row" id="areaModule">
-    <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12 areaLeft">
+    <div class="areaLeft">
       <div id="gaodemap-container" class="gaodemap-container" tabindex="0"></div>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 areaRight">
+    <div class="areaRight">
       <ul class="areaSearch">
         <li class="areaSearchInput">
-          <div (click)="searchVillage()"></div> 
-          <input type="text" placeholder="查找区域、设备编号" [(ngModel)]="activeInput" (change)="dimVillage()">
+          <div (click)="searchVillage()"></div>
+          <div><input type="text" placeholder="查找区域、设备编号" [(ngModel)]="activeInput"></div>
           <ol>
             <li *ngFor="let hero of heroes"></li>
-          </ol>                
+          </ol>
         </li>
         <li class="areaSearchTitle">当前区域</li>
         <li class="areaSearchPresent">地区 : {{this.area}}</li>
@@ -22,8 +22,8 @@
         <li class="areaSearchEquip equipAnomaly">异常设备 : {{this.equipAnomaly}}台</li>
       </ul>
     </div>
-    <div class="col-lg-12 areaBottom">
-      <div class="areaList">
+    <div class="areaBottom">
+      <!-- <div class="areaList">
         <ul class="areaListTop">
           <li class="col-lg-2">设备编号</li>
           <li class="col-lg-3">设备位置</li>
@@ -48,5 +48,16 @@
           <div class="areaBatch">批量处理</div>
         </div>
       </div>
+    </div> -->
+    <div class="tablebox">
+      <app-table
+        [checkBox]="true"
+        [heads]="heads"
+        [bodys]="bodys"
+        (selectedListChange)="getSelectedList($event)"
+        (dropdownEvent)="getDropdownEvent($event)"
+        (operateEvent)="getOperateEvent($event)"
+        (selectedListChange)="getSelectedList($event)"
+      ></app-table>
     </div>
 </div>

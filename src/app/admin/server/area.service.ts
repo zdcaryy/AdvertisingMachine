@@ -10,14 +10,14 @@ export class AreaService {
   constructor(private http:HttpClient) { }
   //获取小区
   getVillage(key:string): Observable<any>{
-  	return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode')}});		
+  	return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),access_token:localStorage.getItem('access_token')}});		
   }
   //获取小区
   searchVillage(key:string,village:string): Observable<any>{
-    return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),ViliiageName:village}});		
+    return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),ViliiageName:village,access_token:localStorage.getItem('access_token')}});		
   }
   //小区模糊搜索
   dimVillage(key:string,village:string): Observable<any>{
-    return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),villageName:village}});		
+    return this.http.get<any>(`${environment.userUrl}`+key,{params:{phoneNumber:localStorage.getItem('userCode'),villageName:village,access_token:localStorage.getItem('access_token')}});		
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AreaService } from "../server/area.service";
 declare var AMap:any ;
+declare var $:any ;
 
 @Component({
   selector: 'app-area',
@@ -20,6 +21,12 @@ export class AreaComponent implements OnInit {
   areaCoord=[];
   activeInput:string;
   map;
+
+  heads: object[];
+  bodys: object[];
+  selectedList:object[] = [];
+  textConfig: object;
+  colorConfig: object;
 
   constructor(
     private areaService:AreaService
@@ -44,6 +51,28 @@ export class AreaComponent implements OnInit {
         });
         this.map.addControl(geolocation);
     });
+    //小区模糊搜索
+    $('.areaSearchInput').find('input').bind('input propertychange',()=>{
+      this.activeInput=$('.areaSearchInput').find('input').val();
+      this.dimVillage()
+    })
+    //操作列表
+    this.heads = [{label: '设备编号',field: 'mac'},
+      {label: '设备位置', field: 'position'},
+      {label: '设备运行状态', field: 'status', child: [ '正常', '故障']},
+      {label: '备份情况', field: 'copy', child: ['所有', '已上传', '待上传', '上传中']},
+      {label: '维护人员', field: 'accendantName'},
+      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除']}];
+    
+    this.bodys = [
+    ];
+    
+    this.textConfig = {status: {0: '正常', 1: '故障'}};
+    this.colorConfig = {
+      status: {0: 'blue', 1: 'red'},
+      copy:{0:'blue',1:'green',2:'red',3:'yellow'},
+      caozuo: {修改: '#119C9D', 删除: '#d73e3e'}
+    };
   }
   //获取全部小区
   getVillage(){
@@ -87,7 +116,7 @@ export class AreaComponent implements OnInit {
         this.equipAll=value.vliiageAndCount.machineCount;
         this.equipNormal=value.vliiageAndCount.normalCount;
         this.equipAnomaly=value.vliiageAndCount.unusualCount;
-        this.areaCoord=value.machines;
+        this.bodys=value.machines;
       })
   }
   //小区模糊搜索

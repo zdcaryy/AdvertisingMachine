@@ -25,11 +25,11 @@ div,table,thead,tbody,td{
 	text-align: center;
 	position: relative;
 }
-.tableContainer .thead tbody tr th div{
+.tableContainer .thead tbody tr th.headers div{
 	line-height: 30px;
 	border-right: 1px solid #e0e0e0;
 }
-.tableContainer .thead tbody tr th:nth-last-child(2) div{
+.tableContainer .thead tbody tr th.lastHeader div{
 	border: 0;
 }
 /*表头中的二级菜单*/

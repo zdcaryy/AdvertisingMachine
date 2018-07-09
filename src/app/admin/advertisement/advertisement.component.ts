@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { AdverService } from '../server/adver.service';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-advertisement',
@@ -22,7 +21,7 @@ import { Location } from '@angular/common';
 })
 export class AdvertisementComponent implements OnInit {
 
-  constructor(private adService:AdverService,private location: Location) { }
+  constructor(private adService:AdverService) { }
 
   // 当前显示的广告类型
   nowType:string;

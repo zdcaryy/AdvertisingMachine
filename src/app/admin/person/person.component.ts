@@ -35,23 +35,14 @@ export class PersonComponent implements OnInit {
     this.heads = [{label: '人员姓名',field: 'name'},
       {label: '所属公司(户主)', field: 'ownerName'},
       {label: '联系电话', field: 'phoneNumber'},
-      {label: '类型', field: 'type', child: ['业主','租户','物业员工','公司员工','访客','维护人员']},
-      {label: '人脸特征数据', field: 'tag',child:['已通过','审核中']},
+      {label: '类型', field: 'type', child: ['业主','租户','物业员工','公司员工','访客','维护人员'],textConfig:{0: '业主', 1: '租户',2:'物业员工',3:'公司员工',4:'访客',5:'维护人员'},colorConfig:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple',6:'gold'}},
+      {label: '人脸特征数据', field: 'tag',child:['已通过','审核中'],textConfig:{0:'已通过',1:'审核中'},colorConfig:{0:'#119C9D',1:'#d73e3e'}},
       {label:'入住时间',field:'date'},
-      {label: '操作', field: 'caozuo',operate:true,operations:['查看']}];
+      {label: '操作', field: 'caozuo',operate:true,operations:['查看'],colorConfig:{查看: '#119C9D'}}];
   
     this.bodys = [
     ];
-  
-    this.textConfig = {
-      type: {0: '业主', 1: '租户',2:'物业员工',3:'公司员工',4:'访客',5:'维护人员'},
-      tag:{0:'已通过',1:'审核中'}
-    };
-    this.colorConfig = {
-      type:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple',6:'gold'},
-      tag:{0:'#119C9D',1:'#d73e3e'},
-      caozuo: {查看: '#119C9D'}
-    };
+    
     //初始化设备列表
     this.getPerson();
   }
@@ -73,6 +64,12 @@ export class PersonComponent implements OnInit {
     console.log(e);
   }
   
+  handle(time: number): void {
+    // [time] is string
+    // date style follow format props
+    console.log(time)
+  }
+ 
   //获取人员列表
   getPerson(){
     this.admachineService.getData('/person/findAll').subscribe(res=>{

@@ -1,12 +1,12 @@
 <header id="header">
-  <div class="header-floder"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
+  <div class="header-floder"><span></span><span></span><span></span></div>
   <div class="header-title">人脸识别广告机后台管理系统</div>
   <div class="header-option">
     <p class="username">你好,{{username}}</p>
     <ul>
       <li (click)="logout()">退出登录</li>
-      <li (click)="refresh()"><span class="header-refresh"></span><span>刷新</span></li>
-      <li><span class="header-msg"></span><span>信息</span></li>
+      <li (click)="refresh()"><span class="header-refresh"></span><span class="header-info">刷新</span></li>
+      <li><span class="header-msg"></span><span class="header-info">信息</span></li>
     </ul>
   </div>
 </header>

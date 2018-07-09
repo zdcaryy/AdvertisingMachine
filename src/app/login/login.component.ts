@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   public username: string;
   public password: string;
   public errorMessage: string;
+  public userBorder: boolean=false;
+  public psdBorder: boolean=false;
 
   constructor(
     private router: Router,
@@ -22,12 +24,22 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    $('.login-div').find('input').focus(function(){
-      $(this).parent().css("border-left","3px solid #009788")
-    });
-    $('.login-div').find('input').blur(function(){
-      $(this).parent().css("border-left","3px solid white")
-    })
+  }
+
+  focus(param:string){
+    if(param=="user"){
+      this.userBorder=true
+    }else if(param=="psd"){
+      this.psdBorder=true
+    }
+  }
+
+  blur(param:string){
+    if(param=="user"){
+      this.userBorder=false
+    }else if(param=="psd"){
+      this.psdBorder=false
+    }
   }
 
   login(form: NgForm) {
@@ -46,4 +58,5 @@ export class LoginComponent implements OnInit {
         this.errorMessage = "账号或密码错误";
     }
   }
+
 }
