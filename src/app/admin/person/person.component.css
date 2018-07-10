@@ -88,6 +88,7 @@
   padding:30px;
   font-size:12px;
   color	:#4F4F4F;
+  position:relative;
 }
 .child-view .child-form .form-item{
   margin-bottom:20px;
@@ -208,6 +209,28 @@ el-date-picker{
 }
 ::ng-deep .el-input__inner{
   border:1px solid #e0e0e0;
+}
+
+#img-list{
+  width: 80%;
+  border-radius:15px;
+  background:rgba(222,222,222,0.5);
+  padding:20px;
+  display:flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  justify-content: space-around;
+  position:absolute;
+  z-index:999;
+  left:50%;
+  transform: translate(-50%);
+}
+#img-list img{
+  width:100px;
+  margin:20px;
+  padding:5px;
+  background:deepskyblue;
+  border-radius:10px;
 }
 
 

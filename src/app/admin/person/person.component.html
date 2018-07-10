@@ -32,7 +32,7 @@
   <div class="child-view" id="add_equip" style="width:800px;"  [@dialogState]="addDialogState">
     <div class="close-btn" (click)="addDialogHidden();"></div>
     <h3>添加人员</h3>
-    <form action="" class="child-form" #f="ngForm">
+    <form action="" class="child-form" #f="ngForm" id="addForm">
       <div class="form-item">
         <label>姓名：</label><input type="text">
         <span style="color:red;margin-right:100px;">*</span>
@@ -44,10 +44,16 @@
         <span style="color:red;margin-right:100px;">*</span>
         <label>人脸特征数据：</label>
         <div class="upload-container">
-          <input type="file" name="upload" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*"/>
+          <input type="file" name="upload" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
         </div>
         <label for="fileToUpload" style="color:#119C9D;">选择照片</label>
         <a href="javascript:;">显示详情</a>
+      </div>
+      <div id="img-list" *ngIf="photosUrls.length">
+        <div  *ngFor="let url of photosUrls;let i=index;">
+          <img [src]="url" alt="">
+          <i class="el-icon-circle-close"></i>
+        </div>
       </div>
       <div class="form-item">
         <label>所属公司(户主)：</label><input type="text">

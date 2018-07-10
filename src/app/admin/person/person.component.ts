@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import{AdmachineService} from '../server/admachine.service';
 import{trigger,state,style,animate,transition} from '@angular/animations';
+declare var $:any;
 
 
 @Component({
@@ -30,6 +31,9 @@ export class PersonComponent implements OnInit {
   colorConfig: object;
   
   addDialogState='hidden';//弹框是否显示
+  files=[];//存放上传的文件
+  photosUrls=[];//存放预览图
+  formdata;
 
   ngOnInit() {
     this.heads = [{label: '人员姓名',field: 'name'},
@@ -63,7 +67,48 @@ export class PersonComponent implements OnInit {
   getSelectedList(e){
     console.log(e);
   }
+  //读取文件
   
+  getUpLoad(e):void{
+    this.files=e.target.files;
+    let that=this;
+    for(let file of this.files){
+        let reads = new FileReader();
+        reads.readAsDataURL(file);//异步操作
+        reads.onload = function (res) {
+          if($.inArray(res.target['result'],that.photosUrls)!=-1){
+            return;
+          }
+          else{
+            //限制上传图片数量最多六张
+            if(that.photosUrls.length<6){
+              that.formdata.append('upload',file);
+              that.photosUrls.push(res.target['result']);
+            }
+          }
+        };
+    }
+  }
+  
+  
+  //canvas绘制缩略图
+  // if(that.files.length!=0){
+  //   let canvas = document.createElement('canvas');
+  //   let context = canvas.getContext('2d');
+  //   let img=new Image();
+  //   img.src=that.src;
+  //   console.log(img);
+  //   img.onload=()=>{
+  //     let w=100,
+  //       h=w/(img.width/img.height);
+  //     console.log(w);
+  //     context.drawImage(img,0,0,w,h);
+  //     document.getElementById('img').appendChild(canvas);
+  //   }
+  // }
+  
+  
+  //日期选择处理函数
   handle(time: number): void {
     // [time] is string
     // date style follow format props
@@ -92,6 +137,7 @@ export class PersonComponent implements OnInit {
   //打开添加人员弹框
   addDialogStateShow(){
     this.addDialogState='show';
+    this.formdata=new FormData($('#addForm')[0]);
   }
   //关闭添加人员弹框
   addDialogHidden(){

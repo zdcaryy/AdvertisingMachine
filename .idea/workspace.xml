@@ -3,46 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c72915e3-10fc-4822-a491-866d37237a9c" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin-routing.module.ts" afterPath="$PROJECT_DIR$/src/app/admin/admin-routing.module.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.component.css" afterPath="$PROJECT_DIR$/src/app/admin/admin.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.component.html" afterPath="$PROJECT_DIR$/src/app/admin/admin.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/admin.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.module.ts" afterPath="$PROJECT_DIR$/src/app/admin/admin.module.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/area/area.component.css" afterPath="$PROJECT_DIR$/src/app/admin/area/area.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/area/area.component.html" afterPath="$PROJECT_DIR$/src/app/admin/area/area.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/area/area.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/area/area.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/equip/equip.component.css" afterPath="$PROJECT_DIR$/src/app/admin/equip/equip.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/equip/equip.component.html" afterPath="$PROJECT_DIR$/src/app/admin/equip/equip.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/equip/equip.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/equip/equip.component.ts" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.css" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.css" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.html" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.html" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/property/property.component.css" afterPath="$PROJECT_DIR$/src/app/admin/property/property.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/property/property.component.html" afterPath="$PROJECT_DIR$/src/app/admin/property/property.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/property/property.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/property/property.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/server/area.service.ts" afterPath="$PROJECT_DIR$/src/app/admin/server/area.service.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.css" afterPath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.html" afterPath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/table/说明.txt" afterPath="$PROJECT_DIR$/src/app/admin/shared/table/说明.txt" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/user/user.component.css" afterPath="$PROJECT_DIR$/src/app/admin/user/user.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/user/user.component.html" afterPath="$PROJECT_DIR$/src/app/admin/user/user.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/user/user.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/user/user.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/village/village.component.css" afterPath="$PROJECT_DIR$/src/app/admin/village/village.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/village/village.component.html" afterPath="$PROJECT_DIR$/src/app/admin/village/village.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/village/village.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/village/village.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.css" afterPath="$PROJECT_DIR$/src/app/login/login.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.html" afterPath="$PROJECT_DIR$/src/app/login/login.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/login/login.component.ts" afterPath="$PROJECT_DIR$/src/app/login/login.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/register/register.component.css" afterPath="$PROJECT_DIR$/src/app/register/register.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/register/register.component.html" afterPath="$PROJECT_DIR$/src/app/register/register.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/register/register.component.ts" afterPath="$PROJECT_DIR$/src/app/register/register.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/assets/img/icon_sprite@1.5x.png" afterPath="$PROJECT_DIR$/src/assets/img/icon_sprite@1.5x.png" />
-      <change beforePath="$PROJECT_DIR$/src/assets/img/icon_sprite@1x.png" afterPath="$PROJECT_DIR$/src/assets/img/icon_sprite@1x.png" />
-      <change beforePath="$PROJECT_DIR$/src/assets/img/icon_sprite@2x.png" afterPath="$PROJECT_DIR$/src/assets/img/icon_sprite@2x.png" />
-      <change beforePath="$PROJECT_DIR$/src/assets/img/icon_sprite@3x.png" afterPath="$PROJECT_DIR$/src/assets/img/icon_sprite@3x.png" />
-      <change beforePath="$PROJECT_DIR$/src/styles.css" afterPath="$PROJECT_DIR$/src/styles.css" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -84,6 +47,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -95,8 +60,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -133,7 +96,8 @@
       <workItem from="1528104811113" duration="312000" />
       <workItem from="1530263989656" duration="67000" />
       <workItem from="1530869594002" duration="212000" />
-      <workItem from="1531128228741" duration="16000" />
+      <workItem from="1531128228741" duration="70000" />
+      <workItem from="1531215062961" duration="14000" />
     </task>
     <task id="LOCAL-00001" summary="zdc-2018/6/4">
       <created>1528105094280</created>
@@ -156,11 +120,18 @@
       <option name="project" value="LOCAL" />
       <updated>1530869632651</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="人员管理---添加人员信息">
+      <created>1531128284472</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1531128284472</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="607000" />
+    <option name="totallyTimeSpent" value="675000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="194" y="160" width="1333" height="864" extended-state="0" />
@@ -197,7 +168,8 @@
     <MESSAGE value="zdc-2018/6/4" />
     <MESSAGE value="zdc-2018/6/29" />
     <MESSAGE value="人员管理" />
-    <option name="LAST_COMMIT_MESSAGE" value="人员管理" />
+    <MESSAGE value="人员管理---添加人员信息" />
+    <option name="LAST_COMMIT_MESSAGE" value="人员管理---添加人员信息" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
