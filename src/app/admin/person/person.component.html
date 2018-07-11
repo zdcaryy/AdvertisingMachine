@@ -32,9 +32,9 @@
   <div class="child-view" id="add_equip" style="width:800px;"  [@dialogState]="addDialogState">
     <div class="close-btn" (click)="addDialogHidden();"></div>
     <h3>添加人员</h3>
-    <form action="" class="child-form" #f="ngForm" id="addForm">
+    <form action="" class="child-form" #f="ngForm" id="add-form">
       <div class="form-item">
-        <label>姓名：</label><input type="text">
+        <label>姓名：</label><input type="text" name="name">
         <span style="color:red;margin-right:100px;">*</span>
         <label>联系电话：</label><input type="text">
         <span style="color:red;">*</span>
@@ -50,11 +50,18 @@
         <a href="javascript:;">显示详情</a>
       </div>
       <div id="img-list" *ngIf="photosUrls.length">
-        <div  *ngFor="let url of photosUrls;let i=index;">
-          <img [src]="url" alt="">
-          <i class="el-icon-circle-close"></i>
+        <div  *ngFor="let photo of photosUrls;">
+          <ul>
+            <li>{{photo.name}}</li>
+            <li><a href="javascript:;" (click)="preview(photo.src)">预览<i class="el-icon-view"></i></a></li>
+          </ul>
+          <img [src]="photo.src" alt="">
+          <i class="el-icon-circle-close" style="position:absolute;top:1px;right:1px;color:#000000;z-index:999;" (click)="removePic(photo.src)"></i>
         </div>
       </div>
+      <!--预览图start-->
+      <img src="" alt="">
+      <!--预览图end-->
       <div class="form-item">
         <label>所属公司(户主)：</label><input type="text">
         <span style="color:red;">*</span>
@@ -96,7 +103,7 @@
         </div>
       </div>
       <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson();">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>

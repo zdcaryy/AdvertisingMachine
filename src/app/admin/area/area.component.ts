@@ -59,20 +59,13 @@ export class AreaComponent implements OnInit {
     //操作列表
     this.heads = [{label: '设备编号',field: 'mac'},
       {label: '设备位置', field: 'position'},
-      {label: '设备运行状态', field: 'status', child: [ '正常', '故障']},
-      {label: '备份情况', field: 'copy', child: ['所有', '已上传', '待上传', '上传中']},
+      {label: '设备运行状态', field: 'status', child: ['所有', '正常', '故障'],textConfig:{0: '正常', 1: '故障'},colorConfig:{0: 'blue', 1: 'red'}},
+      {label: '备份情况', field: 'copy', child: ['所有', '已上传', '待上传', '上传中'],colorConfig:{0:'blue',1:'green',2:'red',3:'yellow'}},
       {label: '维护人员', field: 'accendantName'},
-      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除']}];
+      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除'],colorConfig:{修改: '#119C9D', 删除: '#d73e3e'}}];
     
     this.bodys = [
     ];
-    
-    this.textConfig = {status: {0: '正常', 1: '故障'}};
-    this.colorConfig = {
-      status: {0: 'blue', 1: 'red'},
-      copy:{0:'blue',1:'green',2:'red',3:'yellow'},
-      caozuo: {修改: '#119C9D', 删除: '#d73e3e'}
-    };
   }
   //获取全部小区
   getVillage(){

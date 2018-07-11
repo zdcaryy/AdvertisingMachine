@@ -31,7 +31,9 @@ export class TableComponent implements OnInit {
   initialHeight:number;
   //最大拖拽距离
   maxScrollHeight:number;
-  
+  // head中，所有下拉列表的选中值
+  headDropList:object = {};
+
   ngOnInit() {
     // 点击空白隐藏
     window.addEventListener('click',()=>{
@@ -53,6 +55,15 @@ export class TableComponent implements OnInit {
 
   // 传入数据改变时，清除已选择列表
   ngOnChanges(changes){
+    if(changes.heads){
+      let head = changes.heads.currentValue;
+      head.map(item=>{
+        if(item.child){
+          this.headDropList[item.field] = item.child[0];
+        }
+      });
+      this.dropdownEvent.emit(this.headDropList);
+    }
     if(changes.bodys){
       this.selectedList = [];
       this.selectedListChange.emit(this.selectedList);
@@ -62,11 +73,12 @@ export class TableComponent implements OnInit {
 
   // 表头中的操作，如选中下拉框中的某一项
   headOper(field,option){
-    let toEmit = {
-      field:field,
-      option:option
-    };
-    this.dropdownEvent.emit(toEmit);
+    this.headDropList[field] = option;
+    // let toEmit = {
+    //   field:field,
+    //   option:option
+    // };
+    this.dropdownEvent.emit(this.headDropList);
   }
   // 表格body内部的事件，例如删除/查看等等
   bodyOper(field,option,data){

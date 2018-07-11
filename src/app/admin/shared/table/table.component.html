@@ -6,7 +6,7 @@
 				<!-- checkbox -->
 				<th *ngIf="checkBox" class="forCheck"><input type="checkbox" #checkbox_all title="全选" [checked]="selectedList.length&&selectedList.length==bodys.length" (click)="selectAll(checkbox_all.checked)"></th>
 				<!-- 主体 -->
-				<th class="headers" [class.lastHeader]="i==heads.length-1" *ngFor="let head of heads;index as i" [style.width]="head.width?head.width:''" (click)="dropList=head.field;$event.stopPropagation();">
+				<th class="headers" *ngFor="let head of heads;index as i" [class.lastHeader]="i==heads.length-1" [style.width]="head.width?head.width:''" (click)="dropList=head.field;head.child?$event.stopPropagation():'';">
 					<!-- 传的数据中含有'child'，则代表有二级菜单 -->
 					<ng-template #noChild><div>{{head.label}}</div></ng-template>
 					<div *ngIf="head.child;else noChild">

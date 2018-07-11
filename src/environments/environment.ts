@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   tokenUrl: 'http://192.168.31.230:9061',
-  userUrl: 'http://192.168.31.230:9062'
+  userUrl: 'http://192.168.31.214:9062'
 };

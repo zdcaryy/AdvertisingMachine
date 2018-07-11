@@ -1,30 +1,64 @@
 <div class="register">
-    <div class="register-form" [style.top]="" [style.left]="">
+    <div class="register-form">
+        <div class="form-remove">
+            <span routerLink="/login">×</span>
+        </div>
         <div class="form-title">用户注册</div>
         <div class="form-warn">请输入真实信息否则将无法通过审核。请注意带"<span class="form-star">*</span>"为必填</div>
-        <div class="login-div">
-            <label></label>
-            <input type="text" name="username" 
-            [(ngModel)]="username" required />
-        </div>
-        <div class="login-div">
-            <label></label>
-            <input type="password" name="password" 
-            [(ngModel)]="password" required />
-        </div>
-        <div class="login-div">
-            <label></label>
-            <input type="password" name="repassword" 
-            [(ngModel)]="repassword" required />
-        </div>
-        <div class="login-msg">{{errorMessage}}</div>
-        <div class="form-group form-submit">
-          <button type="submit">注&nbsp;&nbsp;&nbsp;&nbsp;册</button><br/>
-          <a routerLink="/login">返回登录</a>
-        </div>
+        <div class="form-login">
+            <div class="register-div">
+                <p>姓名<span class="form-star">*</span></p>
+                <div class="form-input">
+                    <input type="text" name="username" 
+                    [(ngModel)]="username" required />
+                    <p [class]="this.userBoolean"></p>
+                </div>     
+            </div>
+            <div class="register-div">
+                <p>手机号<span class="form-star">*</span></p>
+                <div class="form-input">
+                    <input type="text" name="phone" 
+                    [(ngModel)]="phone" required />
+                    <p [class]="phoneBoolean?'tureImg':'eorrImg'"></p>
+                </div>    
+            </div>
+            <div class="register-div">
+                <p>证件号<span class="form-star">*</span></p>
+                <div class="form-input">
+                    <input type="text" name="papers" 
+                    [(ngModel)]="papers" required />
+                    <p [class]="papersBoolean?'tureImg':'eorrImg'"></p>
+                </div>    
+            </div>
+            <div class="register-div">
+                <p>邮箱<span class="form-star">*</span></p>
+                <div class="form-input">
+                    <input type="email" name="email" 
+                    [(ngModel)]="email" required />
+                    <p [class]="emailBoolean?'tureImg':'eorrImg'"></p>
+                </div>    
+            </div>
+            <div class="register-div">
+                <p>密码<span class="form-star">*</span></p>
+                <div class="form-input">
+                    <input type="password" name="password" 
+                    [(ngModel)]="password" required />
+                    <p [class]="psdBoolean?'tureImg':'eorrImg'"></p>
+                </div>    
+            </div>
+            <div class="register-div">
+                <p>确认密码<span class="form-star">*</span></p>
+                <div class="form-input">
+                    <input type="password" name="repassword" 
+                    [(ngModel)]="repassword" required />
+                    <p [class]="repsdBoolean?'tureImg':'eorrImg'"></p>
+                </div>    
+            </div>
+            <div class="register-sure" (click)="register()">注册</div>
+        </div>     
     </div>
-    <div class="register-bottom">
+    <!-- <div class="register-bottom">
         技术支持:中钞信达成都研发中心<br/>
         Copyright &copy; 2016-2020 cbpm-xinda,All Rights Reserved
-    </div>
+    </div> -->
 </div>

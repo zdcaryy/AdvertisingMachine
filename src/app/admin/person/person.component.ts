@@ -18,6 +18,32 @@ declare var $:any;
       })),
       transition('show => hidden', animate('200ms ease-in')),
       transition('hidden => show', animate('200ms ease-out'))
+    ]),
+    trigger('flyInOut', [
+      state('in', style({width: 500, transform: 'translateX(0)', opacity: 1})),
+      transition('void => *', [
+        style({width: 10, transform: 'translateX(50px)', opacity: 0}),
+        group([
+          animate('0.3s 0.1s ease', style({
+            transform: 'translateX(0)',
+            width: 500
+          })),
+          animate('0.3s ease', style({
+            opacity: 1
+          }))
+        ])
+      ]),
+      transition('* => void', [
+        group([
+          animate('0.3s ease', style({
+            transform: 'translateX(50px)',
+            width: 10
+          })),
+          animate('0.3s 0.2s ease', style({
+            opacity: 0
+          }))
+        ])
+      ])
     ])
   ]
 })
@@ -31,8 +57,9 @@ export class PersonComponent implements OnInit {
   colorConfig: object;
   
   addDialogState='hidden';//弹框是否显示
-  files=[];//存放上传的文件
+  files=[];//存放file类型的input选择的上传文件
   photosUrls=[];//存放预览图
+  datas=[];//存放最终需要上传的文件
   formdata;
 
   ngOnInit() {
@@ -67,12 +94,13 @@ export class PersonComponent implements OnInit {
   getSelectedList(e){
     console.log(e);
   }
-  //读取文件
   
+  //读取文件
   getUpLoad(e):void{
     this.files=e.target.files;
     let that=this;
     for(let file of this.files){
+      console.log(file);
         let reads = new FileReader();
         reads.readAsDataURL(file);//异步操作
         reads.onload = function (res) {
@@ -82,12 +110,45 @@ export class PersonComponent implements OnInit {
           else{
             //限制上传图片数量最多六张
             if(that.photosUrls.length<6){
-              that.formdata.append('upload',file);
-              that.photosUrls.push(res.target['result']);
+              that.datas.push(file);
+              that.photosUrls.push({src:res.target['result'],name:file.name});
+              $('#fileToUpload').val('');
             }
           }
         };
     }
+  }
+  
+  //删除待上传的图片
+  removePic(url):void{
+    let index=this.photosUrls.indexOf(url);
+    let that=this;
+    this.photosUrls.splice(index,1);
+    this.datas.forEach((data,i)=>{
+      let reads = new FileReader();
+      reads.readAsDataURL(data);//异步操作
+      reads.onload = function (res) {
+        if(res.target['result']==url){
+          that.datas.splice(i,1);
+        }
+      }
+    })
+  }
+  
+  //预览图片
+  preview():void{
+  
+  }
+  
+  //添加人员
+  addPerson():void{
+    console.log(this.datas);
+    this.formdata=new FormData($('#add-form')[0]);
+    this.formdata.delete('upload');
+    for(let data of this.datas){
+      this.formdata.append('upload',data);
+    }
+    console.log(this.formdata.getAll('upload'));
   }
   
   
@@ -137,7 +198,6 @@ export class PersonComponent implements OnInit {
   //打开添加人员弹框
   addDialogStateShow(){
     this.addDialogState='show';
-    this.formdata=new FormData($('#addForm')[0]);
   }
   //关闭添加人员弹框
   addDialogHidden(){

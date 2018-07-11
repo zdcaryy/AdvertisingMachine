@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 import { AuthService } from "./login/auth.service";
+import { RegisterService } from "./register/register.service";
 import { AuthGuard } from "./login/auth.guard";
 
 
@@ -30,7 +31,7 @@ import { AuthGuard } from "./login/auth.guard";
     AppRoutingModule,
     BrowserAnimationsModule
   ],
-  providers: [AuthService,AuthGuard],
+  providers: [AuthService,RegisterService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
