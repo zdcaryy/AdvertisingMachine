@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'selectVillage',
@@ -9,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class SelectVillageComponent implements OnInit {
 
-  constructor(private http:HttpClient) { }
+  constructor() { }
 
   @Input() showLevel:any = 4;
   @Input() allVillage:any[];
@@ -36,9 +34,17 @@ export class SelectVillageComponent implements OnInit {
   }
 
   ngOnChanges(e){
+    // console.log(e)
     if(e.allVillage && e.allVillage.currentValue){
       this.resetAll();
       if(this.init){
+        setTimeout(()=>{this.initLocation()},0);
+      }
+    }else{
+      // 只有init在变化
+      let arr = [];
+      for(let i in e){arr.push(i)};
+      if(arr.length==1 && arr[0]=='init'){
         setTimeout(()=>{this.initLocation()},0);
       }
     }

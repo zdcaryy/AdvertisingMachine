@@ -4,61 +4,71 @@
             <span routerLink="/login">×</span>
         </div>
         <div class="form-title">用户注册</div>
-        <div class="form-warn">请输入真实信息否则将无法通过审核。请注意带"<span class="form-star">*</span>"为必填</div>
+        <div class="form-warn">请输入真实信息否则将无法通过审核。请注意带"<span class="form-star">★</span>"为必填</div>
         <div class="form-login">
             <div class="register-div">
-                <p>姓名<span class="form-star">*</span></p>
+                <p>姓名<span class="form-star">★</span></p>
                 <div class="form-input">
                     <input type="text" name="username" 
-                    [(ngModel)]="username" required />
-                    <p [class]="this.userBoolean"></p>
+                    [(ngModel)]="username" required (keyup)="blur('user')"/>
+                    <p [class]="userImg"></p>
                 </div>     
             </div>
             <div class="register-div">
-                <p>手机号<span class="form-star">*</span></p>
+                <p>手机号<span class="form-star">★</span><span class="phone-eorr" *ngIf="phoneBoolean">该手机号已经注册</span></p>
                 <div class="form-input">
                     <input type="text" name="phone" 
-                    [(ngModel)]="phone" required />
-                    <p [class]="phoneBoolean?'tureImg':'eorrImg'"></p>
+                    [(ngModel)]="phone" required (keyup)="blur('phone')"/>
+                    <p [class]="phoneImg"></p>
                 </div>    
             </div>
             <div class="register-div">
-                <p>证件号<span class="form-star">*</span></p>
+                <p>证件号<span class="form-star">★</span></p>
                 <div class="form-input">
                     <input type="text" name="papers" 
-                    [(ngModel)]="papers" required />
-                    <p [class]="papersBoolean?'tureImg':'eorrImg'"></p>
+                    [(ngModel)]="papers" required (keyup)="blur('papers')"/>
+                    <p [class]="papersImg"></p>
                 </div>    
             </div>
             <div class="register-div">
-                <p>邮箱<span class="form-star">*</span></p>
+                <p>邮箱</p>
                 <div class="form-input">
                     <input type="email" name="email" 
-                    [(ngModel)]="email" required />
-                    <p [class]="emailBoolean?'tureImg':'eorrImg'"></p>
+                    [(ngModel)]="email" required (keyup)="blur('email')"/>
+                    <p [class]="emailImg"></p>
                 </div>    
             </div>
             <div class="register-div">
-                <p>密码<span class="form-star">*</span></p>
+                <p>密码<span class="form-star">★</span></p>
                 <div class="form-input">
                     <input type="password" name="password" 
-                    [(ngModel)]="password" required />
-                    <p [class]="psdBoolean?'tureImg':'eorrImg'"></p>
+                    [(ngModel)]="password" required (keyup)="blur('psd')"/>
+                    <p [class]="psdImg"></p>
                 </div>    
             </div>
             <div class="register-div">
-                <p>确认密码<span class="form-star">*</span></p>
+                <p>确认密码<span class="form-star">★</span></p>
                 <div class="form-input">
                     <input type="password" name="repassword" 
-                    [(ngModel)]="repassword" required />
-                    <p [class]="repsdBoolean?'tureImg':'eorrImg'"></p>
+                    [(ngModel)]="repassword" required (keyup)="blur('repsd')"/>
+                    <p [class]="repsdImg"></p>
                 </div>    
             </div>
             <div class="register-sure" (click)="register()">注册</div>
         </div>     
     </div>
-    <!-- <div class="register-bottom">
-        技术支持:中钞信达成都研发中心<br/>
-        Copyright &copy; 2016-2020 cbpm-xinda,All Rights Reserved
-    </div> -->
+</div>
+<div class="register-pop" *ngIf="sucessBoolean">
+    <ul>
+        <li style="background:url('../../assets/img/icon_sprite@1x.png') -200px 10px"></li>
+        <li>注册成功</li>
+        <li routerLink="/login">返回登陆</li>
+    </ul>
+</div>
+<div class="register-pop" *ngIf="failBoolean">
+    <ul>
+        <li style="font-size: 40px;text-align: center;line-height: 40px;color:red">×</li>
+        <li>{{failMsg}}</li>
+        <li (click)="registerEorr()">关闭窗口</li>
+    </ul>
 </div>

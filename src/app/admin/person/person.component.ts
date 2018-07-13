@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import{AdmachineService} from '../server/admachine.service';
 import{trigger,state,style,animate,transition} from '@angular/animations';
+
 declare var $:any;
 
 
@@ -9,58 +10,49 @@ declare var $:any;
   templateUrl: './person.component.html',
   styleUrls: ['./person.component.css'],
   animations:[
-    trigger('dialogState', [
-      state('show', style({
-        opacity:1,
-      })),
-      state('hidden',   style({
-        opacity:0
-      })),
-      transition('show => hidden', animate('200ms ease-in')),
-      transition('hidden => show', animate('200ms ease-out'))
-    ]),
     trigger('flyInOut', [
-      state('in', style({width: 500, transform: 'translateX(0)', opacity: 1})),
+      state('in', style({width: 300, transform: 'translateX(0)', opacity: 1})),
       transition('void => *', [
         style({width: 10, transform: 'translateX(50px)', opacity: 0}),
-        group([
-          animate('0.3s 0.1s ease', style({
-            transform: 'translateX(0)',
-            width: 500
-          })),
-          animate('0.3s ease', style({
+          animate('1s 0.1s ease', style({
             opacity: 1
           }))
-        ])
       ]),
       transition('* => void', [
-        group([
-          animate('0.3s ease', style({
-            transform: 'translateX(50px)',
-            width: 10
-          })),
-          animate('0.3s 0.2s ease', style({
+          animate('1s 0.1s ease', style({
             opacity: 0
           }))
-        ])
       ])
     ])
   ]
 })
 export class PersonComponent implements OnInit {
 
-  constructor(private admachineService:AdmachineService) { }
+  constructor(private personService:AdmachineService) { }
   heads: object[];
   bodys: object[];
   selectedList:object[] = [];
   textConfig: object;
   colorConfig: object;
-  
-  addDialogState='hidden';//弹框是否显示
+  animateState='void';//动画状态
+  previewSrc='';
+  addState:boolean=false;//作用与弹框的ngIf
   files=[];//存放file类型的input选择的上传文件
   photosUrls=[];//存放预览图
   datas=[];//存放最终需要上传的文件
+  renter:boolean=false;//用于判断是否是租客
   formdata;
+  faceTag:boolean;//用于人脸信息是否上传的判断
+  addObject={
+    name:'',
+    phoneNumber:'',
+    ownerName:'',
+    date:'',
+    expiredDate:'',
+    type:''
+  };
+  modifyObject={};
+  dialog:boolean=false;
 
   ngOnInit() {
     this.heads = [{label: '人员姓名',field: 'name'},
@@ -69,7 +61,7 @@ export class PersonComponent implements OnInit {
       {label: '类型', field: 'type', child: ['业主','租户','物业员工','公司员工','访客','维护人员'],textConfig:{0: '业主', 1: '租户',2:'物业员工',3:'公司员工',4:'访客',5:'维护人员'},colorConfig:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple',6:'gold'}},
       {label: '人脸特征数据', field: 'tag',child:['已通过','审核中'],textConfig:{0:'已通过',1:'审核中'},colorConfig:{0:'#119C9D',1:'#d73e3e'}},
       {label:'入住时间',field:'date'},
-      {label: '操作', field: 'caozuo',operate:true,operations:['查看'],colorConfig:{查看: '#119C9D'}}];
+      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除'],colorConfig:{修改: '#119C9D',删除:'#d73e3e'}}];
   
     this.bodys = [
     ];
@@ -83,7 +75,19 @@ export class PersonComponent implements OnInit {
         console.log(e);
         break;
       case "修改":
-      
+        if(!this.dialog){
+          console.log(e);
+          this.dialog=true;
+          $('#modify_person').fadeIn();
+          this.modifyObject=e.data;
+          if(e.data.imgFeatures.length!=0){
+            this.faceTag=true;
+          }
+          else{
+            this.faceTag=false;
+          }
+        }
+        break;
     }
   }
   
@@ -99,12 +103,16 @@ export class PersonComponent implements OnInit {
   getUpLoad(e):void{
     this.files=e.target.files;
     let that=this;
+    let ps=[];//用于存储图像列表对象数组中的src属性
     for(let file of this.files){
       console.log(file);
         let reads = new FileReader();
         reads.readAsDataURL(file);//异步操作
         reads.onload = function (res) {
-          if($.inArray(res.target['result'],that.photosUrls)!=-1){
+          for(let p of that.photosUrls){
+            ps.push(p.src);
+          }
+          if($.inArray(res.target['result'],ps)!=-1){
             return;
           }
           else{
@@ -121,9 +129,12 @@ export class PersonComponent implements OnInit {
   
   //删除待上传的图片
   removePic(url):void{
-    let index=this.photosUrls.indexOf(url);
     let that=this;
-    this.photosUrls.splice(index,1);
+    this.photosUrls.forEach((photo,i)=>{
+      if(photo.src==url){
+        this.photosUrls.splice(i,1);
+      }
+    })
     this.datas.forEach((data,i)=>{
       let reads = new FileReader();
       reads.readAsDataURL(data);//异步操作
@@ -136,19 +147,13 @@ export class PersonComponent implements OnInit {
   }
   
   //预览图片
-  preview():void{
-  
+  preview(src):void{
+    this.animateState='in';
+    this.previewSrc=src;
   }
-  
-  //添加人员
-  addPerson():void{
-    console.log(this.datas);
-    this.formdata=new FormData($('#add-form')[0]);
-    this.formdata.delete('upload');
-    for(let data of this.datas){
-      this.formdata.append('upload',data);
-    }
-    console.log(this.formdata.getAll('upload'));
+  //关闭预览
+  closePreview():void{
+    this.animateState='void';
   }
   
   
@@ -170,19 +175,26 @@ export class PersonComponent implements OnInit {
   
   
   //日期选择处理函数
-  handle(time: number): void {
+  handle1(time: string): void {
     // [time] is string
     // date style follow format props
-    console.log(time)
+    console.log(time);
+    this.addObject.date=time;
+  }
+  handle2(time: string): void {
+    // [time] is string
+    // date style follow format props
+    console.log(time);
+    this.addObject.expiredDate=time;
   }
  
   //获取人员列表
   getPerson(){
-    this.admachineService.getData('/person/findAll').subscribe(res=>{
+    this.personService.getData('/person/findAll').subscribe(res=>{
       let that=this;
       this.bodys = res.map(function (item) {
         item['date']=that.timestampToTime(item.date)
-        item['operate'] =  ['查看'];
+        item['operate'] =  ['修改','删除'];
         return item;
       });
     })
@@ -196,11 +208,62 @@ export class PersonComponent implements OnInit {
     return Y+M+D;
   }
   //打开添加人员弹框
-  addDialogStateShow(){
-    this.addDialogState='show';
+  addDialogShow(){
+    if(!this.dialog){
+      this.dialog=true;
+      $('#add_person').fadeIn();
+    }
+  }
+  //打开照片列表弹框
+  photoDialogShow(){
+    $('.img-list').fadeIn();
+  }
+  //添加人员
+  addPerson(form):void{
+    if(this.renter===true&&this.addObject.date===''){
+      return;
+    }
+    this.formdata=new FormData($('#add-form')[0]);
+    this.formdata.delete('img');
+    for(let data of this.datas){
+      this.formdata.append('img',data);
+    }
+    this.formdata.append('expiredDate',this.addObject.date);
+    console.log(this.formdata.get('type'));
+    this.personService.upfile('/person/save',this.formdata).subscribe(res=>{
+      console.log(res);
+      form.reset();
+      this.formdata={}
+      this.photosUrls=[];
+    })
   }
   //关闭添加人员弹框
-  addDialogHidden(){
-    this.addDialogState='hidden';
+  addDialogHidden(form){
+    $('#add_person').fadeOut();
+    form.reset();
+    this.dialog=false;
+    this.formdata={}
+    this.photosUrls=[];
+  }
+  //关闭照片列表弹框
+  photoDialogHidden(){
+    $('.img-list').fadeOut();
+  }
+  
+  //关闭修改人员弹框
+  modifyDialogHidden(){
+    $('#modify_person').fadeOut();
+    this.dialog=false;
+    this.formdata={}
+    this.photosUrls=[];
+  }
+  
+  //根据人员类型进行不同的显示
+  powerCheck():void{
+    switch(this.addObject.type){
+      case '0':
+        
+        break;
+    }
   }
 }

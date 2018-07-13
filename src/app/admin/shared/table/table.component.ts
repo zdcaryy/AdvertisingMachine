@@ -53,7 +53,6 @@ export class TableComponent implements OnInit {
     });
   }
 
-  // 传入数据改变时，清除已选择列表
   ngOnChanges(changes){
     if(changes.heads){
       let head = changes.heads.currentValue;
@@ -65,9 +64,11 @@ export class TableComponent implements OnInit {
       this.dropdownEvent.emit(this.headDropList);
     }
     if(changes.bodys){
+      // 传入数据改变时，清除已选择列表
       this.selectedList = [];
       this.selectedListChange.emit(this.selectedList);
-      setTimeout(()=>{this.ifShowScroll()},0)
+      // 重置滚动条
+      setTimeout(()=>{this.ifShowScroll();this.scrollToTop()},0)
     }
   }
 
@@ -132,6 +133,10 @@ export class TableComponent implements OnInit {
     }else{
       this.showScroll=false
     };
+  }
+  // 滚动到顶部
+  scrollToTop(){
+    this.el.nativeElement.querySelector('.viewBox').scrollTop = 0;
   }
   // 设置滚动条的位置
   setScrollHeight(){

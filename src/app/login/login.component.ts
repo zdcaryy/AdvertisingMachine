@@ -44,10 +44,9 @@ export class LoginComponent implements OnInit {
     if (form.valid) {
         this.auth.login(this.username, this.password)
             .subscribe(response => {
-              console.log(response);
+              //console.log(response.json());
               this.router.navigateByUrl("/admin/equip");
               localStorage.setItem('access_token',response.json().access_token);
-              localStorage.setItem('userCode',this.username);
             },error => {
               console.log(error);
               this.errorMessage = "账号或密码错误";

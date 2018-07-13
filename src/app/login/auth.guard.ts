@@ -13,7 +13,10 @@ export class AuthGuard {
     canActivate(){
         this.auth.getUserInfo().subscribe(response => {
             //console.log(response);
-            localStorage.setItem('name',response.name)
+            if(response.status!=0){
+                this.router.navigate(['/login']);
+                localStorage.clear()
+            }
         },error => {
             this.router.navigate(['/login']);
             localStorage.clear()

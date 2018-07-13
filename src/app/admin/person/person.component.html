@@ -25,31 +25,47 @@
 
   <div class="operation">
     <button class="btn useless-btn" type="button">批量删除</button>
-    <button class="btn useful-btn" type="button" (click)="addDialogStateShow();">添加人员</button>
+    <button class="btn useful-btn" type="button" (click)="addDialogShow();">添加人员</button>
   </div>
 
   <!--添加人员信息start-->
-  <div class="child-view" id="add_equip" style="width:800px;"  [@dialogState]="addDialogState">
-    <div class="close-btn" (click)="addDialogHidden();"></div>
+  <div class="child-view" id="add_person" style="width:800px;display:none;">
+    <div class="close-btn" (click)="addDialogHidden(f);"></div>
     <h3>添加人员</h3>
     <form action="" class="child-form" #f="ngForm" id="add-form">
       <div class="form-item">
-        <label>姓名：</label><input type="text" name="name">
-        <span style="color:red;margin-right:100px;">*</span>
-        <label>联系电话：</label><input type="text">
-        <span style="color:red;">*</span>
+        <label>姓名：</label>
+        <span class="form-check">
+           <input type="text" name="name" [(ngModel)]="addObject.name" #name=ngModel pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required [class.border-red]="name.invalid&&name.touched">
+            <span style="color:red;margin-right:100px;">*</span>
+            <span *ngIf="name.invalid&&name.touched" class="form-notice">请输入汉字姓名</span>
+        </span>
+        <label>联系电话：</label>
+        <span class="form-check">
+           <input type="text" name="phoneNumber" [(ngModel)]="addObject.phoneNumber" #tel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required [class.border-red]="tel.invalid&&tel.touched">
+            <span style="color:red;">*</span>
+           <span *ngIf="tel.invalid&&tel.touched" class="form-notice">手机号格式有误</span>
+        </span>
       </div>
       <div class="form-item">
-        <label>类型：</label><select name="" id=""></select>
+        <label>类型：</label>
+        <select name="type" [(ngModel)]="addObject.type" (change)="powerCheck();">
+          <option value="0">物业主管</option>
+          <option value="1">物业员工</option>
+          <option value="2">业主</option>
+          <option value="3">公司管理员</option>
+          <option value="4">租户</option>
+          <option value="5">机器运维人员</option>
+         </select>
         <span style="color:red;margin-right:100px;">*</span>
         <label>人脸特征数据：</label>
         <div class="upload-container">
-          <input type="file" name="upload" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
+          <input type="file" name="img" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
         </div>
         <label for="fileToUpload" style="color:#119C9D;">选择照片</label>
-        <a href="javascript:;">显示详情</a>
+        <a href="javascript:;"(click)="photoDialogShow();">显示详情</a>
       </div>
-      <div id="img-list" *ngIf="photosUrls.length">
+      <div class="img-list" *ngIf="photosUrls.length">
         <div  *ngFor="let photo of photosUrls;">
           <ul>
             <li>{{photo.name}}</li>
@@ -58,23 +74,25 @@
           <img [src]="photo.src" alt="">
           <i class="el-icon-circle-close" style="position:absolute;top:1px;right:1px;color:#000000;z-index:999;" (click)="removePic(photo.src)"></i>
         </div>
+        <i class="el-icon-circle-close" style="font-size: 30px;position: absolute;top: -10px;right: -10px;color: rgb(200,200,200);" (click)="photoDialogHidden()"></i>
       </div>
-      <!--预览图start-->
-      <img src="" alt="">
-      <!--预览图end-->
       <div class="form-item">
-        <label>所属公司(户主)：</label><input type="text">
-        <span style="color:red;">*</span>
+        <label>所属公司(户主)：</label>
+        <span class="form-check">
+            <input type="text" name="ownername" required [(ngModel)]="addObject.ownerName" #ownername="ngModel" [class.border-red]="ownername.invalid&&ownername.touched">
+            <span style="color:red;">*</span>
+            <span *ngIf="ownername.invalid&&ownername.touched" class="form-notice">公司或户主名不能为空</span>
+        </span>
       </div>
       <div class="form-item">
         <label>房间：</label>
         <table width="500">
           <tr>
-            <td colspan="2">业主：<input type="text"></td>
+            <td colspan="2">业主：<input type="text" name="ownerName"></td>
             <td colspan="2">电话：<input type="text"></td>
           </tr>
           <tr>
-            <td colspan="4">小区：<input type="text"></td>
+            <td colspan="4">小区：<input type="text" name="villageName"></td>
           </tr>
           <tr>
             <td>楼栋号：<input type="text"></td>
@@ -86,7 +104,7 @@
         <div class="form-item">
           <label>入住日期：</label>
           <el-date-picker
-            (modelChange)="handle($event)"
+            (modelChange)="handle1($event)"
             (clear-click)="0"
             size="mini"
           ></el-date-picker>
@@ -94,7 +112,7 @@
         <div class="form-item">
           <label>失效日期：</label>
           <el-date-picker
-            (modelChange)="handle($event)"
+            (modelChange)="handle2($event)"
             (clear-click)="0"
             size="mini"
           >
@@ -103,9 +121,109 @@
         </div>
       </div>
       <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson();">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson(f);">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
   <!--添加人员信息end-->
+
+  <!--修改人员信息start-->
+  <div class="child-view" id="modify_person" style="width:800px;display:none;">
+    <div class="close-btn" (click)="modifyDialogHidden();"></div>
+    <h3>修改人员信息</h3>
+    <form action="" class="child-form"  id="modify-form">
+      <div class="form-item">
+        <label>姓名：</label>
+        <span class="form-check">
+           <input type="text" name="name" [(ngModel)]="modifyObject.name" #name=ngModel pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required [class.border-red]="name.invalid&&name.touched">
+            <span style="color:red;margin-right:100px;">*</span>
+            <span *ngIf="name.invalid&&name.touched" class="form-notice">请输入汉字姓名</span>
+        </span>
+        <label>联系电话：</label>
+        <span class="form-check">
+           <input type="text" name="phoneNumber" [(ngModel)]="modifyObject.phoneNumber" #tel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required [class.border-red]="tel.invalid&&tel.touched">
+            <span style="color:red;">*</span>
+           <span *ngIf="tel.invalid&&tel.touched" class="form-notice">手机号格式有误</span>
+        </span>
+      </div>
+      <div class="form-item">
+        <label>类型：</label>
+        <select name="type" [(ngModel)]="modifyObject.type">
+          <option value="0">物业主管</option>
+          <option value="1">物业员工</option>
+          <option value="2">业主</option>
+          <option value="3">公司管理员</option>
+          <option value="4">租户</option>
+          <option value="5">机器运维人员</option>
+        </select>
+        <span style="color:red;margin-right:100px;">*</span>
+        <label>人脸特征数据：</label>
+        <span>{{faceTag?'已上传':'未上传'}}</span>
+        <div class="upload-container">
+          <input type="file" name="img" id="fileToUpload2" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
+        </div>
+        <label for="fileToUpload2" style="color:#119C9D;">更换照片</label>
+        <a href="javascript:;"(click)="photoDialogShow();">显示详情</a>
+      </div>
+      <div class="img-list" *ngIf="photosUrls.length">
+        <div  *ngFor="let photo of photosUrls;">
+          <ul>
+            <li>{{photo.name}}</li>
+            <li><a href="javascript:;" (click)="preview(photo.src)">预览<i class="el-icon-view"></i></a></li>
+          </ul>
+          <img [src]="photo.src" alt="">
+          <i class="el-icon-circle-close" style="position:absolute;top:1px;right:1px;color:#000000;z-index:999;" (click)="removePic(photo.src)"></i>
+        </div>
+        <i class="el-icon-circle-close" style="font-size: 30px;position: absolute;top: -10px;right: -10px;color: rgb(200,200,200);" (click)="photoDialogHidden()"></i>
+      </div>
+      <div class="form-item">
+        <label>所属公司(户主)：</label>
+        <span class="form-check">
+            <input type="text" name="ownername" required [(ngModel)]="modifyObject.ownerName" #ownername="ngModel" [class.border-red]="ownername.invalid&&ownername.touched">
+            <span style="color:red;">*</span>
+            <span *ngIf="ownername.invalid&&ownername.touched" class="form-notice">公司或户主名不能为空</span>
+        </span>
+      </div>
+      <div class="form-item">
+        <label>房间：</label>
+        <table width="500">
+          <tr>
+            <td colspan="2">业主：<input type="text" name="ownerName" [(ngModel)]="modifyObject.ownerName"></td>
+            <td colspan="2">电话：<input type="text" name="tel" [(ngModel)]="modifyObject.phoneNumber"></td>
+          </tr>
+          <tr>
+            <td colspan="4">小区：<input type="text" name="villageName" [(ngModel)]="modifyObject.villageName"></td>
+          </tr>
+          <tr>
+            <td>楼栋号：<input type="text"></td>
+            <td>单元号：<input type="text"></td>
+            <td>楼层：<input type="text"></td>
+            <td>房间：<input type="text"></td>
+          </tr>
+        </table>
+        <div class="form-item">
+          <label>入住日期：</label>
+          <el-date-picker
+            (modelChange)="handle1($event)"
+            (clear-click)="0"
+            size="mini"
+          ></el-date-picker>
+        </div>
+        <div class="form-item">
+          <label>失效日期：</label>
+          <el-date-picker
+            (modelChange)="handle2($event)"
+            (clear-click)="0"
+            size="mini"
+          >
+          </el-date-picker>
+          <span style="color:red;">*</span>
+        </div>
+      </div>
+      <div class="operation">
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson(f);">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+      </div>
+    </form>
+  </div>
+  <!--修改人员信息end-->
 </div>

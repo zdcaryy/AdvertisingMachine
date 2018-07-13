@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import{EquipService} from '../server/equip.service';
+import{AdmachineService} from '../server/admachine.service';
+
 declare var $ : any;
 
 
@@ -9,7 +10,7 @@ declare var $ : any;
   styleUrls: ['./equip.component.css']
 })
 export class EquipComponent implements OnInit {
-  constructor(private equipService:EquipService) {
+  constructor(private equipService:AdmachineService) {
   }
   heads: object[];
   bodys: object[];
@@ -49,7 +50,8 @@ export class EquipComponent implements OnInit {
   
   };
   property:string;//物业信息
-  initVill:object;//用于修改设备对象功能中，地理位置的初始化
+  initVillAdd:object;//用于添加设备对象功能中，地理位置的清空重置
+  initVillModify:object;//用于修改设备对象功能中，地理位置的初始化
   //运维人员信息
   maintainer=[];
   
@@ -78,7 +80,7 @@ export class EquipComponent implements OnInit {
         if(!this.dialog){
           this.dialog=true;
           this.modifyEquip=e.data;
-          this.initVill={
+          this.initVillModify={
             province:e.data.province,city:e.data.city,region:e.data.region,village:e.data.villageName,building:e.data.buildingNum
           };
           this.getPerson(e.data);
@@ -94,24 +96,15 @@ export class EquipComponent implements OnInit {
   
   getDropdownEvent(e){
     console.log(e);
-    switch(e.field){
-      case 'status':
-        switch(e.option){
-          case '所有':
-            this.bodys=this.equipList;
-            break;
-          case '正常':
-            this.bodys=this.equipList.filter(equip=>equip['status']==0);
-            break;
-          case '故障':
-            this.bodys=this.equipList.filter(equip=>equip['status']==1);
-            break;
-        }
+    switch(e.status){
+      case '所有':
+        this.bodys=this.equipList;
         break;
-      case 'copy':
-        switch(e.option){
-        
-        }
+      case '正常':
+        this.bodys=this.equipList.filter(equip=>equip['status']==0);
+        break;
+      case '故障':
+        this.bodys=this.equipList.filter(equip=>equip['status']==1);
         break;
     }
   }
@@ -210,6 +203,7 @@ export class EquipComponent implements OnInit {
         this.success=true;
         $('#add_equip').fadeOut();
         form.reset();//添加成功重置表单
+        this.initVillAdd={};
         this.getEquip('/machine/findAll');
       }
       if(res.status==1){
@@ -221,13 +215,11 @@ export class EquipComponent implements OnInit {
     });
   }
   //关闭添加设备弹框
-  closeAddView(){
+  closeAddView(form){
     let that=this;
     $('#add_equip').fadeOut(function(){
-      that.addEquip.mac='';
-      that.addEquip.villageName='';
-      that.addEquip.property='';
-      that.addEquip.accendantName='';
+      form.reset();
+      that.initVillAdd={};
       that.dialog=false;
       that.maintainer=[];
     });

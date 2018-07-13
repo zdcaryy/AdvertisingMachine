@@ -4,7 +4,6 @@
     background: url("../../assets/img/title_bg.png");
     background-size: 100% 100%;
     color:white;
-    text-indent: 1em;
     font-weight: 500;
     letter-spacing: 2px
 }
@@ -24,33 +23,38 @@
     border-radius:2px;
     background:white
 }
-.header-title{
-    float:left;
-    height:60px;
-    line-height: 60px;
-}
 .header-option{
     float:right;
     padding:0 10px;
     font-size: 15px;
 }
-.header-option>p,ul{
+.header-option>p{
     height:30px;
     margin-bottom:0;
     line-height:30px;
 }
-.header-option>p{
-    text-align:right
+.header-option>ul{
+    height:30px;
+    margin-bottom:0;
+    line-height:30px;
 }
 .header-option li{
     cursor:pointer;
     float:right;
-    margin-left:20px
+}
+
+
+.cutBtn{
+    margin-right:30px;
+    cursor: pointer;
 }
 .header-option span{
     display:block;
     height:30px;
     float:left
+}
+.logout,.refresh{
+    margin-left:30px
 }
 .header-refresh{
     width:30px;
@@ -86,12 +90,77 @@
     bottom:0;
     background:#f9fffe
 }
+.plotCheck{
+    width:98%;
+    position: fixed; 
+    top:70px;
+    bottom:1%;
+    left:1%;
+    background:white;
+    box-shadow: 0 0 3px #bcc0c0;
+    display: flex;
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+}
+.plotCheck div::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.plotCheck h3{
+    margin:20px 0;
+    text-align: center
+}
+.plotCheck ul{
+    width:100%;
+    margin-bottom:0;
+    text-align: center;
+}
+.plotCheck ul::after{
+    content: '';
+    display: block;
+    clear: both;
+}
+.plotCheck li{
+    width:300px;
+    height:80px;
+    max-width:100%;
+    box-sizing: border-box;
+    border:1px solid #c2c2c2;
+    cursor: pointer;
+    text-align: inherit;
+    border-radius: 5px
+}
+.plotCheck li>p{
+    height:40px;
+    line-height: 40px;
+    margin:0;
+    text-align: left;
+    text-indent: 10px;
+    letter-spacing: 2px;
+    font-size: 17px;
+    color:#888
+}
+.plotCheck li span:nth-of-type(1){
+    color: #424242;
+    font-size: 18px;
+    font-weight: 800
+}
+.plotCheck li span:nth-of-type(2){
+    float:right;
+    margin-right:10px;
+    color: #129d90
+}
 @media screen and (min-width: 970px) {
     .header-floder{
         display:none
     }
     .header-title{
         font-size:24px;
+        float:left;
+        height:60px;
+        line-height: 60px;
+        text-indent: 1em;
     }
     #nav{
         width:200px;
@@ -110,6 +179,13 @@
         left:200px;
         right:0;
     }
+    .plotCheck div{
+        width:800px
+    }
+    .plotCheck li{
+        display: inline-block;
+        margin:20px 50px;
+    }
 }
 @media screen and (max-width: 969px) {
     #header{
@@ -121,7 +197,7 @@
         display:block
     }
     .header-title{
-        font-size:18px;
+        display: none
     }
     #nav{
         width:150px;
@@ -140,5 +216,11 @@
     }
     #section{
         width:100%;     
+    }
+    .plotCheck div{
+        width:90%
+    }
+    .plotCheck li{
+        margin:10px auto
     }
 }

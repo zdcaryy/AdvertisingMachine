@@ -12,7 +12,6 @@
 			[checkBox]="true"
 			[heads]="heads" 
 			[bodys]="showVillInfo"
-			(dropdownEvent)="getDropdownEvent($event)" 
 			(operateEvent)="getOperateEvent($event)" 
 			(selectedListChange)="getSelectedList($event)"
 		></app-table>
@@ -30,19 +29,96 @@
 			<!--    添加小区    -->
 			<div *ngSwitchCase="'add'">
 				<p class="modal_title">添加小区</p>
-				<p class="modal_row"><span class="row_left">小区：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.name"></span></p>
-				<p class="modal_row"><span class="row_left">物业：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.propertyComName"></span></p>
-				<p class="modal_row"><span class="row_left">物业电话：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.phoneNumber"></span></p>
-				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.priceTag"></span></p>
 				<p class="modal_row">
 					<span class="row_left">位置：</span>
 					<span class="row_right">
-						<selectVillage [allVillage]="villInfo" [showLevel]="3" (handle)="selectVillageAdd($event)"></selectVillage>
+						<AreaSelect [init]="{province:'四川省'}" (handle)="selectAreaAdd($event)"></AreaSelect>
 					</span>
 				</p>
+				<p class="modal_row"><span class="row_left">小区：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.name" (change)="getVillageCode('add')"></span></p>
+				<p class="modal_row"><span class="row_left">物业：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.propertyComName"></span></p>
+				<p class="modal_row"><span class="row_left">物业电话：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.phoneNumber"></span></p>
+				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="addVillage.priceTag"></span></p>
 				<p class="modal_foot"><span class="modal_btn" (click)="addNew()">添加</span></p>
+			</div>
+
+			<!--    修改小区    -->
+			<div *ngSwitchCase="'modify'">
+				<p class="modal_title">修改小区信息</p>
+				<p class="modal_row">
+					<span class="row_left">位置：</span>
+					<span class="row_right">
+						<AreaSelect [init]="{province:viewInfo.province,city:viewInfo.city,region:viewInfo.region}" (handle)="selectAreaModify($event)"></AreaSelect>
+					</span>
+				</p>
+				<p class="modal_row"><span class="row_left">小区：</span><span class="row_right"><input type="text" [(ngModel)]="modifyInfo.name" (change)="getVillageCode('modify')"></span></p>
+				<p class="modal_row"><span class="row_left">物业：</span><span class="row_right"><input type="text" [(ngModel)]="modifyInfo.propertyComName"></span></p>
+				<p class="modal_row"><span class="row_left">物业电话：</span><span class="row_right"><input type="text" [(ngModel)]="modifyInfo.phoneNumber"></span></p>
+				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="modifyInfo.priceTag"></span></p>
+				<p class="modal_foot"><span class="modal_btn" (click)="modify()">修改</span></p>
+			</div>
+
+			<!--    添加楼栋信息    -->
+			<div *ngSwitchCase="'buildAdd'">
+				<p class="modal_title">添加楼栋信息</p>
+				<p class="modal_row"><span class="row_left">楼栋号：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.serialNum"></span></p>
+				<p class="modal_row"><span class="row_left">单元数：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.unitNum"></span></p>
+				<p class="modal_row"><span class="row_left">楼层数：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.floorNum"></span></p>
+				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.priceTag"></span></p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addBuild()">添加</span></p>
 			</div>
 			
 		</div>
 	</div>
+
+	<!--    查看小区    -->
+	<div id="viewVillage" *ngIf="viewVillage">
+		<div class="contentBox">
+			<div class="backTo" (click)="viewVillage=false"><span class="el-icon-arrow-left underline">返回列表</span></div>
+			<table class="text_left">
+				<tr>
+					<th>小区信息</th>
+					<th class="view_oper text_right"><span class="el-icon-edit underline" (click)="showModal=true;modalType='modify';initModify()">修改信息</span></th>
+				</tr>
+				<tr>
+					<td>小区名：{{viewInfo.name}}</td>
+					<td>所属物业：{{viewInfo.propertyComName}}</td>
+				</tr>
+				<tr>
+					<td>位置：{{viewInfo.address}}</td>
+					<td>物业电话：{{viewInfo.phoneNumber}}</td>
+				</tr>
+				<tr>
+					<td>楼栋数：{{viewInfo.buildingNum}}</td>
+					<td>物业费：{{viewInfo.priceTag}}</td>
+				</tr>
+			</table>
+
+			<table class="text_center">
+				<tr>
+					<th colspan="2">楼栋信息</th>
+					<th colspan="3" class="view_oper text_right"><span class="el-icon-plus underline" (click)="showModal=true;modalType='buildAdd';initAddBuild()">添加楼栋</span></th>
+				</tr>
+				<tr>
+					<td>楼栋</td>
+					<td>单元数</td>
+					<td>楼层数</td>
+					<td>物业费</td>
+					<td>操作</td>
+				</tr>
+				<tr *ngIf="!viewInfo.buildings"><td colspan="4">暂无楼栋信息</td></tr>
+				<tr *ngFor="let buil of viewInfo.buildings;index as ind">
+					<td>{{buil.serialNum}}</td>
+					<td>{{buil.unitNum}}</td>
+					<td>{{buil.floorNum}}</td>
+					<td>{{buil.priceTag}}</td>
+					<td style="min-width: 50px;width: 5%;white-space: nowrap;">
+						<span class="underline" style="color: #009688">修改</span><br>
+						<span (click)="initModify();delBuild(ind)" class="underline" style="color: #d73e3e">删除</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
 </div>

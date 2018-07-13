@@ -6,8 +6,6 @@ import { environment } from "../../environments/environment";
 @Injectable()
 export class AuthService {
 
-    loginUrl: string;
-    getUserUrl: string;
     str64:string="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     output:string='';
 
@@ -45,13 +43,6 @@ export class AuthService {
             })
         }))
     }
-    // 获取登录用户的信息
-    getUserInfo(){
-        return this.http.get(
-            `${environment.userUrl}`+"/user/findByPhoneNumber",
-            {params:{phoneNumber:localStorage.getItem('userCode'),access_token:localStorage.getItem('access_token')}}
-        ).map(res => res.json())
-    }
     //字符串转为utf-8
     utf8Encode(user: string, pass: string){
         let string = (user+':'+pass).replace(/\r\n/g,"\n");
@@ -71,5 +62,12 @@ export class AuthService {
  
         }
         return utftext;
+    }
+    // 获取登录用户的信息
+    getUserInfo(){
+        return this.http.get(
+            `${environment.userUrl}`+"/user/findByToken",
+            {params:{access_token:localStorage.getItem('access_token')}}
+        ).map(res => res.json())
     }
 }

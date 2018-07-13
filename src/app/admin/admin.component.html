@@ -2,18 +2,22 @@
   <div class="header-floder"><span></span><span></span><span></span></div>
   <div class="header-title">人脸识别广告机后台管理系统</div>
   <div class="header-option">
-    <p class="username">你好,{{username}}</p>
     <ul>
-      <li (click)="logout()">退出登录</li>
-      <li (click)="refresh()"><span class="header-refresh"></span><span class="header-info">刷新</span></li>
-      <li><span class="header-msg"></span><span class="header-info">信息</span></li>
+      <li class="username">你好,{{ username }}</li>
+      <li class="cutBtn" (click)="cutBtn()" *ngIf="!adminStatus" >&#40;切换&#41;</li>
+      <li class="presentPlot" *ngIf="!adminStatus">所属小区:{{ activePlot }}</li>
+    </ul>
+    <ul>
+      <li (click)="logout()" class="logout">退出登录</li>
+      <li (click)="refresh()" class="refresh"><span class="header-refresh"></span><span class="header-info">刷新</span></li>
+      <li><span class="header-msg"></span><span class="header-info">信息&#40;{{msgNumber}}&#41;</span></li>
     </ul>
   </div>
 </header>
-<nav id="nav">
+<nav id="nav" *ngIf="!plotCheckStatus">
   <ul>
     <li routerLink="/admin/equip" routerLinkActive="activePage">设备管理</li>
-    <li routerLink="/admin/area" routerLinkActive="activePage">区域管理</li>
+    <li routerLink="/admin/area" routerLinkActive="activePage" *ngIf="adminStatus">区域管理</li>
     <li routerLink="/admin/adver" routerLinkActive="activePage">广告管理</li>
     <li routerLink="/admin/person" routerLinkActive="activePage">人员管理</li>
     <li routerLink="/admin/user" routerLinkActive="activePage">用户管理</li>
@@ -21,7 +25,19 @@
     <li routerLink="/admin/village" routerLinkActive="activePage">小区管理</li>
   </ul>
 </nav>
-<section id="section">
+<div class="plotCheck" *ngIf="plotCheckStatus">
+    <div>
+      <h3>请选择要进入的小区</h3>
+      <ul>
+        <li *ngFor="let plot of plots" (click)="plotCheck(plot)">
+          <p><span>{{plot.village.name}}</span><span>{{plot.userLevel | userLevel}}</span></p>
+          <p>{{plot.village.propertyComName}}</p>
+        </li>
+      </ul>
+    </div> 
+  </div>
+<section id="section" *ngIf="!plotCheckStatus">
   {{appLength}}
   <router-outlet></router-outlet>
 </section>
+

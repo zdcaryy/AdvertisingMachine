@@ -30,7 +30,7 @@
 
   <!--添加设备start-->
   <div class="child-view" id="add_equip" style="width:900px;">
-    <div class="close-btn" (click)=" closeAddView();"></div>
+    <div class="close-btn" (click)=" closeAddView(f);"></div>
     <h3>添加设备</h3>
     <form action="" class="child-form" #f="ngForm">
       <div class="form-item">
@@ -55,6 +55,7 @@
           (handle)="selectPosition($event);"
           [allVillage]="allvillage"
           [showLevel]="5"
+          [init]="initVillAdd"
         ></selectVillage>
       </div>
       <div class="form-item">
@@ -101,7 +102,7 @@
                        (handle)="modifyPosition($event);"
                        [allVillage]="allvillage"
                        [showLevel]="5"
-                       [init]="initVill"
+                       [init]="initVillModify"
         ></selectVillage>
       </div>
       <div class="form-item">

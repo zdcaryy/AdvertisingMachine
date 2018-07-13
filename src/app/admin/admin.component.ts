@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AdminService } from "./server/admin.service";
+import { MsgService } from "./server/msg.service";
 declare var $:any ;
 
 @Component({
@@ -9,12 +10,21 @@ declare var $:any ;
 })
 export class AdminComponent implements OnInit {
 
-  floder:boolean;
-  username:string=localStorage.getItem('name');
+  username:string;
+  adminStatus:boolean;
+  plotCheckStatus:boolean;
+  plots:object[];
+  activePlot:string='未选择';
+  msgNumber:number=0;
 
-  constructor(private router:Router) { }
+  constructor(
+    private adminService:AdminService,
+    private msgService:MsgService
+  ) { }
 
   ngOnInit() {
+    this.getUserLevel()
+    //导航
     $('.header-floder').click(function(){
       $('#nav').slideDown()
     });
@@ -25,13 +35,61 @@ export class AdminComponent implements OnInit {
       }  
     })
     $('body').on('click', '#nav,.header-floder', function(event){
-        event.stopPropagation();  // 或 return false;
+        event.stopPropagation(); 
     });
   }
-  
+  //获取用户信息
+  getUserLevel(){
+    this.adminService.getData("/user/findByToken",{access_token:localStorage.getItem('access_token')})
+    .subscribe(res=>{
+      //console.log(res);
+      this.username=res.userInfo.name;
+      if(res.userInfo.userLevel==0){
+        this.plotCheckStatus=false;
+        this.adminStatus=true;
+      }else if(res.userInfo.userLevel!=0 && localStorage.getItem('plotSign')){
+        this.plotCheckStatus=false;
+        this.adminStatus=false;
+        this.msgService.activePlot=this.activePlot=localStorage.getItem('plotSign');
+      }else{
+        this.plotCheckStatus=true;
+        this.adminStatus=false;
+        this.getUserInfo()
+      }
+    })
+  }
+
+  //非0级用户查询小区
+  getUserInfo(){
+    this.adminService.getData("/village/getRelatedVillage",{access_token:localStorage.getItem('access_token')})
+    .subscribe(res=>{
+      //console.log(res);
+      this.plots=res;
+    })
+  }
+
+  //非0级用户选择小区
+  plotCheck(param){
+    console.log(param);
+    this.msgService.activePlot=this.activePlot=param.village.name;
+    localStorage.setItem('plotSign',param.village.name)
+    this.plotCheckStatus=false;
+  }
+
+  //切换小区
+  cutBtn(){
+    this.plotCheckStatus=true;
+    this.getUserInfo()
+  }
+
+  //刷新网页
+  refresh(){
+    window.location.reload()
+  }
+
+  //登录退出
   logout(){
-    localStorage.clear();
-    this.router.navigateByUrl('/login');
+    this.adminService.logout()
   }
 
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ElModule } from 'element-angular';
+import { FormsModule } from '@angular/forms';
 
 import { AdminRoutingModule } from "./admin-routing.module";
 import { AdminComponent } from './admin.component';
@@ -11,18 +12,20 @@ import { AdvertisementComponent } from './advertisement/advertisement.component'
 
 import { TableComponent } from './shared/table/table.component';
 
+import { AdminService } from "./server/admin.service";
 import { AreaService } from "./server/area.service";
-import { FormsModule } from '@angular/forms';
-import { EquipService } from './server/equip.service';
 import { UserComponent } from './user/user.component';
-import { UserService } from './server/user.service';
 import { AdverService } from './server/adver.service';
 import { VillageComponent } from './village/village.component';
 import { SelectVillageComponent } from './shared/select-village/select-village.component';
 import { PropertyComponent} from './property/property.component';
-import { PropertyService} from './server/property.service';
 import { PersonComponent } from './person/person.component';
 import { AdmachineService } from './server/admachine.service';
+import { AreaselectComponent } from './shared/areaselect/areaselect.component';
+import { AccountComponent } from './account/account.component';
+import { MsgService } from "./server/msg.service";
+
+import { UserLevelPipe } from './pipe/user-level.pipe';
 
 
 @NgModule({
@@ -32,14 +35,27 @@ import { AdmachineService } from './server/admachine.service';
     FormsModule,
     ElModule.forRoot(),
   ],
-  declarations: [AdminComponent, AreaComponent, EquipComponent, TableComponent, AdvertisementComponent,UserComponent, VillageComponent, SelectVillageComponent,PropertyComponent, PersonComponent],
+  declarations: [
+    AdminComponent, 
+    AreaComponent, 
+    EquipComponent, 
+    TableComponent, 
+    AdvertisementComponent,
+    UserComponent, 
+    VillageComponent, 
+    SelectVillageComponent,
+    PropertyComponent, 
+    PersonComponent, 
+    AreaselectComponent,
+    AccountComponent,
+    UserLevelPipe
+  ],
   providers: [
+    AdminService,
     AreaService,
-    EquipService,
-    UserService,
     AdverService,
-    PropertyService,
-    AdmachineService
+    AdmachineService,
+    MsgService
   ]
 })
 export class AdminModule { }

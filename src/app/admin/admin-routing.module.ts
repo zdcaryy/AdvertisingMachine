@@ -8,8 +8,9 @@ import { EquipComponent } from './equip/equip.component';
 import { AdvertisementComponent } from './advertisement/advertisement.component';
 import { UserComponent } from './user/user.component';
 import { VillageComponent } from './village/village.component';
-import {PropertyComponent} from './property/property.component';
-import{PersonComponent} from './person/person.component';
+import { PropertyComponent } from './property/property.component';
+import { PersonComponent } from './person/person.component';
+import { AccountComponent } from './account/account.component';
 
 const routes:Routes=[
     {
@@ -24,35 +25,42 @@ const routes:Routes=[
             {
                 path:'equip',
                 component:EquipComponent,
-                // canActivate: [AuthGuard]
+                canActivate: [AuthGuard]
             },
             {
                 path:'area',
                 component:AreaComponent,
-                // canActivate: [AuthGuard]
+                canActivate: [AuthGuard]
             },
             {
                 path:'adver',
                 component:AdvertisementComponent,
-                // canActivate: [AuthGuard]
+                canActivate: [AuthGuard]
             },
             {
                 path:'user',
                 component:UserComponent,
-                // canActivate: [AuthGuard]
+                canActivate: [AuthGuard]
             },
             {
                 path:'village',
                 component:VillageComponent,
-                // canActivate: [AuthGuard]
+                canActivate: [AuthGuard]
             },
             {
                 path:'property',
-                component:PropertyComponent
+                component:PropertyComponent,
+                canActivate: [AuthGuard]
             },
             {
-              path:'person',
-              component:PersonComponent
+                path:'person',
+                component:PersonComponent,
+                canActivate: [AuthGuard]
+            },
+            {
+                path:'account',
+                component:AccountComponent,
+                canActivate: [AuthGuard]
             }
         ]
     }

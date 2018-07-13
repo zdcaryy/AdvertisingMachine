@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import{ UserService } from '../server/user.service';
+import{AdmachineService} from '../server/admachine.service';
 
 declare var $:any;
 
@@ -11,10 +11,11 @@ declare var $:any;
 })
 export class UserComponent implements OnInit {
 
-  constructor(private userService:UserService) { }
+  constructor(private userService:AdmachineService) { }
   
   heads: object[];
   bodys: object[];
+  userList=[];//存储列表数据，方便通过状态筛选数据。(系统管理员、其他)
   selectedList:object[] = [];
   textConfig: object;
   colorConfig: object;
@@ -49,7 +50,7 @@ export class UserComponent implements OnInit {
       {label: '证件号', field: 'identity'},
       {label: '手机号', field: 'phoneNumber'},
       {label:'所属公司或户主名', field: 'ownerNames'},
-      {label: '类型', field: 'userLevel',child:['系统管理员','管理员','业主'],textConfig:{0: '系统管理员', 1: '管理员', 2: '业主'},colorConfig:{0: 'red', 1: 'blue', 2: 'green'}},
+      {label: '类型', field: 'userLevel',child:['所有','系统管理员','其他'],textConfig:{0: '系统管理员', 1: '其他'},colorConfig:{0: 'red',1: 'blue'}},
       {label: '操作', field:'caozuo',width:'25%',operate:true,operations:['修改','删除'],colorConfig:{修改: '#119C9D', 删除: '#d73e3e'}}
       ];
   
@@ -74,7 +75,17 @@ export class UserComponent implements OnInit {
   
   getDropdownEvent(e){
     console.log(e);
-    //switch(e)...
+    switch(e.userLevel){
+      case '所有':
+        this.bodys=this.userList;
+        break;
+      case '系统管理员':
+        this.bodys=this.userList.filter(user=>user['userLevel']==0);
+        break;
+      case '其他':
+        this.bodys=this.userList.filter(user=>user['userLevel']==1);
+        break;
+    }
   }
   
   getSelectedList(e){
@@ -96,6 +107,7 @@ export class UserComponent implements OnInit {
           item['operate'] =  ['修改', '删除'];
           return item;
         });
+        this.userList=this.bodys;
       });
   }
   
@@ -198,6 +210,7 @@ export class UserComponent implements OnInit {
         if(res.status==0){
           this.delItem.map(function (item){
             that.bodys=that.bodys.filter(user=>user!==item);
+            that.userList=that.bodys;
           });
           $('.del-confirm').fadeOut();
           //删除成功，弹出提示框
@@ -212,6 +225,7 @@ export class UserComponent implements OnInit {
       this.userService.postData('/user/delete',delArr).subscribe(res=>{
         if(res.status==0){
           this.bodys=this.bodys.filter(equip=>equip!==this.delItem);
+          this.userList=this.bodys;
           $('.del-confirm').fadeOut();
           //删除成功，弹出提示框
           this.operationResult=true;

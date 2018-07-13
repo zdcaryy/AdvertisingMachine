@@ -2,7 +2,8 @@
     width:100%;
     height:100%;
     margin:0;
-    padding:0
+    padding:0;
+    position: relative;
 }
 .gaodemap-container{
     height:100%;
@@ -54,6 +55,26 @@
     right:35px;
     left:0;
     top:0
+}
+.areaSearchInput ol{
+    position: absolute;
+    z-index:1;
+    top:35px;
+    width:100%;
+    background:white;
+    box-shadow: 0 1px 1px #ddd
+}
+.areaSearchInput ol>li{
+    width:100%;
+    height:35px;
+    line-height: 35px;
+    text-indent: 1em;
+    cursor: pointer;
+    letter-spacing: 2px
+}
+.areaSearchInput ol>li:hover{
+    background:#109d90;
+    color:white;
 }
 .areaSearchTitle{
     height:40px;
@@ -180,4 +201,41 @@
         position: absolute;
         top:40%;
     }
+}
+.equip-look{
+    width:100%;
+    height:100%;
+    position: absolute;
+    top:0;
+    z-index: 10;
+    display: flex;
+    background:rgba(255,255,255,0.5);
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+}
+.equip-info{
+    width:600px;
+    max-width:90%;
+    background:white;
+    border-top:5px solid #009688;
+    box-shadow: 0 2px 2px #ddd;
+    padding:10px 0
+}
+.equip-info h3{
+    text-indent: 1em;
+    color:black
+}
+.equip-info li{
+    text-indent: 3em;
+    margin-top:20px
+}
+.equip-info p{
+    width:100px;
+    height:35px;
+    text-align: center;
+    line-height: 35px;
+    background:#009688;
+    margin:10px auto;
+    color:white;
+    cursor: pointer;
 }

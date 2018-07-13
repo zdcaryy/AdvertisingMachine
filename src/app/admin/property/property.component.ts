@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {PropertyService} from '../server/property.service';
+import {AdmachineService} from '../server/admachine.service';
 
 declare var $:any;
 
@@ -10,7 +10,7 @@ declare var $:any;
 })
 export class PropertyComponent implements OnInit {
 
-  constructor(private propertyService:PropertyService) { }
+  constructor(private propertyService:AdmachineService) { }
 
   heads: object[];
   bodys: object[];
@@ -134,6 +134,7 @@ export class PropertyComponent implements OnInit {
   //修改物业信息
   modify(){
     this.propertyService.postData('/property/modifyProperty',this.modifyProperty).subscribe(res=>{
+      console.log(res);
       if(res.status==0){
         $('#property_config').fadeOut();
         this.operationResult=true;

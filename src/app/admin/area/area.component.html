@@ -5,59 +5,46 @@
     <div class="areaRight">
       <ul class="areaSearch">
         <li class="areaSearchInput">
-          <div (click)="searchVillage()"></div>
-          <div><input type="text" placeholder="查找区域、设备编号" [(ngModel)]="activeInput"></div>
+          <div (click)="searchOnePlot()"></div> 
+          <div><input type="text" placeholder="查找区域、设备编号" [(ngModel)]="activeInput" (keyup)="searchDim()"></div>
           <ol>
-            <li *ngFor="let hero of heroes"></li>
-          </ol>
+            <li *ngFor="let plot of searchPlots" (click)="plotCheck(plot.name)">{{plot.name}}</li>
+          </ol>                
         </li>
         <li class="areaSearchTitle">当前区域</li>
-        <li class="areaSearchPresent">地区 : {{this.area}}</li>
-        <li class="areaSearchPresent">街道 : {{this.street}}</li>
-        <li class="areaSearchPresent">小区 : {{this.plot}}</li>
-        <li class="areaSearchPresent">物业信息 : {{this.property}}</li>
+        <li class="areaSearchPresent">地区&nbsp;:&nbsp;{{currentArea}}</li>
+        <li class="areaSearchPresent">街道&nbsp;:&nbsp;{{currentStreet}}</li>
+        <li class="areaSearchPresent">小区&nbsp;:&nbsp;{{currentPlot}}</li>
+        <li class="areaSearchPresent">物业信息&nbsp;:&nbsp;{{currentProperty}}</li>
         <li class="areaSearchTitle">设备信息</li>
-        <li class="areaSearchEquip equipAll">设备总数 : {{this.equipAll}}台</li>
-        <li class="areaSearchEquip equipNormal">正常运行 : {{this.equipNormal}}台</li>
-        <li class="areaSearchEquip equipAnomaly">异常设备 : {{this.equipAnomaly}}台</li>
+        <li class="areaSearchEquip equipAll">设备总数&nbsp;:&nbsp;{{currentEquipAll}}台</li>
+        <li class="areaSearchEquip equipNormal">正常运行&nbsp;:&nbsp;{{currentEquipNormal}}台</li>
+        <li class="areaSearchEquip equipAnomaly">异常设备&nbsp;:&nbsp;{{currentEquipAnomaly}}台</li>
       </ul>
     </div>
     <div class="areaBottom">
-      <!-- <div class="areaList">
-        <ul class="areaListTop">
-          <li class="col-lg-2">设备编号</li>
-          <li class="col-lg-3">设备位置</li>
-          <li class="col-lg-2">设备运行状态（全部）</li>
-          <li class="col-lg-2">备份情况（全部）</li>
-          <li class="col-lg-1">维护人员</li>
-          <li class="col-lg-2">操作</li>
-        </ul>
-        <div class="areaListContent">
-          <table>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-        <div class="areaListBottom">
-          <div class="areaBatch">批量处理</div>
-        </div>
+      <div class="tablebox">
+        <app-table
+          [checkBox]="false"
+          [heads]="heads"
+          [bodys]="bodys"
+          (dropdownEvent)="getDropdownEvent($event)"
+          (operateEvent)="getOperateEvent($event)"
+        ></app-table>
       </div>
-    </div> -->
-    <div class="tablebox">
-      <app-table
-        [checkBox]="true"
-        [heads]="heads"
-        [bodys]="bodys"
-        (selectedListChange)="getSelectedList($event)"
-        (dropdownEvent)="getDropdownEvent($event)"
-        (operateEvent)="getOperateEvent($event)"
-        (selectedListChange)="getSelectedList($event)"
-      ></app-table>
+    </div>
+    <div class="equip-look" *ngIf="equipIf">
+      <div class="equip-info">
+        <h3>查看设备信息</h3>
+        <ul>
+          <li>设备号&nbsp;:&nbsp;{{equipNumber}}</li>
+          <li>设备位置&nbsp;:&nbsp;{{equipArea}}</li>
+          <li>所处小区&nbsp;:&nbsp;{{equipVillage}}</li>
+          <li>所属物业&nbsp;:&nbsp;{{equipProperty}}</li>
+          <li>运维人员&nbsp;:&nbsp;{{equipMaintainer}}</li>
+          <li>播放广告&nbsp;:&nbsp;{{equipAdver}}</li>
+        </ul>
+        <p (click)="closeEquip()">关闭</p>
+      </div>
     </div>
 </div>

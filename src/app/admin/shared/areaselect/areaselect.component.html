@@ -1,0 +1,23 @@
+<div style="display: inline-block;vertical-align:middle;">
+	
+	<table>
+		<tr>
+			<td id="province" (click)="show=='pro'?show='':show='pro';$event.stopPropagation()">
+				<input [value]="chooseRes.province?chooseRes.province:''" type="text" readonly placeholder="省份">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='pro'">&#60;</span>
+				<ul *ngIf="show=='pro'"><li (click)="hasSelect('province',pro)" *ngFor="let pro of areas">{{pro.name}}</li></ul>
+			</td>
+			<td id="city" (click)="show=='ci'?show='':show='ci';$event.stopPropagation()" [class.disabled]="cityList.length==0">
+				<input [value]="chooseRes.city?chooseRes.city:''" type="text" readonly placeholder="市">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='ci'">&#60;</span>
+				<ul *ngIf="show=='ci'"><li (click)="hasSelect('city',ci)" *ngFor="let ci of cityList">{{ci.name}}</li></ul>
+			</td>
+			<td id="region" (click)="show=='reg'?show='':show='reg';$event.stopPropagation()" [class.disabled]="regionList.length==0">
+				<input [value]="chooseRes.region?chooseRes.region:''" type="text" readonly placeholder="区/县">
+				<span class="arrow arrow_down" [class.arrow_up]="show=='reg'">&#60;</span>
+				<ul *ngIf="show=='reg'"><li (click)="hasSelect('region',reg)" *ngFor="let reg of regionList">{{reg}}</li></ul>
+			</td>
+		</tr>
+	</table>
+
+</div>
