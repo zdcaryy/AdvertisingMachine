@@ -4,12 +4,14 @@
   margin:10px;
   background:#f9f9f9;
   height: calc(100% - 20px);
+  position:relative;
 }
 .search-container{
   padding:20px 50px;
   border-width:1px 0 0 0;
   border-color:#ccc;
   border-style:solid;
+  height:80px;
 }
 .query-label{
   margin-right:50px;
@@ -24,18 +26,34 @@
   color:#fff;
 }
 .content .tablebox{
+  width: 100%;
   padding-bottom: 15px;
-  height:83%;
+  position:absolute;
+  top:80px;
+  bottom: 80px;
 }
 .content hr{
   padding:0;
   width: 90%;
   background:#e0e0e0;
   height:1px;
-  margin:0 auto;
   border:none;
+  position:absolute;
+  bottom:80px;
+  left:50%;
+  margin-left:-45%;
+  margin-top:0;
+  margin-bottom:0;
 }
 .operation{
+  width: 100%;
+  height: 80px;
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  padding-top: 25px;
+}
+.operation2{
   padding:20px 50px;
   text-align:center;
 }
@@ -105,15 +123,13 @@
 /*display: inline-block;*/
 /*height:20px;*/
 /*}*/
-.distpicker>input,
-.distpicker>select{
+.distpicker>input{
   border:1px solid #e0e0e0;
   border-radius:4px;
   padding:2px;
   outline:none;
 }
-.child-view .child-form .form-item>input,
-.child-view .child-form .form-item>select{
+.child-view .child-form .form-item>input{
   width:400px;
   border:1px solid #e0e0e0;
   border-radius:4px;

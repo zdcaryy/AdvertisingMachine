@@ -36,6 +36,7 @@ export class PersonComponent implements OnInit {
   colorConfig: object;
   animateState='void';//动画状态
   previewSrc='';
+  powerList=[];
   addState:boolean=false;//作用与弹框的ngIf
   files=[];//存放file类型的input选择的上传文件
   photosUrls=[];//存放预览图
@@ -65,6 +66,14 @@ export class PersonComponent implements OnInit {
   
     this.bodys = [
     ];
+    this.powerList=[
+      {label:'物业主管',value:'0'},
+      {label:'物业员工',value:'1'},
+      {label:'业主',value:'2'},
+      {label:'公司管理员',value:'3'},
+      {label:'租户',value:'4'},
+      {label:'机器运维人员',value:'5'}
+    ];//权限列表
     
     //初始化设备列表
     this.getPerson();
@@ -109,6 +118,7 @@ export class PersonComponent implements OnInit {
         let reads = new FileReader();
         reads.readAsDataURL(file);//异步操作
         reads.onload = function (res) {
+          console.log(res);
           for(let p of that.photosUrls){
             ps.push(p.src);
           }
@@ -119,7 +129,9 @@ export class PersonComponent implements OnInit {
             //限制上传图片数量最多六张
             if(that.photosUrls.length<6){
               that.datas.push(file);
-              that.photosUrls.push({src:res.target['result'],name:file.name});
+              let resize=that.renderSize(res['total']);
+              console.log(resize);
+              that.photosUrls.push({src:res.target['result'],name:file.name,size:resize});
               $('#fileToUpload').val('');
             }
           }
@@ -144,6 +156,19 @@ export class PersonComponent implements OnInit {
         }
       }
     })
+  }
+  
+  //  格式化文件大小
+  renderSize(value){
+    if(null==value||value==''){
+      return "0 Bytes";
+    }
+    let unitArr = new Array("Bytes","KB","MB","GB","TB","PB","EB","ZB","YB");
+    let index=0,
+      srcsize = parseFloat(value);
+    index=Math.floor(Math.log(srcsize)/Math.log(1024));
+    let size =srcsize/Math.pow(1024,index);
+    return size.toFixed(2)+unitArr[index];
   }
   
   //预览图片
@@ -259,11 +284,7 @@ export class PersonComponent implements OnInit {
   }
   
   //根据人员类型进行不同的显示
-  powerCheck():void{
-    switch(this.addObject.type){
-      case '0':
-        
-        break;
-    }
+  powerCheck(e):void{
+   console.log(e);
   }
 }

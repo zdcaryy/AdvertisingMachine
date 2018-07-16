@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Observable';
 export class AdmachineService {
   
   constructor(private http:HttpClient) { }
-  private adMachineUrl="http://192.168.31.230:9062";
+  private adMachineUrl="http://192.168.31.214:9062";
   getData(key:string):Observable<any>{
     return this.http.get<any>(this.adMachineUrl+key,{params:{access_token:localStorage.getItem('access_token')}});
   };

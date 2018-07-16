@@ -49,27 +49,25 @@
       </div>
       <div class="form-item">
         <label>类型：</label>
-        <select name="type" [(ngModel)]="addObject.type" (change)="powerCheck();">
-          <option value="0">物业主管</option>
-          <option value="1">物业员工</option>
-          <option value="2">业主</option>
-          <option value="3">公司管理员</option>
-          <option value="4">租户</option>
-          <option value="5">机器运维人员</option>
-         </select>
+        <el-select [(model)]="addObject.type" placeholder="请选择" (modelChange)="powerCheck($event)" size="mini">
+          <el-option *ngFor="let item of powerList"
+                     [label]="item.label"
+                     [value]="item.value">
+          </el-option>
+        </el-select>
         <span style="color:red;margin-right:100px;">*</span>
         <label>人脸特征数据：</label>
         <div class="upload-container">
           <input type="file" name="img" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
         </div>
         <label for="fileToUpload" style="color:#119C9D;">选择照片</label>
-        <a href="javascript:;"(click)="photoDialogShow();">显示详情</a>
+        <a href="javascript:;"(click)="photoDialogShow();">预览</a>
       </div>
       <div class="img-list" *ngIf="photosUrls.length">
         <div  *ngFor="let photo of photosUrls;">
           <ul>
-            <li>{{photo.name}}</li>
-            <li><a href="javascript:;" (click)="preview(photo.src)">预览<i class="el-icon-view"></i></a></li>
+            <li class="photo-name">{{photo.name}}</li>
+            <li>{{photo.size}}</li>
           </ul>
           <img [src]="photo.src" alt="">
           <i class="el-icon-circle-close" style="position:absolute;top:1px;right:1px;color:#000000;z-index:999;" (click)="removePic(photo.src)"></i>
@@ -120,7 +118,7 @@
           <span style="color:red;">*</span>
         </div>
       </div>
-      <div class="operation">
+      <div class="operation2">
         <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson(f);">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
@@ -135,27 +133,25 @@
       <div class="form-item">
         <label>姓名：</label>
         <span class="form-check">
-           <input type="text" name="name" [(ngModel)]="modifyObject.name" #name=ngModel pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required [class.border-red]="name.invalid&&name.touched">
+           <input type="text" name="name" [(ngModel)]="modifyObject.name" #modifyname=ngModel pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required [class.border-red]="modifyname.invalid&&modifyname.touched">
             <span style="color:red;margin-right:100px;">*</span>
-            <span *ngIf="name.invalid&&name.touched" class="form-notice">请输入汉字姓名</span>
+            <span *ngIf="modifyname.invalid&&modifyname.touched" class="form-notice">请输入汉字姓名</span>
         </span>
         <label>联系电话：</label>
         <span class="form-check">
-           <input type="text" name="phoneNumber" [(ngModel)]="modifyObject.phoneNumber" #tel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required [class.border-red]="tel.invalid&&tel.touched">
+           <input type="text" name="phoneNumber" [(ngModel)]="modifyObject.phoneNumber" #modifytel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required [class.border-red]="modifytel.invalid&&modifytel.touched">
             <span style="color:red;">*</span>
-           <span *ngIf="tel.invalid&&tel.touched" class="form-notice">手机号格式有误</span>
+           <span *ngIf="modifytel.invalid&&modifytel.touched" class="form-notice">手机号格式有误</span>
         </span>
       </div>
       <div class="form-item">
         <label>类型：</label>
-        <select name="type" [(ngModel)]="modifyObject.type">
-          <option value="0">物业主管</option>
-          <option value="1">物业员工</option>
-          <option value="2">业主</option>
-          <option value="3">公司管理员</option>
-          <option value="4">租户</option>
-          <option value="5">机器运维人员</option>
-        </select>
+        <el-select [model]="modifyObject.type" placeholder="请选择" (modelChange)="powerCheck($event)" size="mini">
+          <el-option *ngFor="let item of powerList"
+                     [label]="item.label"
+                     [value]="item.value">
+          </el-option>
+        </el-select>
         <span style="color:red;margin-right:100px;">*</span>
         <label>人脸特征数据：</label>
         <span>{{faceTag?'已上传':'未上传'}}</span>
@@ -163,13 +159,13 @@
           <input type="file" name="img" id="fileToUpload2" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
         </div>
         <label for="fileToUpload2" style="color:#119C9D;">更换照片</label>
-        <a href="javascript:;"(click)="photoDialogShow();">显示详情</a>
+        <a href="javascript:;"(click)="photoDialogShow();">预览</a>
       </div>
       <div class="img-list" *ngIf="photosUrls.length">
         <div  *ngFor="let photo of photosUrls;">
           <ul>
             <li>{{photo.name}}</li>
-            <li><a href="javascript:;" (click)="preview(photo.src)">预览<i class="el-icon-view"></i></a></li>
+            <li>{{photo.size}}</li>
           </ul>
           <img [src]="photo.src" alt="">
           <i class="el-icon-circle-close" style="position:absolute;top:1px;right:1px;color:#000000;z-index:999;" (click)="removePic(photo.src)"></i>
@@ -179,9 +175,9 @@
       <div class="form-item">
         <label>所属公司(户主)：</label>
         <span class="form-check">
-            <input type="text" name="ownername" required [(ngModel)]="modifyObject.ownerName" #ownername="ngModel" [class.border-red]="ownername.invalid&&ownername.touched">
+            <input type="text" name="ownername" required [(ngModel)]="modifyObject.ownerName" #modifyowner="ngModel" [class.border-red]="modifyowner.invalid&&modifyowner.touched">
             <span style="color:red;">*</span>
-            <span *ngIf="ownername.invalid&&ownername.touched" class="form-notice">公司或户主名不能为空</span>
+            <span *ngIf="modifyowner.invalid&&modifyowner.touched" class="form-notice">公司或户主名不能为空</span>
         </span>
       </div>
       <div class="form-item">
@@ -220,7 +216,7 @@
           <span style="color:red;">*</span>
         </div>
       </div>
-      <div class="operation">
+      <div class="operation2">
         <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson(f);">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>

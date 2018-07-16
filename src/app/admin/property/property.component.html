@@ -73,8 +73,8 @@
         <i  *ngIf="(linkManPhoneNumber.value=='')&&linkManPhoneNumber.touched">手机号不能为空</i>
         <i  *ngIf="(linkManPhoneNumber.value!='')&&linkManPhoneNumber.invalid&&linkManPhoneNumber.touched">手机号格式不正确</i>
       </div>
-      <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(name.valid&&leaderName.valid&&leaderIdentity.valid&&leaderPhoneNumber.valid&&linkManName.valid&&linkManPhoneNumber.valid)?add(f):0">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+      <div class="operation2">
+        <button class="useful-btn btn" style="margin-top:100px;" (click)="(name.valid&&leaderName.valid&&leaderIdentity.valid&&leaderPhoneNumber.valid&&linkManName.valid&&linkManPhoneNumber.valid)?add(f):0">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
@@ -124,8 +124,8 @@
         <i  *ngIf="(modifylinkManPhoneNumber.value=='')&&modifylinkManPhoneNumber.touched">手机号不能为空</i>
         <i  *ngIf="(modifylinkManPhoneNumber.value!='')&&modifylinkManPhoneNumber.invalid&&modifylinkManPhoneNumber.touched">手机号格式不正确</i>
       </div>
-      <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(modifyname.valid&&modifyleaderName.valid&&modifyleaderIdentity.valid&&modifyleaderPhoneNumber.valid&&modifylinkManName.valid&&modifylinkManPhoneNumber.valid)?modify():0">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>
+      <div class="operation2">
+        <button class="useful-btn btn" style="margin-top:100px;" (click)="(modifyname.valid&&modifyleaderName.valid&&modifyleaderIdentity.valid&&modifyleaderPhoneNumber.valid&&modifylinkManName.valid&&modifylinkManPhoneNumber.valid)?modify():0">&nbsp;&nbsp;保存&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
@@ -147,7 +147,7 @@
   <!--确认删除弹框start-->
   <div class="child-view del-confirm">
     <p style="text-align: center;padding:30px 0;">确认删除此信息？</p>
-    <div class="operation">
+    <div class="operation2">
       <button class="btn useful-btn" type="button" (click)="del();">&nbsp;&nbsp;确认&nbsp;&nbsp;</button>
       <button class="btn useless-btn" type="button" (click)="cancel();">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
     </div>

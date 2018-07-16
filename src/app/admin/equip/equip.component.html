@@ -49,7 +49,7 @@
         <label for="models">广告机型号</label>：
         <input type="text" id="models" name="models" [(ngModel)]="addEquip.models" #models="ngModel" required>
       </div>
-      <div class="form-item">
+      <div class="form-item" style="z-index:1 !important;">
         <label>设备位置</label>：
         <selectVillage *ngIf="addIf"
           (handle)="selectPosition($event);"
@@ -63,9 +63,15 @@
         <select [(ngModel)]="addEquip.accendantName" name="opePerson">
           <option *ngFor="let m of maintainer;" [value]="m">{{m}}</option>
         </select>
+        <el-select [(model)]="addEquip.accendantName" placeholder="请选择" (modelChange)="0" size="mini">
+          <el-option *ngFor="let item of [{label:'zdc',value:'zdc'},{label:'lmy',value:'lmy'}]"
+                     [label]="item.label"
+                     [value]="item.value">
+          </el-option>
+        </el-select>
       </div>
-      <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(machineName.valid&&mac.valid&&netWork.valid&&models.valid)?add(f):0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+      <div class="operation2">
+        <button class="useful-btn btn" style="margin-top:100px;" (click)="(machineName.valid&&mac.valid&&netWork.valid&&models.valid)?add(f):0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
@@ -114,13 +120,19 @@
         <select name="accendantName" [(ngModel)]="modifyEquip['accendantName']">
           <option *ngFor="let m of maintainer" [value]="m">{{m}}</option>
         </select>
+        <el-select [(model)]="addEquip.accendantName" placeholder="请选择" (modelChange)="0" size="mini">
+          <el-option *ngFor="let item of maintainer"
+                     [label]="item.label"
+                     [value]="item.value">
+          </el-option>
+        </el-select>
       </div>
       <div class="form-item">
         <label>备份情况</label>：
         <span>已备份</span>
       </div>
-      <div class="operation">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="modify();">保存修改</button>
+      <div class="operation2">
+        <button class="useful-btn btn" style="margin-top:100px;" (click)="modify();">保存修改</button>
       </div>
     </form>
   </div>
@@ -129,7 +141,7 @@
   <!--确认删除弹框start-->
   <div class="child-view del-confirm">
     <p style="text-align: center;padding:30px 0;">确认删除选中设备？</p>
-    <div class="operation">
+    <div class="operation2">
       <button class="btn useful-btn" type="button" (click)="del();">&nbsp;&nbsp;确认&nbsp;&nbsp;</button>
       <button class="btn useless-btn" type="button" (click)="cancel();">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
     </div>
