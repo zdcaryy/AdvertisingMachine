@@ -44,13 +44,21 @@ export class PersonComponent implements OnInit {
   renter:boolean=false;//用于判断是否是租客
   formdata;
   faceTag:boolean;//用于人脸信息是否上传的判断
+  expiredDateMust:boolean=false;//用于判断失效时期是否必填
+  viewPerson:boolean=false;//用于显示查看人员信息界面
   addObject={
     name:'',
     phoneNumber:'',
     ownerName:'',
+    ownerPhoneNumber:'',
     date:'',
     expiredDate:'',
-    type:''
+    type:'',
+    villageName:'',
+    serialNum:'',
+    unit:'',
+    floorNum:'',
+    roomNumber:''
   };
   modifyObject={};
   dialog:boolean=false;
@@ -59,10 +67,10 @@ export class PersonComponent implements OnInit {
     this.heads = [{label: '人员姓名',field: 'name'},
       {label: '所属公司(户主)', field: 'ownerName'},
       {label: '联系电话', field: 'phoneNumber'},
-      {label: '类型', field: 'type', child: ['业主','租户','物业员工','公司员工','访客','维护人员'],textConfig:{0: '业主', 1: '租户',2:'物业员工',3:'公司员工',4:'访客',5:'维护人员'},colorConfig:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple',6:'gold'}},
-      {label: '人脸特征数据', field: 'tag',child:['已通过','审核中'],textConfig:{0:'已通过',1:'审核中'},colorConfig:{0:'#119C9D',1:'#d73e3e'}},
+      {label: '类型', field: 'type', child: ['所有','业主','租户','物业员工','公司员工','访客','维护人员'],textConfig:{0: '业主', 1: '租户',2:'物业员工',3:'公司员工',4:'访客',5:'维护人员'},colorConfig:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple',6:'gold'}},
+      {label: '审核状态', field: 'tag',child:['所有','已通过','审核中','未通过'],textConfig:{0:'已通过',1:'审核中'},colorConfig:{0:'#119C9D',1:'#d73e3e'}},
       {label:'入住时间',field:'date'},
-      {label: '操作', field: 'caozuo',operate:true,operations:['修改','删除'],colorConfig:{修改: '#119C9D',删除:'#d73e3e'}}];
+      {label: '操作', field: 'caozuo',operate:true,operations:['查看','删除'],colorConfig:{查看: '#119C9D',删除:'#d73e3e'}}];
   
     this.bodys = [
     ];
@@ -83,18 +91,15 @@ export class PersonComponent implements OnInit {
       case "删除":
         console.log(e);
         break;
-      case "修改":
-        if(!this.dialog){
-          console.log(e);
-          this.dialog=true;
-          $('#modify_person').fadeIn();
-          this.modifyObject=e.data;
-          if(e.data.imgFeatures.length!=0){
-            this.faceTag=true;
-          }
-          else{
-            this.faceTag=false;
-          }
+      case "查看":
+        console.log(e.data);
+        this.viewPerson=true;
+        this.modifyObject=e.data;
+        if(e.data.imgFeatures.length!=0){
+          this.faceTag=true;
+        }
+        else{
+          this.faceTag=false;
         }
         break;
     }
@@ -133,6 +138,7 @@ export class PersonComponent implements OnInit {
               console.log(resize);
               that.photosUrls.push({src:res.target['result'],name:file.name,size:resize});
               $('#fileToUpload').val('');
+              $('#fileToUpload2').val('');
             }
           }
         };
@@ -237,6 +243,7 @@ export class PersonComponent implements OnInit {
     if(!this.dialog){
       this.dialog=true;
       $('#add_person').fadeIn();
+      this.addObject.villageName=localStorage.getItem('plotSign');
     }
   }
   //打开照片列表弹框
@@ -253,13 +260,19 @@ export class PersonComponent implements OnInit {
     for(let data of this.datas){
       this.formdata.append('img',data);
     }
-    this.formdata.append('expiredDate',this.addObject.date);
-    console.log(this.formdata.get('type'));
+    this.formdata.append('date',this.addObject.date);
+    this.formdata.append('expiredDate',this.addObject.expiredDate);
+    this.formdata.append('type',this.addObject.type);
     this.personService.upfile('/person/save',this.formdata).subscribe(res=>{
       console.log(res);
-      form.reset();
-      this.formdata={}
-      this.photosUrls=[];
+      if(res===0){
+        form.reset();
+        this.formdata={};
+        this.photosUrls=[];
+      }
+      else{
+      
+      }
     })
   }
   //关闭添加人员弹框
@@ -269,12 +282,26 @@ export class PersonComponent implements OnInit {
     this.dialog=false;
     this.formdata={}
     this.photosUrls=[];
+    this.addObject.type=null;
+    this.addObject.date=null;
+    this.addObject.expiredDate=null;
   }
   //关闭照片列表弹框
   photoDialogHidden(){
     $('.img-list').fadeOut();
   }
+  //打开修改人员弹框
+  modifyDialogShow(){
+    if(!this.dialog){
+      this.dialog=true;
+      $('#modify_person').fadeIn();
+      this.modifyObject['type']+='';
+    }
+  }
+  //修改人员信息
+  modifyPerson(){
   
+  }
   //关闭修改人员弹框
   modifyDialogHidden(){
     $('#modify_person').fadeOut();
@@ -285,6 +312,11 @@ export class PersonComponent implements OnInit {
   
   //根据人员类型进行不同的显示
   powerCheck(e):void{
-   console.log(e);
+   if(e==='4'){
+     this.expiredDateMust=true;
+   }
+   else{
+     this.expiredDateMust=false;
+   }
   }
 }

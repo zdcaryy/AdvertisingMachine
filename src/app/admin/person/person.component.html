@@ -74,29 +74,29 @@
         </div>
         <i class="el-icon-circle-close" style="font-size: 30px;position: absolute;top: -10px;right: -10px;color: rgb(200,200,200);" (click)="photoDialogHidden()"></i>
       </div>
-      <div class="form-item">
-        <label>所属公司(户主)：</label>
-        <span class="form-check">
-            <input type="text" name="ownername" required [(ngModel)]="addObject.ownerName" #ownername="ngModel" [class.border-red]="ownername.invalid&&ownername.touched">
-            <span style="color:red;">*</span>
-            <span *ngIf="ownername.invalid&&ownername.touched" class="form-notice">公司或户主名不能为空</span>
-        </span>
-      </div>
+      <!--<div class="form-item">-->
+        <!--<label>所属公司(户主)：</label>-->
+        <!--<span class="form-check">-->
+            <!--<input type="text" name="ownername" required [(ngModel)]="addObject.ownerName" #ownername="ngModel" [class.border-red]="ownername.invalid&&ownername.touched">-->
+            <!--<span style="color:red;">*</span>-->
+            <!--<span *ngIf="ownername.invalid&&ownername.touched" class="form-notice">公司或户主名不能为空</span>-->
+        <!--</span>-->
+      <!--</div>-->
       <div class="form-item">
         <label>房间：</label>
-        <table width="500">
+        <table width="500" class="input-table">
           <tr>
-            <td colspan="2">业主：<input type="text" name="ownerName"></td>
-            <td colspan="2">电话：<input type="text"></td>
+            <td colspan="2">户主：<input type="text" name="ownerName" #ownerName [(ngModel)]="addObject.ownerName"></td>
+            <td colspan="2">电话：<input type="text" name="ownerPhoneNumber" #ownerPhoneNumber [(ngModel)]="addObject.ownerPhoneNumber"></td>
           </tr>
           <tr>
-            <td colspan="4">小区：<input type="text" name="villageName"></td>
+            <td colspan="4">小区：<input type="text" name="villageName" [(ngModel)]="addObject.villageName" #villageName></td>
           </tr>
           <tr>
-            <td>楼栋号：<input type="text"></td>
-            <td>单元号：<input type="text"></td>
-            <td>楼层：<input type="text"></td>
-            <td>房间：<input type="text"></td>
+            <td>楼栋号：<input type="text" name="serialNum" #serialNum [(ngModel)]="addObject.serialNum"></td>
+            <td>单元号：<input type="text" name="unit" #unit [(ngModel)]="addObject.unit"></td>
+            <td>楼层：<input type="text" name="floorNum" #floorNum [(ngModel)]="addObject.floorNum"></td>
+            <td>房间：<input type="text" name="roomNumber" #roomNumber [(ngModel)]="addObject.roomNumber"></td>
           </tr>
         </table>
         <div class="form-item">
@@ -105,6 +105,7 @@
             (modelChange)="handle1($event)"
             (clear-click)="0"
             size="mini"
+            [model]="addObject.date"
           ></el-date-picker>
         </div>
         <div class="form-item">
@@ -113,17 +114,57 @@
             (modelChange)="handle2($event)"
             (clear-click)="0"
             size="mini"
+            [model]="addObject.expiredDate"
           >
           </el-date-picker>
-          <span style="color:red;">*</span>
+          <span style="color:red;" *ngIf="expiredDateMust">*为租户时必须选择失效日期</span>
         </div>
       </div>
       <div class="operation2">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson(f);">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(name.valid&&tel.valid&&!expiredDateMust)||(name.valid&&tel.valid&&expiredDateMust&&addObject.expiredDate)?addPerson(f):0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
   <!--添加人员信息end-->
+
+  <!--查看人员信息start-->
+  <div id="viewPerson" *ngIf="viewPerson">
+    <div class="contentBox">
+      <div class="backTo" (click)="viewPerson=false"><span class="el-icon-arrow-left underline">返回列表</span></div>
+      <table class="text_left">
+        <tr>
+          <th>人员信息</th>
+          <th>&nbsp;</th>
+          <th class="view_oper text_right"><span class="el-icon-edit underline" (click)="modifyDialogShow()">修改信息</span></th>
+        </tr>
+        <tr>
+          <td>姓名：{{modifyObject.name}}</td>
+          <td>联系电话：{{modifyObject.phoneNumber}}</td>
+          <td>类型：{{modifyObject.type}}</td>
+        </tr>
+        <tr>
+          <td>人脸数据：{{faceTag?'已上传':'未上传'}}</td>
+          <td>所属公司(户主)：{{modifyObject.ownerName}}</td>
+          <td>户主：{{modifyObject.ownerName}}</td>
+        </tr>
+        <tr>
+          <td>户主电话：{{modifyObject.ownerPhoneNumber}}</td>
+          <td>小区：</td>
+          <td>楼栋号：{{modifyObject.floorNum}}</td>
+        </tr>
+        <tr>
+          <td>单元号：{{modifyObject.unit}}</td>
+          <td>楼层：{{modifyObject.roomNumber}}</td>
+          <td>房间号：</td>
+        </tr>
+        <tr>
+          <td>入住日期：</td>
+          <td>失效日期：</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <!--查看人员信息end-->
 
   <!--修改人员信息start-->
   <div class="child-view" id="modify_person" style="width:800px;display:none;">
@@ -182,9 +223,9 @@
       </div>
       <div class="form-item">
         <label>房间：</label>
-        <table width="500">
+        <table width="500" class="input-table">
           <tr>
-            <td colspan="2">业主：<input type="text" name="ownerName" [(ngModel)]="modifyObject.ownerName"></td>
+            <td colspan="2">户主：<input type="text" name="ownerName" [(ngModel)]="modifyObject.ownerName"></td>
             <td colspan="2">电话：<input type="text" name="tel" [(ngModel)]="modifyObject.phoneNumber"></td>
           </tr>
           <tr>
