@@ -55,7 +55,7 @@ const routes:Routes=[
             {
                 path:'person',
                 component:PersonComponent,
-                // canActivate: [AuthGuard]
+                canActivate: [AuthGuard]
             },
             {
                 path:'account',

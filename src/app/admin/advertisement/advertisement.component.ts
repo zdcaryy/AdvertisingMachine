@@ -78,22 +78,6 @@ export class AdvertisementComponent implements OnInit {
   }
 
   getAdver(){
-   // this.adver = [
-   //    {id:34564,name:"隔壁超市的薯片半价！1",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！2",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！3",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！4",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！5",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！6",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！7",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！8",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！9",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！10",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！11",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！12",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！13",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //    {id:34564,name:"隔壁超市的薯片半价！14",type:"时尚",imgUrls:"assets/img/adver/adv.jpg",addedDate:"2018-01-12",expiredDate:"2018-02-11"},
-   //  ];
     this.adService.getData('/advertisement/findAll').subscribe(val=>{
       console.log(val);
       this.adver = val;
@@ -120,6 +104,7 @@ export class AdvertisementComponent implements OnInit {
       this.nowType = type;
       this.adver = res;
       this.showTypes = false;
+      this.selectedADs = [];
     })
   }
 

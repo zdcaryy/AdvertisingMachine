@@ -20,6 +20,7 @@ export class AdminService {
   logout(){
     localStorage.clear();
     this.router.navigateByUrl('/login');
+    window.location.reload();
   }
 
 }

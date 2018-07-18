@@ -1,3 +1,208 @@
-<p>
-  account works!
-</p>
+<div class="account">
+	<div class="header">
+		<span>我的小区</span>
+	</div>
+	<div class="main">
+		<div class="infoList">
+			<!-- 管理员box -->
+			<div class="fitBox" *ngFor="let info of noHouseInfo" (click)="viewbox=true;viewInfo=info;getFamily(info)">
+				<div class="infoItem">
+					<p class="title">{{info.villageName.split('-')[1]}}</p>
+					<p class="lightFont">{{typeList[info.type]}}</p>
+					<p class="lightFont">{{info.ownerName}}</p>
+					<div *ngIf="info.tag==0" class="mylabel"><span>审核中</span></div>
+				</div>
+			</div>
+			<!-- 业主box -->
+			<div class="fitBox" *ngFor="let info of houseInfo" (click)="viewbox=true;viewInfo=info;getFamily(info)">
+				<div class="infoItem">
+					<p class="title">{{info.villageName.split('-')[1]}}</p>
+					<p class="lightFont">{{typeList[info.type]}}</p>
+					<p class="lightFont">{{info.house.serialNum}}栋{{info.house.unit}}单元{{info.house.floorNum}}楼{{info.house.roomNumber}}号</p>
+					<div *ngIf="info.tag==0" class="mylabel"><span>审核中</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<div class="addBtn" (click)="showModal=true;modalType='add';initAdd();">添加信息</div>
+	</div>
+	
+	<div class="cover" [@adCover]="showModal?'show':'hide'" (@adCover.start)="animeState=true" (@adCover.done)="animeState=false" 
+										 [style.display]="showModal||animeState?'block':'none'">
+		<div class="modalBox" [ngSwitch]="modalType">
+			<span class="close el-icon-close" (click)="showModal=false"></span>
+
+			<!--    添加个人信息    -->
+			<div *ngSwitchCase="'add'">
+				<p class="modal_title">添加信息</p>
+
+				<p class="modal_row">
+					<span class="row_left">小区：</span>
+					<span class="row_right">
+						<selectVillage [allVillage]="villInfo" [showLevel]="4" (handle)="selectRegion($event)" style="position: relative;z-index: 1"></selectVillage>
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">房间：</span>
+					<span class="row_right">
+						<table class="labelInput">
+							<tr>
+								<td><input type="text" [(ngModel)]="addInfo['serialNum']"><span>栋</span></td>
+								<td><input type="text" [(ngModel)]="addInfo['unit']"><span>单元</span></td>
+								<td><input type="text" [(ngModel)]="addInfo['floorNum']"><span>楼</span></td>
+								<td><input type="text" [(ngModel)]="addInfo['roomNumber']"><span>号</span></td>
+							</tr>
+						</table>
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">上传文件：</span>
+					<span class="row_right">
+						<input type="text" [class.disable]="addFace.files.length<=0" [value]="addFace.files.length?addFace.files[0]['name']:''" placeholder="请选择文件" readonly>
+						<input type="file" accept="image/*" #addFace (change)="getAddFace(addFace)" style="display: none;">
+						<span class="modal_oper" (click)="addFace.click()"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;选择文件</span>
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">入住时间：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="addInfo.date">
+					</span>
+				</p>
+				<!-- <p class="modal_row"><span class="row_left">单元数：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.unitNum"></span></p>
+				<p class="modal_row"><span class="row_left">楼层数：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.floorNum"></span></p>
+				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.priceTag"></span></p> -->
+				<p class="modal_foot"><span class="modal_btn" (click)="addNew()">提交</span></p>
+			</div>
+
+			<!--  添加家庭成员  -->
+			<div *ngSwitchCase="'addFamily'">
+				<p class="modal_title">添加成员</p>
+				<p class="modal_row">
+					<span class="row_left">姓名：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="addFamilyInfo.name">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">电话：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="addFamilyInfo.phoneNumber">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">入住时间：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="addFamilyInfo.date">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">上传文件：</span>
+					<span class="row_right">
+						<input type="text" [class.disable]="addFamilyFace.files.length<=0" [value]="addFamilyFace.files.length?addFamilyFace.files[0]['name']:''" placeholder="请选择文件" readonly>
+						<input type="file" accept="image/*" #addFamilyFace (change)="getFamilyFace(addFamilyFace)" style="display: none;">
+						<span class="modal_oper" (click)="addFamilyFace.click()"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;选择文件</span>
+					</span>
+				</p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addFamily()">提交</span></p>
+			</div>
+
+			<!--  修改家庭成员  -->
+			<div *ngSwitchCase="'modifyFamily'">
+				<p class="modal_title">修改成员</p>
+				<p class="modal_row">
+					<span class="row_left">姓名：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="modifyFamilyInfo.name">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">电话：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="modifyFamilyInfo.phoneNumber">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">入住时间：</span>
+					<span class="row_right">
+						<input type="text" [(ngModel)]="modifyFamilyInfo.date">
+					</span>
+				</p>
+				<p class="modal_row">
+					<span class="row_left">上传文件：</span>
+					<span class="row_right">
+						<input type="text" [class.disable]="modifyFamilyFace.files.length<=0" [value]="modifyFamilyFace.files.length?modifyFamilyFace.files[0]['name']:''" placeholder="请选择文件" readonly>
+						<input type="file" accept="image/*" #modifyFamilyFace (change)="modFamilyFace(modifyFamilyFace)" style="display: none;">
+						<span class="modal_oper" (click)="modifyFamilyFace.click()"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;选择文件</span>
+					</span>
+				</p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addFamily()">提交</span></p>
+			</div>
+			
+		</div>
+	</div>
+
+	<!--    查看信息    -->
+	<div id="viewInfo" *ngIf="viewbox">
+		<div class="contentBox">
+			<div class="backTo" (click)="viewbox=false"><span class="el-icon-arrow-left underline">返回列表</span></div>
+			<table class="text_left noborder">
+				<tr>
+					<th>个人信息</th>
+				</tr>
+				<tr>
+					<td>姓名：{{viewInfo.name}}</td>
+					<td>电话：{{viewInfo.phoneNumber}}</td>
+				</tr>
+				<tr>
+					<td>类型：{{typeList[viewInfo.type]}}</td>
+					<td>照片：{{'zhaopian'}}</td>
+				</tr>
+			</table>
+			<table class="text_left">
+				<tr>
+					<th>房屋信息</th>
+				</tr>
+				<tr>
+					<td colspan="2">户主：{{viewInfo.house.ownerName}}</td>
+					<td colspan="2">电话：{{viewInfo.house.phoneNumber}}</td>
+				</tr>
+				<tr>
+					<td colspan="2">小区：{{viewInfo.house.villageName.split('-')[1]}}</td>
+					<td colspan="2">地址：{{viewInfo.house.villageName.split('-')[0]}}</td>
+				</tr>
+				<tr>
+					<td>楼栋：{{viewInfo.house.serialNum}}栋</td>
+					<td>单元：{{viewInfo.house.unit}}单元</td>
+					<td>楼层：{{viewInfo.house.floorNum}}楼</td>
+					<td>房间：{{viewInfo.house.roomNumber}}号</td>
+				</tr>
+			</table>
+			<table class="text_center">
+				<tr>
+					<th>成员信息</th>
+				</tr>
+				<tr>
+					<td>姓名</td>
+					<td>电话</td>
+					<td>审核状态</td>
+					<td>操作</td>
+				</tr>
+				<tr *ngFor="let fam of viewInfo.family">
+					<td>{{fam.name}}</td>
+					<td>{{fam.phoneNumber}}</td>
+					<td [style.color]="fam.tag==0?'#FFC800':fam.tag==1?'#19A5A0':'#d73e3e'">{{tagList[fam.tag]}}</td>
+					<td style="width: 5%;white-space: nowrap;">
+						<span style="cursor: pointer;color: #19A5A0" class="underline" (click)="showModal=true;modalType='modifyFamily';modifyFamilyInfo=fam;">修改</span><br>
+						<span style="cursor: pointer;color: #d73e3e" class="underline" >删除</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="hoverTd" (click)="showModal=true;modalType='addFamily';initAddFamily();">添加成员</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+</div>

@@ -161,6 +161,7 @@ export class SelectVillageComponent implements OnInit {
         delete this.chooseRes['id'];
         delete this.chooseRes['building'];
         this.villageList = this.getVillage();
+        console.log(this.villageList)
         this.buildingList = [];
         break;
 

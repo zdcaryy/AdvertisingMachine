@@ -9,6 +9,12 @@ div,table,thead,tbody,td{
 .tableContainer table{
 	width: 100%;
 	table-layout: fixed;
+	cursor: default;
+}
+.tableContainer table td{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 /*表头*/
@@ -49,6 +55,13 @@ div,table,thead,tbody,td{
 	display: inline-block;
 	line-height: 60px;
 }
+/*.secMenu .menuTitle>span{
+	display: table-cell;
+	vertical-align: middle;
+	box-sizing: border-box;
+	height: 60px;
+	width: 100%;
+}*/
 .secMenu .dropItem{
 	font-weight: normal;
 	cursor: pointer;
@@ -125,13 +138,8 @@ div,table,thead,tbody,td{
 
 /*checkbox样式*/
 .forCheck{
-	width: 10px;
-}
-th.forCheck{
-	z-index: 2;
-}
-.forCheck input{
-	transform: translateX(20px);
+	width: 25px;
+	text-align: right !important;
 }
 input[type=checkbox]{
 	/*清除默认样式*/
@@ -176,4 +184,11 @@ input[type=checkbox]:checked{
 /*选中状态*/
 .secMenu .dropSelected{
 	background-color: #eeeeee;
+}
+
+/* 避免其他地方修改滚动条，影响这里的宽度 */
+::-webkit-scrollbar
+{
+    width: 18px !important;
+    /*height: 6px;*/
 }

@@ -9,7 +9,7 @@
           <div><input type="text" placeholder="查找区域、设备编号" [(ngModel)]="activeInput" (keyup)="searchDim()"></div>
           <ol>
             <li *ngFor="let plot of searchPlots" (click)="plotCheck(plot.name)">{{plot.name}}</li>
-          </ol>                
+          </ol>
         </li>
         <li class="areaSearchTitle">当前区域</li>
         <li class="areaSearchPresent">地区&nbsp;:&nbsp;{{currentArea}}</li>
@@ -33,18 +33,18 @@
         ></app-table>
       </div>
     </div>
-    <div class="equip-look" *ngIf="equipIf">
-      <div class="equip-info">
-        <h3>查看设备信息</h3>
-        <ul>
-          <li>设备号&nbsp;:&nbsp;{{equipNumber}}</li>
-          <li>设备位置&nbsp;:&nbsp;{{equipArea}}</li>
-          <li>所处小区&nbsp;:&nbsp;{{equipVillage}}</li>
-          <li>所属物业&nbsp;:&nbsp;{{equipProperty}}</li>
-          <li>运维人员&nbsp;:&nbsp;{{equipMaintainer}}</li>
-          <li>播放广告&nbsp;:&nbsp;{{equipAdver}}</li>
-        </ul>
-        <p (click)="closeEquip()">关闭</p>
-      </div>
-    </div>
+</div>
+<div class="equip-look" *ngIf="equipIf">
+  <div class="equip-info">
+    <h3>查看设备信息</h3>
+    <ul>
+      <li>设备号&nbsp;:&nbsp;{{equipNumber}}</li>
+      <li>设备位置&nbsp;:&nbsp;{{equipArea}}</li>
+      <li>所处小区&nbsp;:&nbsp;{{equipVillage}}</li>
+      <li>所属物业&nbsp;:&nbsp;{{equipProperty}}</li>
+      <li>运维人员&nbsp;:&nbsp;{{equipMaintainer}}</li>
+      <li>播放广告&nbsp;:&nbsp;{{equipAdver}}</li>
+    </ul>
+    <p (click)="closeEquip()">关闭</p>
+  </div>
 </div>

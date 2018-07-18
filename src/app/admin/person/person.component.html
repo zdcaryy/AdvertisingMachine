@@ -82,23 +82,54 @@
             <!--<span *ngIf="ownername.invalid&&ownername.touched" class="form-notice">公司或户主名不能为空</span>-->
         <!--</span>-->
       <!--</div>-->
+
+      <!--房间选择start-->
+      <div class="form-item house-pick">
+        <label>选择房间：</label>
+        <el-select [(model)]="roomPick.serial" placeholder="--楼栋--" (modelChange)="getUnitList();" size="mini">
+          <el-option *ngFor="let item of serialList"
+                     [label]="item"
+                     [value]="item">
+          </el-option>
+        </el-select>
+        <el-select [(model)]="roomPick.unit" placeholder="--单元--" (modelChange)="getFloorList();" size="mini" [elDisabled]="!roomPick.serial">
+          <el-option *ngFor="let item of unitList"
+                     [label]="item"
+                     [value]="item">
+          </el-option>
+        </el-select>
+        <el-select [(model)]="roomPick.floor" placeholder="--楼层--" (modelChange)="getRoomList();" size="mini" [elDisabled]="!roomPick.unit">
+          <el-option *ngFor="let item of floorList"
+                     [label]="item"
+                     [value]="item">
+          </el-option>
+        </el-select>
+        <el-select [(model)]="roomPick.room" placeholder="--房间--" (modelChange)=" getHouseConfig();" size="mini" [elDisabled]="!roomPick.floor">
+          <el-option *ngFor="let item of roomList"
+                     [label]="item"
+                     [value]="item">
+          </el-option>
+        </el-select>
+      </div>
+      <!--房间选择end-->
+
       <div class="form-item">
-        <label>房间：</label>
-        <table width="500" class="input-table">
-          <tr>
-            <td colspan="2">户主：<input type="text" name="ownerName" #ownerName [(ngModel)]="addObject.ownerName"></td>
-            <td colspan="2">电话：<input type="text" name="ownerPhoneNumber" #ownerPhoneNumber [(ngModel)]="addObject.ownerPhoneNumber"></td>
-          </tr>
-          <tr>
-            <td colspan="4">小区：<input type="text" name="villageName" [(ngModel)]="addObject.villageName" #villageName></td>
-          </tr>
-          <tr>
-            <td>楼栋号：<input type="text" name="serialNum" #serialNum [(ngModel)]="addObject.serialNum"></td>
-            <td>单元号：<input type="text" name="unit" #unit [(ngModel)]="addObject.unit"></td>
-            <td>楼层：<input type="text" name="floorNum" #floorNum [(ngModel)]="addObject.floorNum"></td>
-            <td>房间：<input type="text" name="roomNumber" #roomNumber [(ngModel)]="addObject.roomNumber"></td>
-          </tr>
-        </table>
+        <label>房间信息：</label>
+          <table  class="house-table" width="500">
+            <tr>
+              <td colspan="2">户主：{{roomRes.ownerName}}</td>
+              <td colspan="2">电话：{{roomRes.phoneNumber}}</td>
+            </tr>
+            <tr>
+              <td colspan="4">小区：{{addObject.villageName}}</td>
+            </tr>
+            <tr>
+              <td>楼栋号：{{roomRes.serialNum}}</td>
+              <td>单元号：{{roomRes.unit}}</td>
+              <td>楼层：{{roomRes.floorNum}}</td>
+              <td>房间：{{roomRes.roomNumber}}</td>
+            </tr>
+          </table>
         <div class="form-item">
           <label>入住日期：</label>
           <el-date-picker
@@ -117,11 +148,11 @@
             [model]="addObject.expiredDate"
           >
           </el-date-picker>
-          <span style="color:red;" *ngIf="expiredDateMust">*为租户时必须选择失效日期</span>
+          <span style="color:red;" *ngIf="renter">*为租户时必须选择失效日期</span>
         </div>
       </div>
       <div class="operation2">
-        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(name.valid&&tel.valid&&!expiredDateMust)||(name.valid&&tel.valid&&expiredDateMust&&addObject.expiredDate)?addPerson(f):0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
+        <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="name.valid&&tel.valid?addPerson(f):0;">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
       </div>
     </form>
   </div>
@@ -148,18 +179,18 @@
           <td>户主：{{modifyObject.ownerName}}</td>
         </tr>
         <tr>
-          <td>户主电话：{{modifyObject.ownerPhoneNumber}}</td>
-          <td>小区：</td>
-          <td>楼栋号：{{modifyObject.floorNum}}</td>
+          <td>户主电话：{{modifyObject.house.phoneNumber}}</td>
+          <td>小区：{{modifyObject.house.villageName}}</td>
+          <td>楼栋号：{{modifyObject.house.serialNum}}</td>
         </tr>
         <tr>
-          <td>单元号：{{modifyObject.unit}}</td>
-          <td>楼层：{{modifyObject.roomNumber}}</td>
-          <td>房间号：</td>
+          <td>单元号：{{modifyObject.house.unit}}</td>
+          <td>楼层：{{modifyObject.house.floorNum}}</td>
+          <td>房间号：{{modifyObject.house.roomNumber}}</td>
         </tr>
         <tr>
-          <td>入住日期：</td>
-          <td>失效日期：</td>
+          <td>入住日期：{{modifyObject.date}}</td>
+          <td>失效日期：{{modifyObject.expiredDate}}</td>
         </tr>
       </table>
     </div>
@@ -223,19 +254,19 @@
       </div>
       <div class="form-item">
         <label>房间：</label>
-        <table width="500" class="input-table">
+        <table width="500" class="input-table" *ngIf="modifyObject.house">
           <tr>
-            <td colspan="2">户主：<input type="text" name="ownerName" [(ngModel)]="modifyObject.ownerName"></td>
-            <td colspan="2">电话：<input type="text" name="tel" [(ngModel)]="modifyObject.phoneNumber"></td>
+            <td colspan="2">户主：<input type="text" name="ownerName" [(ngModel)]="modifyObject.house.ownerName"></td>
+            <td colspan="2">电话：<input type="text" name="ownerPhoneNumber" [(ngModel)]="modifyObject.house.phoneNumber"></td>
           </tr>
           <tr>
-            <td colspan="4">小区：<input type="text" name="villageName" [(ngModel)]="modifyObject.villageName"></td>
+            <td colspan="4">小区：<input type="text" name="villageName" [(ngModel)]="modifyObject.house.villageName"></td>
           </tr>
           <tr>
-            <td>楼栋号：<input type="text"></td>
-            <td>单元号：<input type="text"></td>
-            <td>楼层：<input type="text"></td>
-            <td>房间：<input type="text"></td>
+            <td>楼栋号：<input type="text" name="serialNum" [(ngModel)]="modifyObject.house.serialNum"></td>
+            <td>单元号：<input type="text" name="unit" [(ngModel)]="modifyObject.house.unit"></td>
+            <td>楼层：<input type="text" name="floorNum" [(ngModel)]="modifyObject.house.floorNum"></td>
+            <td>房间：<input type="text" name="roomNumber" [(ngModel)]="modifyObject.house.roomNumber"></td>
           </tr>
         </table>
         <div class="form-item">

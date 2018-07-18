@@ -11,7 +11,7 @@ html,body{
     height:100%;
     font-size: 16px
 }
-/* 隐藏高德logo */
+/* 高德地图样式 */
 .amap-logo {
     display: none;
 }
@@ -22,7 +22,32 @@ html,body{
 .amap-icon img{
     width:40px
 }
-
+.amap-marker-label{
+    border:1px solid #888
+}
+/*滚动条样式*/  
+::-webkit-scrollbar
+{
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track-piece
+{
+    background-color: #CCCCCC;
+    -webkit-border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:vertical
+{
+    height: 5px;
+    background-color: #999999;
+    -webkit-border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:horizontal
+{
+    width: 5px;
+    background-color: #CCCCCC;
+    -webkit-border-radius: 6px;
+}
 /*  ELE-UI插件样式覆盖 -- 日历 */
 /*.el-date-table td.available:hover{
 	color: #009688;

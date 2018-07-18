@@ -111,7 +111,13 @@
 			<!--   添加广告   -->
 			<div *ngSwitchCase="'add'">
 				<p class="modal_title">添加项目</p>
-				<p class="modal_row"><span class="row_left">广&ensp;告&ensp;名：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.name"></span></p>
+				<p class="modal_row">
+					<span class="row_left">广&ensp;告&ensp;名：</span>
+					<span class="row_right">
+						<input #addName="ngModel" type="text" [(ngModel)]="addAD.name" required>
+						<span class="warning" *ngIf="addName.invalid&&addName.touched">广告名不能为空</span>
+					</span>
+				</p>
 				<p class="modal_row">
 					<span class="row_left">选择分类：</span>
 					<span class="row_right">

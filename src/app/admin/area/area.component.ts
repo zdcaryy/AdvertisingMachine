@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AreaService } from "../server/area.service";
 declare var AMap:any ;
-declare var $:any ;
 
 @Component({
   selector: 'app-area',
@@ -97,6 +96,10 @@ export class AreaComponent implements OnInit {
         position: [param[i].village.ptLoc.x,param[i].village.ptLoc.y],
         title: param[i].village.name
       })
+      marker.setLabel({
+        offset: new AMap.Pixel(-8, 40),
+        content: '<span>'+param[i].village.name+'</span>'
+      });
       marker.on('click',()=>{
         this.activeInput=marker.G.title;
         this.searchOnePlot()

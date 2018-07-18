@@ -22,7 +22,7 @@ export class AdverService {
       })
     };
     //json数据token好像不能加在data里面
-    key += '?access_token='+localStorage.getItem('access_token');
+    if(key.indexOf('?')<0){key+='?access_token='+localStorage.getItem('access_token')}else{key+='&access_token='+localStorage.getItem('access_token')};
     // return this.http.post<any>(this.sdkUrl+key,data,this.httpOptions);
     return this.http.post<any>(this.adUrl+key,data,httpOptions);
   }

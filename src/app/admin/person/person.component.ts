@@ -44,8 +44,41 @@ export class PersonComponent implements OnInit {
   renter:boolean=false;//用于判断是否是租客
   formdata;
   faceTag:boolean;//用于人脸信息是否上传的判断
-  expiredDateMust:boolean=false;//用于判断失效时期是否必填
   viewPerson:boolean=false;//用于显示查看人员信息界面
+  
+  /*******用于房间信息的选择********/
+  allHouseList=[];//在一个小区下所有的房屋信息
+  serialList=[];//楼栋列表
+  unitList=[];//单元列表
+  floorList=[];//楼层列表
+  roomList=[];//房间号列表
+  
+  roomPick={
+    serial:null,
+    unit:null,
+    floor:null,
+    room:null,
+  }//选择的房间
+  
+  roomRes={};//根据选择获取的房屋信息，包括户主的信息
+  
+  // testData=[
+  //   {serialNum:1,unit:1,floorNum:1,roomNumber:1001},
+  //   {serialNum:2,unit:2,floorNum:2,roomNumber:2002},
+  //   {serialNum:2,unit:1,floorNum:1,roomNumber:2021},
+  //   {serialNum:3,unit:1,floorNum:1,roomNumber:3001},
+  //   {serialNum:3,unit:2,floorNum:1,roomNumber:3002},
+  //   {serialNum:3,unit:3,floorNum:1,roomNumber:3003},
+  //   {serialNum:7,unit:1,floorNum:1,roomNumber:7001},
+  //   {serialNum:8,unit:1,floorNum:1,roomNumber:8001},
+  //   {serialNum:9,unit:1,floorNum:1,roomNumber:9001},
+  //   {serialNum:10,unit:1,floorNum:1,roomNumber:10001},
+  //   {serialNum:11,unit:1,floorNum:1,roomNumber:11001},
+  //   {serialNum:12,unit:1,floorNum:1,roomNumber:12001},
+  //   {serialNum:13,unit:1,floorNum:1,roomNumber:13001},
+  // ]
+  /*******用于房间信息的选择********/
+  
   addObject={
     name:'',
     phoneNumber:'',
@@ -54,11 +87,7 @@ export class PersonComponent implements OnInit {
     date:'',
     expiredDate:'',
     type:'',
-    villageName:'',
-    serialNum:'',
-    unit:'',
-    floorNum:'',
-    roomNumber:''
+    villageName:''
   };
   modifyObject={};
   dialog:boolean=false;
@@ -242,8 +271,15 @@ export class PersonComponent implements OnInit {
   addDialogShow(){
     if(!this.dialog){
       this.dialog=true;
-      $('#add_person').fadeIn();
       this.addObject.villageName=localStorage.getItem('plotSign');
+      this.personService.getData('/house/findAllHouseByVillage?villageName='+this.addObject.villageName).subscribe(res=>{
+        console.log(res);
+        if(res.status==0&&res.houseList.length!=0){
+          this.allHouseList=res.houseList;
+          this.getSerialList();
+        }
+      })
+      $('#add_person').fadeIn();
     }
   }
   //打开照片列表弹框
@@ -252,7 +288,7 @@ export class PersonComponent implements OnInit {
   }
   //添加人员
   addPerson(form):void{
-    if(this.renter===true&&this.addObject.date===''){
+    if(this.renter===true&&this.addObject.expiredDate===''){
       return;
     }
     this.formdata=new FormData($('#add-form')[0]);
@@ -263,12 +299,15 @@ export class PersonComponent implements OnInit {
     this.formdata.append('date',this.addObject.date);
     this.formdata.append('expiredDate',this.addObject.expiredDate);
     this.formdata.append('type',this.addObject.type);
+    this.formdata.append('houseId',this.roomRes['id']);
+    console.log(this.formdata.get('houseId'));
     this.personService.upfile('/person/save',this.formdata).subscribe(res=>{
       console.log(res);
       if(res===0){
         form.reset();
         this.formdata={};
         this.photosUrls=[];
+        this.roomRes=null;
       }
       else{
       
@@ -296,11 +335,33 @@ export class PersonComponent implements OnInit {
       this.dialog=true;
       $('#modify_person').fadeIn();
       this.modifyObject['type']+='';
+      this.modifyObject['date']=this.timestampToTime(this.modifyObject['date']);
+      this.modifyObject['expiredDate']=this.timestampToTime(this.modifyObject['expiredDate']);
     }
   }
   //修改人员信息
   modifyPerson(){
-  
+    if(this.renter===true&&this.modifyObject['expiredDate']===''){
+      return;
+    }
+    this.formdata=new FormData($('#modify-form')[0]);
+    this.formdata.delete('img');
+    for(let data of this.datas){
+      this.formdata.append('img',data);
+    }
+    this.formdata.append('date',this.modifyObject['date']);
+    this.formdata.append('expiredDate',this.modifyObject['expiredDate']);
+    this.formdata.append('type',this.modifyObject['type']);
+    this.personService.upfile('/person/save',this.formdata).subscribe(res=>{
+      console.log(res);
+      if(res===0){
+        this.formdata={};
+        this.photosUrls=[];
+      }
+      else{
+      
+      }
+    })
   }
   //关闭修改人员弹框
   modifyDialogHidden(){
@@ -313,10 +374,74 @@ export class PersonComponent implements OnInit {
   //根据人员类型进行不同的显示
   powerCheck(e):void{
    if(e==='4'){
-     this.expiredDateMust=true;
+     this.renter=true;
    }
    else{
-     this.expiredDateMust=false;
+     this.renter=false;
    }
+  }
+  
+  //获取楼栋列表
+  getSerialList():void{
+    this.serialList=[];
+    this.allHouseList.map(item=>{
+      if($.inArray(item.serialNum,this.serialList)===-1){
+        this.serialList.push(item.serialNum);
+      }
+    })
+    this.serialList.sort(this.compare);
+  };
+  //获取单元列表
+  getUnitList():void{
+    this.unitList=[];
+    this.allHouseList.map(item=>{
+      if($.inArray(item.unit,this.unitList)===-1&&item.serialNum===this.roomPick.serial){
+        this.unitList.push(item.unit);
+      }
+    });
+    this.unitList.sort(this.compare);
+    this.roomPick.unit=this.unitList[0];
+    this.getFloorList();
+  };
+  //获取楼层列表
+  getFloorList():void{
+    this.floorList=[];
+    this.allHouseList.map(item=>{
+      if($.inArray(item.floorNum,this.floorList)===-1&&item.serialNum===this.roomPick.serial&&item.unit===this.roomPick.unit){
+        this.floorList.push(item.floorNum);
+      }
+    });
+    this.floorList.sort(this.compare);
+    this.roomPick.floor=this.floorList[0];
+    this.getRoomList();
+  };
+  //获取房间列表
+  getRoomList():void{
+    this.roomList=[];
+    this.allHouseList.map(item=>{
+      if($.inArray(item.roomNumber,this.roomList)===-1&&item.serialNum===this.roomPick.serial&&item.unit===this.roomPick.unit&&item.floorNum===this.roomPick.floor){
+        this.roomList.push(item.roomNumber);
+      }
+    })
+    this.roomList.sort(this.compare);
+    this.roomPick.room=this.roomList[0];
+    this.getHouseConfig();
+  };
+  //获取具体房间信息
+  getHouseConfig():void{
+    this.roomRes=this.allHouseList.filter(house=>
+      house.serialNum===this.roomPick.serial&&house.unit===this.roomPick.unit&&house.floorNum===this.roomPick.floor&&house.roomNumber===this.roomPick.room
+    )[0];
+  }
+  
+  //比较函数，用于sort升序排序使用,房屋信息录入时不一定按顺序录入
+  compare(value1,value2){
+    if(value1 < value2){
+      return -1;
+    }else if(value1 > value2){
+      return 1;
+    }else{
+      return 0;
+    }
   }
 }

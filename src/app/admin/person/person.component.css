@@ -76,8 +76,8 @@
   padding:5px 10px;
 }
 /*子view样式style*/
-#add_equip,#equip_config,.del-confirm{
-  /*display:none;*/
+#add_person,#modify_person,.del-confirm{
+  display:none;
 }
 .child-view{
   z-index:999;
@@ -159,33 +159,35 @@
 .background-red{
   background:#d81e06;
 }
-table.input-table{
-  display:inline-block;
+table.house-table{
   vertical-align: top;
   margin-bottom:20px;
   overflow:hidden;
   border-radius:15px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e0e0e0 !important;
+  /*display:inline-grid;*/
+  display:inline-block;
 }
-table.input-table td{
+table.house-table td{
   padding:10px;
   cursor:pointer;
+  width:125px;
 }
-table.input-table tr:first-child td:first-child{
+table.house-table tr:first-child td:first-child{
   border-right:1px solid #e0e0e0;
   border-bottom:1px solid #e0e0e0;
 }
-table.input-table tr:first-child td:last-child{
+table.house-table tr:first-child td:last-child{
   border-bottom:1px solid #e0e0e0;
 }
-table.input-table tr:last-child td{
+table.house-table tr:last-child td{
   border-top:1px solid #e0e0e0;
   border-right:1px solid #e0e0e0;
 }
-table.input-table tr:last-child td:last-child{
+table.house-table tr:last-child td:last-child{
   border-right:none;
 }
-table.input-table input{
+table.house-table input{
   border:none;
   outline:none;
   /*这个宽度影响了表格的布局*/
@@ -193,21 +195,13 @@ table.input-table input{
   cursor:pointer;
 }
 .upload-container {
-
   background-image: url(../../../assets/img/icon_sprite@1x.png);
-
   background-repeat: no-repeat;
-
   background-position:-160px -140px;
-
   width:23px;
-
   height: 20px;
-
   padding-bottom: 10px;
-
   display: inline-block;
-
   vertical-align: middle;
 }
 
@@ -381,4 +375,9 @@ el-date-picker{
 }
 .text_right{
   text-align: right;
+}
+
+/*房间联动选择菜单样式*/
+.house-pick ::ng-deep .el-select{
+  width:100px;
 }

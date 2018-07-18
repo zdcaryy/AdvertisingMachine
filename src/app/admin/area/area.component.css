@@ -4,6 +4,7 @@
     margin:0;
     padding:0;
     position: relative;
+    overflow-y:auto
 }
 .gaodemap-container{
     height:100%;
@@ -11,6 +12,8 @@
     border-radius: 5px;
     outline: none
 }
+
+
 .areaSearch{
     width:100%;
     height:100%;
@@ -157,51 +160,6 @@
     border-radius: 2px;
     box-shadow: 0 2px 2px #ddd;
 }
-@media screen and (min-width: 970px) {
-    .areaLeft{
-        position: absolute;
-        padding:5px;
-        height:50%;
-        left:0;
-        right:400px
-    }
-    .areaRight{
-        position: absolute;
-        padding:5px;
-        height:50%;
-        width:400px;
-        right:0
-    }
-    .areaBottom{
-        width:100%;
-        height:50%;
-        position: absolute;
-        bottom:0;
-        padding:5px;
-        border-radius: 5px
-    }
-}
-@media screen and (max-width: 969px) {
-    .areaLeft{
-        height:40%;
-        width:100%;
-    }
-    .areaRight{
-        width:100%;
-        height:60px;
-        overflow:hidden;
-        position: absolute;
-        top:0;
-        z-index:50;
-    }
-    .areaBottom{
-        width:100%;
-        padding:2px;
-        height:58%;
-        position: absolute;
-        top:40%;
-    }
-}
 .equip-look{
     width:100%;
     height:100%;
@@ -238,4 +196,43 @@
     margin:10px auto;
     color:white;
     cursor: pointer;
+}
+@media screen and (min-width: 970px) {
+    .areaLeft{
+        position: absolute;
+        padding:5px;
+        height:50%;
+        left:0;
+        right:400px
+    }
+    .areaRight{
+        position: absolute;
+        padding:5px;
+        height:50%;
+        width:400px;
+        right:0
+    }
+    .areaBottom{
+        width:100%;
+        height:50%;
+        position: absolute;
+        bottom:0;
+        padding:5px;
+        border-radius: 5px
+    }
+}
+@media screen and (max-width: 969px) {
+    .areaLeft{
+        height:300px;
+        width:100%;
+    }
+    .areaRight{
+        width:100%;
+        padding:2px 0
+    }
+    .areaBottom{
+        width:100%;
+        padding:2px;
+        position: absolute;
+    }
 }

@@ -1,0 +1,307 @@
+.account{
+	height: calc(100% - 20px);
+	margin: 10px;
+	background-color: #fff;
+	box-shadow:  2px 2px 4px 0px #b0b0b0;
+	position: relative;
+}
+.header{
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	background-color: #f9f9f9;
+	/*border-top: 1px solid #d0d0d0;*/
+	padding: 0px 20px;
+	font-size: 1.15em;
+	color: #19A5A0;
+}
+.main{
+	width: 100%;
+	padding: 30px 20px 0px 20px;
+	position: absolute;
+	top: 50px;
+	bottom: 80px;
+	/*padding: 20px 0;*/
+	overflow: auto;
+}
+.main .infoList{
+	max-width: 1400px;
+}
+.footer{
+	width: 100%;
+	height: 80px;
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid #d0d0d0;
+	text-align: center;
+	padding-top: 25px;
+}
+.footer .addBtn{
+	cursor: pointer;
+	width: 90px;
+	line-height: 30px;
+	border-radius: 2px;
+	display: inline-block;
+	color: #fff;
+	background-color: #009688;
+}
+
+
+/* 小区列表 */
+.infoItem{
+	border: 1px solid #19A5A0;
+	margin-right: 10%;
+	margin-bottom: 8%;
+	padding: 10px 10px 0px;
+	position: relative;
+	overflow: hidden;
+}
+.infoItem:hover{
+	background-color: rgba(25,165,160,0.1);
+	cursor: pointer;
+}
+.infoItem p{
+	margin: 0;
+	margin-bottom: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.mylabel{
+	font-size: 12px;
+	position: absolute;
+	top: 0;right: 0;
+	width: 65px;
+	height: 65px;
+	background-color: #19A5A0;
+	color: #efefef;
+	transform-origin: center center;
+	transform: translate(50%,-50%) rotate(45deg);
+}
+.mylabel span{
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+}
+.title{
+	font-size: 1.1em;
+}
+.lightFont{
+	color: #b7b7b7;
+}
+/* 自适应 */
+.fitBox{
+	float: left;
+}
+@media screen and (max-width: 768px){
+	.fitBox{
+		width: 50%;
+	}
+}
+@media screen and (min-width: 768px){
+	/* 16:14 */
+	.fitBox{
+		width: 33.33333%;
+	}
+}
+@media screen and (min-width: 1200px){
+	/* 16:14 */
+	.fitBox{
+		width: 25%;
+	}
+}
+
+
+/*********** 弹窗--查看，添加等... *************/
+.cover{
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 998;
+	width: 100%;
+	height: 100%;
+	/*background-color: rgba(255,255,255,0.4);*/
+}
+.modalBox{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	z-index: 999;
+	width: 600px;
+	height: 400px;
+	background-color: #fff;
+	box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.3);
+	border-top: 5px solid #009688;
+	transition: opacity 300ms;
+	text-align: left;
+	padding: 0 20px;
+}
+.modalBox .close{
+	font-size: 18px;
+	font-weight: bold;
+	margin: 7px -7px 0 0;
+	opacity: 0.4;
+}
+.modalBox .close:hover{
+	opacity: 0.7;
+}
+.modalBox .modal_title{
+	font-size: 18px;
+	letter-spacing: 2px;
+	margin: 25px 0;
+}
+.modalBox .modal_row{
+	margin-bottom: 16px;
+	padding-left: 20px; 
+}
+/*消除span换行空格*/
+.modalBox .modal_row{
+	font-size: 0;
+}
+.modalBox .modal_row .row_left,.row_right{
+	/*font-size: 1rem;*/
+	font-size: 14px;
+}
+.modalBox .modal_foot{
+	margin-top: 30px;
+	text-align: center;
+}
+.modalBox .modal_btn{
+	display: inline-block;
+	width: 80px;
+	height: 30px;
+	background-color: #009688;
+	color: #fff;
+	line-height: 30px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+.modalBox .modal_oper{
+	cursor: pointer;
+	color: #009688;
+}
+.modalBox input[type=text]{
+	border: 1px solid #d0d0d0;
+	border-radius: 5px;
+	outline: none;
+	padding: 2px 8px;
+	width: 180px;
+	color: #5a5e66;
+	background-color: #fff;
+}
+.modalBox input[type=text]:focus{
+	border-color: #009688;
+}
+.modalBox input[type=text].disable{
+	background-color: #eaeaea;
+}
+
+.disable{
+	background-color: #eaeaea;
+}
+/*********** 弹窗--查看，添加等... *************/
+
+/* 右边带标签的input */
+.labelInput{
+	display: inline-block;
+	vertical-align: middle;
+}
+.labelInput td{
+	position: relative;
+	width: 70px;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.labelInput td:first-child input[type=text]{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+.labelInput td:last-child input[type=text]{
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.labelInput input[type=text]{
+	border-radius: 0;
+	width: 100% !important;
+	text-align: center;
+	color: #5a5e66;
+	padding-right: 35px !important; 
+}
+.labelInput span{
+	display: inline-block;
+	width: 28px;
+	text-align: right;
+	transform: translateX(-32px);
+	color: #bbbbbb;
+}
+/* 右边带标签的input */
+
+/***************  查看信息  ****************/
+.underline:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#viewInfo{
+	position: absolute;
+	top: 0;left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 997;
+	background-color: #fff;
+	padding: 10px;
+	overflow: auto;
+}
+#viewInfo .contentBox{
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+#viewInfo .backTo{
+	display: inline-block;
+	cursor: pointer;
+	color: #5a5e66;
+	margin-top: 10px;
+}
+#viewInfo table{
+	width: 100%;
+}
+#viewInfo table td{
+	border: 1px solid #d0d0d0;
+	color: #5a5e66;
+	height: 50px;
+	padding: 0px 15px;
+}
+.noborder td{
+	border: 0 !important;
+}
+#viewInfo table th{
+	height: 60px;
+	padding: 0px 10px;
+	font-size: 1.2em;
+}
+#viewInfo .view_oper{
+	color: #19A5A0;
+	font-weight: normal;
+}
+#viewInfo .view_oper span{
+	cursor: pointer;
+}
+.text_center{
+	text-align: center;
+}
+.text_left{
+	text-align: left;
+}
+.text_right{
+	text-align: right;
+}
+.hoverTd{
+	color: #19A5A0 !important;
+}
+.hoverTd:hover{
+	background-color: rgba(25,165,160,0.1);
+	cursor: pointer;
+}

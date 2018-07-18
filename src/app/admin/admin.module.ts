@@ -23,7 +23,6 @@ import { PersonComponent } from './person/person.component';
 import { AdmachineService } from './server/admachine.service';
 import { AreaselectComponent } from './shared/areaselect/areaselect.component';
 import { AccountComponent } from './account/account.component';
-import { MsgService } from "./server/msg.service";
 
 import { UserLevelPipe } from './pipe/user-level.pipe';
 
@@ -54,8 +53,7 @@ import { UserLevelPipe } from './pipe/user-level.pipe';
     AdminService,
     AreaService,
     AdverService,
-    AdmachineService,
-    MsgService
+    AdmachineService
   ]
 })
 export class AdminModule { }

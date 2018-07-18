@@ -104,9 +104,9 @@
 					<td>单元数</td>
 					<td>楼层数</td>
 					<td>物业费</td>
-					<td>操作</td>
+					<td style="min-width: 50px;width: 5%;white-space: nowrap;">操作</td>
 				</tr>
-				<tr *ngIf="!viewInfo.buildings"><td colspan="4">暂无楼栋信息</td></tr>
+				<tr *ngIf="!viewInfo.buildings"><td colspan="5">暂无楼栋信息</td></tr>
 				<tr *ngFor="let buil of viewInfo.buildings;index as ind">
 					<td>{{buil.serialNum}}</td>
 					<td>{{buil.unitNum}}</td>

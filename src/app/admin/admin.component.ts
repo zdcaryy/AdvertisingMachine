@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from "./server/admin.service";
-import { MsgService } from "./server/msg.service";
 declare var $:any ;
 
 @Component({
@@ -18,23 +17,22 @@ export class AdminComponent implements OnInit {
   msgNumber:number=0;
 
   constructor(
-    private adminService:AdminService,
-    private msgService:MsgService
+    private adminService:AdminService
   ) { }
 
   ngOnInit() {
     this.getUserLevel()
     //导航
     $('.header-floder').click(function(){
-      $('#nav').slideDown()
+      $('#nav').slideToggle()
     });
     $('body').click(function(){
       let w = document.documentElement.clientWidth || document.body.clientWidth;
       if(w<970){
-        $('#nav').slideUp()
+        $('#nav').hide()
       }  
     })
-    $('body').on('click', '#nav,.header-floder', function(event){
+    $('body').on('click', '.header-floder', function(event){
         event.stopPropagation(); 
     });
   }
@@ -50,7 +48,7 @@ export class AdminComponent implements OnInit {
       }else if(res.userInfo.userLevel!=0 && localStorage.getItem('plotSign')){
         this.plotCheckStatus=false;
         this.adminStatus=false;
-        this.msgService.activePlot=this.activePlot=localStorage.getItem('plotSign');
+        this.activePlot=localStorage.getItem('plotSign').split("-")[3];
       }else{
         this.plotCheckStatus=true;
         this.adminStatus=false;
@@ -63,7 +61,7 @@ export class AdminComponent implements OnInit {
   getUserInfo(){
     this.adminService.getData("/village/getRelatedVillage",{access_token:localStorage.getItem('access_token')})
     .subscribe(res=>{
-      //console.log(res);
+      console.log(res);
       this.plots=res;
     })
   }
@@ -71,15 +69,19 @@ export class AdminComponent implements OnInit {
   //非0级用户选择小区
   plotCheck(param){
     console.log(param);
-    this.msgService.activePlot=this.activePlot=param.village.name;
-    localStorage.setItem('plotSign',param.village.name)
+    localStorage.setItem('plotSign',param.village.province+param.village.city+param.village.region+'-'+param.village.name)
     this.plotCheckStatus=false;
+    this.activePlot=param.village.name
   }
 
   //切换小区
   cutBtn(){
-    this.plotCheckStatus=true;
-    this.getUserInfo()
+    if(this.plotCheckStatus){
+      this.plotCheckStatus=false;
+    }else{
+      this.plotCheckStatus=true;
+      this.getUserInfo()
+    } 
   }
 
   //刷新网页

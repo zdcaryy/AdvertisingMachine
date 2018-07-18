@@ -267,8 +267,9 @@
 	top: 50%;
 	transform: translate(-50%,-50%);
 	z-index: 999;
-	width: 600px;
-	height: 400px;
+	width: 100%;
+	max-width: 600px;
+	/*height: 400px;*/
 	background-color: #fff;
 	box-shadow: 1px 1px 5px 1px rgba(0,0,0,0.3);
 	border-top: 5px solid #009688;
@@ -303,7 +304,7 @@
 	font-size: 14px;
 }
 .modalBox .modal_foot{
-	margin-top: 30px;
+	margin: 45px 0 30px 0; 
 	text-align: center;
 }
 .modalBox .modal_btn{
@@ -328,6 +329,8 @@
 	width: 180px;
 	color: #5a5e66;
 	background-color: #fff;
+	outline: none;
+	box-shadow: none;
 }
 .modalBox input[type=text]:focus{
 	border-color: #009688;
@@ -400,6 +403,19 @@ input:-ms-input-placeholder{
 	color: #bfbfbf;
 }
 
+/* 表单验证 */
+
+.warning{
+	color: #d9534f;
+}
+.warning::before{
+	content: "\002A";
+	font-family: "Times New Roman";
+	position: relative;
+	top: 2px;
+	height: 0;
+}
+
 
 /*  ele-ui  */
 el-select{
@@ -422,6 +438,7 @@ el-select{
 ::ng-deep .el-select-dropdown__item{
 	height: auto !important;
 	line-height: 24px !important;
+	padding: 0 10px !important;
 }
 ::ng-deep .el-select-dropdown__item span{
 	line-height: 24px !important;
