@@ -45,6 +45,9 @@ export class PersonComponent implements OnInit {
   formdata;
   faceTag:boolean;//用于人脸信息是否上传的判断
   viewPerson:boolean=false;//用于显示查看人员信息界面
+  household:boolean=true;//用于判断人员类型为住户或是工作人员
+  allvillage=[];//所有的小区信息;
+  selectVillage=null;//选择的小区信息
   
   /*******用于房间信息的选择********/
   allHouseList=[];//在一个小区下所有的房屋信息
@@ -121,9 +124,10 @@ export class PersonComponent implements OnInit {
         console.log(e);
         break;
       case "查看":
-        console.log(e.data);
         this.viewPerson=true;
-        this.modifyObject=e.data;
+        this.modifyObject=JSON.parse(JSON.stringify(e.data));
+        this.modifyObject['date']=this.timestampToTime(this.modifyObject['date']);
+        this.modifyObject['expiredDate']=this.timestampToTime(this.modifyObject['expiredDate']);
         if(e.data.imgFeatures.length!=0){
           this.faceTag=true;
         }
@@ -247,6 +251,18 @@ export class PersonComponent implements OnInit {
     console.log(time);
     this.addObject.expiredDate=time;
   }
+  handle3(time: string): void {
+    // [time] is string
+    // date style follow format props
+    console.log(time);
+    this.modifyObject['date']=time;
+  }
+  handle4(time: string): void {
+    // [time] is string
+    // date style follow format props
+    console.log(time);
+    this.modifyObject['expiredDate']=time;
+  }
  
   //获取人员列表
   getPerson(){
@@ -272,11 +288,17 @@ export class PersonComponent implements OnInit {
     if(!this.dialog){
       this.dialog=true;
       this.addObject.villageName=localStorage.getItem('plotSign');
+      if(this.addObject.villageName){
+        this.personService.getData('/person/getUserLevelByVillage?villageName=四川省成都市高新区-子木小区\n')
+      }
       this.personService.getData('/house/findAllHouseByVillage?villageName='+this.addObject.villageName).subscribe(res=>{
         console.log(res);
         if(res.status==0&&res.houseList.length!=0){
           this.allHouseList=res.houseList;
           this.getSerialList();
+          for(let k in this.roomPick){
+            this.roomPick[k]=null;
+          }
         }
       })
       $('#add_person').fadeIn();
@@ -299,8 +321,15 @@ export class PersonComponent implements OnInit {
     this.formdata.append('date',this.addObject.date);
     this.formdata.append('expiredDate',this.addObject.expiredDate);
     this.formdata.append('type',this.addObject.type);
-    this.formdata.append('houseId',this.roomRes['id']);
-    console.log(this.formdata.get('houseId'));
+    if(this.household){
+      this.formdata.append('villageName',this.addObject.villageName);
+      this.formdata.append('houseId',this.roomRes['id']);
+    }
+    else{
+      this.addObject.villageName=this.selectVillage.province+this.selectVillage.city+this.selectVillage.region+'-'+this.selectVillage.village;
+      this.formdata.append('villageName',this.addObject.villageName);
+      this.formdata.append('ownerName',this.addObject.ownerName);
+    }
     this.personService.upfile('/person/save',this.formdata).subscribe(res=>{
       console.log(res);
       if(res===0){
@@ -333,10 +362,21 @@ export class PersonComponent implements OnInit {
   modifyDialogShow(){
     if(!this.dialog){
       this.dialog=true;
-      $('#modify_person').fadeIn();
       this.modifyObject['type']+='';
-      this.modifyObject['date']=this.timestampToTime(this.modifyObject['date']);
-      this.modifyObject['expiredDate']=this.timestampToTime(this.modifyObject['expiredDate']);
+      this.roomPick.serial=this.modifyObject['house']['serialNum'];
+      this.roomPick.unit=this.modifyObject['house']['unit'];
+      this.roomPick.floor=this.modifyObject['house']['floorNum'];
+      this.roomPick.room=this.modifyObject['house']['roomNumber'];
+      console.log(this.modifyObject);
+      this.personService.getData('/house/findAllHouseByVillage?villageName='+this.modifyObject['villageName']).subscribe(res=>{
+        if(res.status==0&&res.houseList.length!=0){
+          this.allHouseList=res.houseList;
+          this.getSerialList();
+          this.initHouse();//初始化
+          console.log(this.roomRes);
+        }
+      });
+      $('#modify_person').fadeIn();
     }
   }
   //修改人员信息
@@ -373,12 +413,20 @@ export class PersonComponent implements OnInit {
   
   //根据人员类型进行不同的显示
   powerCheck(e):void{
-   if(e==='4'){
+    this.renter=false;
+    this.household=true;
+    if(e==='4'){
      this.renter=true;
-   }
-   else{
+    }
+    if(e==='0'||e==='1'||e==='5'){
+     this.household=false;
+      this.personService.getData('/village/findAllVillages').subscribe(res=>{
+        this.allvillage=res.villageList;
+      })
+    }
+    else{
      this.renter=false;
-   }
+    }
   }
   
   //获取楼栋列表
@@ -433,6 +481,30 @@ export class PersonComponent implements OnInit {
       house.serialNum===this.roomPick.serial&&house.unit===this.roomPick.unit&&house.floorNum===this.roomPick.floor&&house.roomNumber===this.roomPick.room
     )[0];
   }
+  //初始化房间选择，用于修改
+  initHouse():void{
+    this.allHouseList.map(item=>{
+      if($.inArray(item.unit,this.unitList)===-1&&item.serialNum===this.roomPick.serial){
+        this.unitList.push(item.unit);
+      }
+    });
+    
+    this.allHouseList.map(item=>{
+      if($.inArray(item.floorNum,this.floorList)===-1&&item.serialNum===this.roomPick.serial&&item.unit===this.roomPick.unit){
+        this.floorList.push(item.floorNum);
+      }
+    });
+
+    this.allHouseList.map(item=>{
+      if($.inArray(item.roomNumber,this.roomList)===-1&&item.serialNum===this.roomPick.serial&&item.unit===this.roomPick.unit&&item.floorNum===this.roomPick.floor){
+        this.roomList.push(item.roomNumber);
+      }
+    })
+    this.unitList.sort(this.compare);
+    this.floorList.sort(this.compare);
+    this.roomList.sort(this.compare);
+    this.getHouseConfig();
+  }
   
   //比较函数，用于sort升序排序使用,房屋信息录入时不一定按顺序录入
   compare(value1,value2){
@@ -442,6 +514,16 @@ export class PersonComponent implements OnInit {
       return 1;
     }else{
       return 0;
+    }
+  }
+  
+  //选择小区，如果身份选择为工作人员而非住户时，则显示该模块功能
+  selectPosition(e):void{
+    console.log(e);
+    this.selectVillage=e;
+    let t=this.allvillage.filter(v=>v['province']==e.province&&v['city']==e.city&&v['region']==e.region&&v['name']==e.village)[0];
+    if(t){
+      this.addObject.ownerName=t.propertyComName;
     }
   }
 }

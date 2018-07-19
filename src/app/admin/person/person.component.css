@@ -214,11 +214,16 @@ table.house-table input{
 el-date-picker{
   display:inline-block;
 }
-::ng-deep .el-input__inner{
+.my-select ::ng-deep .el-input__inner{
   border:1px solid #e0e0e0;
+  cursor: pointer;
+  transition: 0.1s 0.1s all ease;
 }
-::ng-deep .el-select{
+.my-select ::ng-deep .el-select{
   width:200px;
+}
+.my-select ::ng-deep .el-input__inner:hover{
+  border-color:#b4bccc !important;
 }
 .img-list{
   width: 80%;

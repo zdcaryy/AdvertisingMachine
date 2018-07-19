@@ -3,32 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c72915e3-10fc-4822-a491-866d37237a9c" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/account/account.component.css" afterPath="$PROJECT_DIR$/src/app/admin/account/account.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/account/account.component.html" afterPath="$PROJECT_DIR$/src/app/admin/account/account.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/account/account.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/account/account.component.ts" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/admin-routing.module.ts" afterPath="$PROJECT_DIR$/src/app/admin/admin-routing.module.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.component.css" afterPath="$PROJECT_DIR$/src/app/admin/admin.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.component.html" afterPath="$PROJECT_DIR$/src/app/admin/admin.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/admin.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/admin.module.ts" afterPath="$PROJECT_DIR$/src/app/admin/admin.module.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.css" afterPath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.html" afterPath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/advertisement/advertisement.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/area/area.component.css" afterPath="$PROJECT_DIR$/src/app/admin/area/area.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/area/area.component.html" afterPath="$PROJECT_DIR$/src/app/admin/area/area.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/area/area.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/area/area.component.ts" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.css" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.css" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.html" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.html" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/server/admin.service.ts" afterPath="$PROJECT_DIR$/src/app/admin/server/admin.service.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/server/adver.service.ts" afterPath="$PROJECT_DIR$/src/app/admin/server/adver.service.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/areaselect/areaselect.component.css" afterPath="$PROJECT_DIR$/src/app/admin/shared/areaselect/areaselect.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/select-village/select-village.component.css" afterPath="$PROJECT_DIR$/src/app/admin/shared/select-village/select-village.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/select-village/select-village.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/shared/select-village/select-village.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.css" afterPath="$PROJECT_DIR$/src/app/admin/shared/table/table.component.css" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/village/village.component.html" afterPath="$PROJECT_DIR$/src/app/admin/village/village.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" afterPath="$PROJECT_DIR$/src/index.html" />
-      <change beforePath="$PROJECT_DIR$/src/styles.css" afterPath="$PROJECT_DIR$/src/styles.css" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin/user/user.component.css" afterPath="$PROJECT_DIR$/src/app/admin/user/user.component.css" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin/user/user.component.html" afterPath="$PROJECT_DIR$/src/app/admin/user/user.component.html" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin/user/user.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/user/user.component.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -71,7 +52,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -83,6 +63,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -126,7 +107,9 @@
       <workItem from="1531701374079" duration="221000" />
       <workItem from="1531733633281" duration="52000" />
       <workItem from="1531819938585" duration="55000" />
-      <workItem from="1531906805986" duration="10000" />
+      <workItem from="1531906805986" duration="38000" />
+      <workItem from="1531960109640" duration="42000" />
+      <workItem from="1531992980526" duration="9000" />
     </task>
     <task id="LOCAL-00001" summary="zdc-2018/6/4">
       <created>1528105094280</created>
@@ -191,11 +174,18 @@
       <option name="project" value="LOCAL" />
       <updated>1531819977801</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="人员信息修改、查看">
+      <created>1531906828854</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1531906828854</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1169000" />
+    <option name="totallyTimeSpent" value="1248000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="194" y="160" width="1333" height="864" extended-state="0" />

@@ -64,9 +64,11 @@ export class UserComponent implements OnInit {
         this.delView(e.data);
         break;
       case "修改":
+        console.log(e.data);
         if(!this.dialog){
           this.dialog=true;
           this.modifyUser=JSON.parse(JSON.stringify(e.data));
+          this.modifyUser['userLevel']+='';
           $('#user_config').fadeIn();
         }
         break;

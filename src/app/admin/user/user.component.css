@@ -6,6 +6,13 @@
   height: calc(100% - 20px);
   position:relative;
 }
+input{
+  cursor:pointer;
+  transition: 0.1s 0.1s all ease;
+}
+input:hover{
+  border-color:#b4bccc !important;
+}
 .search-container{
   padding:20px 50px;
   border-width:1px 0 0 0;

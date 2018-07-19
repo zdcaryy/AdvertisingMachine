@@ -72,11 +72,16 @@
       </div>
       <div class="form-item">
         <label>用户类型</label>：
-        <select [(ngModel)]="addUser.userLevel" name="usertype">
-          <option value="0">系统管理员</option>
-          <option value="1">管理员</option>
-          <option value="2">业主</option>
-        </select>
+        <el-select [(model)]="addUser.userLevel" placeholder="请选择" size="mini">
+          <el-option *ngFor="let item of [
+          {label:'管理员',value:'0'},
+          {label:'其他',value:'1'}
+          ]"
+                     [label]="item.label"
+                     [value]="item.value"
+          >
+          </el-option>
+        </el-select>
       </div>
       <div class="operation2">
         <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(username.valid&&pwd.valid&&tel.valid&&idcard.valid)?add(f):0">&nbsp;&nbsp;添加&nbsp;&nbsp;</button>
@@ -121,12 +126,16 @@
       </div>
       <div class="form-item">
         <label>用户类型</label>：
-        <select name="modifytype"  [(ngModel)]="modifyUser.userLevel">
-          <option value="0">业主</option>
-          <option value="1">管理员</option>
-          <option value="2">物业</option>
-          <option value="3">系统管理员</option>
-        </select>
+        <el-select [(model)]="modifyUser.userLevel" placeholder="请选择" size="mini">
+          <el-option *ngFor="let item of [
+          {label:'管理员',value:'0'},
+          {label:'其他',value:'1'}
+          ]"
+                     [label]="item.label"
+                     [value]="item.value"
+          >
+          </el-option>
+        </el-select>
       </div>
       <div class="operation2">
         <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="(modifyname.valid&&modifytel.valid&&modifyidcard.valid)?modify():0">保存修改</button>
