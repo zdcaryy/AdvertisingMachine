@@ -147,7 +147,7 @@
       </div>
 
       <!--选择服务的小区------针对工作人员start-->
-      <div class="form-item" *ngIf="!household">
+      <div class="form-item" *ngIf="!household&&selectPower!=1">
         <label>选择小区</label>：
         <selectVillage
                        (handle)="selectPosition($event);"
@@ -155,9 +155,14 @@
                        [showLevel]="4"
         ></selectVillage>
       </div>
+      <div class="form-item" *ngIf="!household&&selectPower==1">
+        <label>小区信息</label>：
+        <span>{{addObject.villageName}}</span>
+      </div>
       <div class="form-item" *ngIf="!household">
         <label>所属公司</label>：
-        <span>250</span>
+        <span *ngIf="selectPower==0||selectPower==1">{{addObject.ownerName}}</span>
+        <input type="text" name="company" *ngIf="selectPower==5">
       </div>
       <!--选择服务的小区------针对工作人员end-->
 
@@ -181,27 +186,27 @@
         <tr>
           <td>姓名：{{modifyObject.name}}</td>
           <td>联系电话：{{modifyObject.phoneNumber}}</td>
-          <td>类型：{{modifyObject.type}}</td>
+          <td>类型：{{powerList[modifyObject.type].label}}</td>
         </tr>
         <tr>
           <td>人脸数据：{{faceTag?'已上传':'未上传'}}</td>
           <td>所属公司(户主)：{{modifyObject.ownerName}}</td>
-          <td>户主：{{modifyObject.ownerName}}</td>
+          <td>小区：{{modifyObject.villageName}}</td>
         </tr>
-        <tr>
+        <tr *ngIf="modifyObject.type!=0&&modifyObject.type!=1&&modifyObject.type!=5">
           <td>户主电话：{{modifyObject.house.phoneNumber}}</td>
-          <td>小区：{{modifyObject.house.villageName}}</td>
+          <td>户主：{{modifyObject.ownerName}}</td>
           <td>楼栋号：{{modifyObject.house.serialNum}}</td>
         </tr>
-        <tr>
+        <tr *ngIf="modifyObject.type!=0&&modifyObject.type!=1&&modifyObject.type!=5">
           <td>单元号：{{modifyObject.house.unit}}</td>
           <td>楼层：{{modifyObject.house.floorNum}}</td>
           <td>房间号：{{modifyObject.house.roomNumber}}</td>
         </tr>
         <tr>
-          <td>入住日期：{{modifyObject.date}}</td>
-          <td>失效日期：{{modifyObject.expiredDate}}</td>
-          <td>审核状态：{{modifyObject.tag}}</td>
+          <td *ngIf="modifyObject.type!=0&&modifyObject.type!=1&&modifyObject.type!=5">入住日期：{{modifyObject.date}}</td>
+          <td *ngIf="modifyObject.type!=0&&modifyObject.type!=1&&modifyObject.type!=5">失效日期：{{modifyObject.expiredDate}}</td>
+          <td>审核状态：{{modifyObject.tag==0?'审核中':(modifyObject.tag==1?'已通过':'未通过')}}</td>
         </tr>
       </table>
     </div>

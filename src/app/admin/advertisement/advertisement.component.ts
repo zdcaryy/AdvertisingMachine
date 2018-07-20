@@ -222,7 +222,7 @@ export class AdvertisementComponent implements OnInit {
     console.log(this.video);
     console.log(this.pic);
     // this.ngOnInit();
-    // if(1){return}
+    if(1){return}
     var formdata = new FormData();
     formdata.append('name',this.addAD['name']);
     formdata.append('category',this.addAD['category']);

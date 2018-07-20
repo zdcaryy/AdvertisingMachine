@@ -37,7 +37,6 @@ export class PersonComponent implements OnInit {
   animateState='void';//动画状态
   previewSrc='';
   powerList=[];
-  addState:boolean=false;//作用与弹框的ngIf
   files=[];//存放file类型的input选择的上传文件
   photosUrls=[];//存放预览图
   datas=[];//存放最终需要上传的文件
@@ -46,6 +45,7 @@ export class PersonComponent implements OnInit {
   faceTag:boolean;//用于人脸信息是否上传的判断
   viewPerson:boolean=false;//用于显示查看人员信息界面
   household:boolean=true;//用于判断人员类型为住户或是工作人员
+  selectPower=null;//选择的人员类别
   allvillage=[];//所有的小区信息;
   selectVillage=null;//选择的小区信息
   
@@ -65,21 +65,6 @@ export class PersonComponent implements OnInit {
   
   roomRes={};//根据选择获取的房屋信息，包括户主的信息
   
-  // testData=[
-  //   {serialNum:1,unit:1,floorNum:1,roomNumber:1001},
-  //   {serialNum:2,unit:2,floorNum:2,roomNumber:2002},
-  //   {serialNum:2,unit:1,floorNum:1,roomNumber:2021},
-  //   {serialNum:3,unit:1,floorNum:1,roomNumber:3001},
-  //   {serialNum:3,unit:2,floorNum:1,roomNumber:3002},
-  //   {serialNum:3,unit:3,floorNum:1,roomNumber:3003},
-  //   {serialNum:7,unit:1,floorNum:1,roomNumber:7001},
-  //   {serialNum:8,unit:1,floorNum:1,roomNumber:8001},
-  //   {serialNum:9,unit:1,floorNum:1,roomNumber:9001},
-  //   {serialNum:10,unit:1,floorNum:1,roomNumber:10001},
-  //   {serialNum:11,unit:1,floorNum:1,roomNumber:11001},
-  //   {serialNum:12,unit:1,floorNum:1,roomNumber:12001},
-  //   {serialNum:13,unit:1,floorNum:1,roomNumber:13001},
-  // ]
   /*******用于房间信息的选择********/
   
   addObject={
@@ -99,8 +84,8 @@ export class PersonComponent implements OnInit {
     this.heads = [{label: '人员姓名',field: 'name'},
       {label: '所属公司(户主)', field: 'ownerName'},
       {label: '联系电话', field: 'phoneNumber'},
-      {label: '类型', field: 'type', child: ['所有','业主','租户','物业员工','公司员工','访客','维护人员'],textConfig:{0: '业主', 1: '租户',2:'物业员工',3:'公司员工',4:'访客',5:'维护人员'},colorConfig:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple',6:'gold'}},
-      {label: '审核状态', field: 'tag',child:['所有','已通过','审核中','未通过'],textConfig:{0:'已通过',1:'审核中'},colorConfig:{0:'#119C9D',1:'#d73e3e'}},
+      {label: '类型', field: 'type', child: ['所有','业主','租户','物业员工','公司员工','访客','维护人员'],textConfig:{0: '物业主管', 1: '物业员工',2:'业主',3:'公司管理员',4:'租户',5:'机器运维人员'},colorConfig:{0:'blue',1:'green',2:'red',3:'yellow',4:'pink',5:'purple'}},
+      {label: '审核状态', field: 'tag',child:['所有','已通过','审核中','未通过'],textConfig:{0:'审核中',1:'已通过',2:'未通过'},colorConfig:{0:'#d73e3e',1:'#119C9D'}},
       {label:'入住时间',field:'date'},
       {label: '操作', field: 'caozuo',operate:true,operations:['查看','删除'],colorConfig:{查看: '#119C9D',删除:'#d73e3e'}}];
   
@@ -125,15 +110,10 @@ export class PersonComponent implements OnInit {
         break;
       case "查看":
         this.viewPerson=true;
+        console.log(e.data);
         this.modifyObject=JSON.parse(JSON.stringify(e.data));
         this.modifyObject['date']=this.timestampToTime(this.modifyObject['date']);
         this.modifyObject['expiredDate']=this.timestampToTime(this.modifyObject['expiredDate']);
-        if(e.data.imgFeatures.length!=0){
-          this.faceTag=true;
-        }
-        else{
-          this.faceTag=false;
-        }
         break;
     }
   }
@@ -240,40 +220,44 @@ export class PersonComponent implements OnInit {
   
   //日期选择处理函数
   handle1(time: string): void {
-    // [time] is string
-    // date style follow format props
     console.log(time);
     this.addObject.date=time;
   }
   handle2(time: string): void {
-    // [time] is string
-    // date style follow format props
     console.log(time);
     this.addObject.expiredDate=time;
   }
   handle3(time: string): void {
-    // [time] is string
-    // date style follow format props
     console.log(time);
     this.modifyObject['date']=time;
   }
   handle4(time: string): void {
-    // [time] is string
-    // date style follow format props
     console.log(time);
     this.modifyObject['expiredDate']=time;
   }
  
   //获取人员列表
   getPerson(){
-    this.personService.getData('/person/findAll').subscribe(res=>{
-      let that=this;
-      this.bodys = res.map(function (item) {
-        item['date']=that.timestampToTime(item.date)
-        item['operate'] =  ['修改','删除'];
-        return item;
-      });
-    })
+    if(localStorage.getItem('plotSign')){
+      this.personService.getData('/person/findAll/?villageName='+localStorage.getItem('plotSign')).subscribe(res=>{
+        let that=this;
+        this.bodys = res.map(function (item) {
+          item['date']=that.timestampToTime(item.date)
+          item['operate'] =  ['查看','删除'];
+          return item;
+        });
+      })
+    }
+    else{
+      this.personService.getData('/person/findAll').subscribe(res=>{
+        let that=this;
+        this.bodys = res.map(function (item) {
+          item['date']=that.timestampToTime(item.date)
+          item['operate'] =  ['查看','删除'];
+          return item;
+        });
+      })
+    }
   }
   //时间格式化
   timestampToTime(timestamp) {
@@ -288,8 +272,50 @@ export class PersonComponent implements OnInit {
     if(!this.dialog){
       this.dialog=true;
       this.addObject.villageName=localStorage.getItem('plotSign');
+      //判断当前登陆的账号的权限，不同权限可添加不同的人员身份
       if(this.addObject.villageName){
-        this.personService.getData('/person/getUserLevelByVillage?villageName=四川省成都市高新区-子木小区\n')
+        this.personService.getData('/person/getUserLevelByVillage?villageName='+this.addObject.villageName).subscribe(res=>{
+          switch(res.level){
+            //物业主管
+            case 0:
+              this.powerList.forEach((power,i)=>{
+                if(i==0||i==5){
+                  power.elDisabled=true;
+                }
+                else{
+                  power.elDisabled=false;
+                }
+              });
+              break;
+              //物业员工
+            case 1:
+              this.household=true;
+              this.powerList.forEach((power,i)=>{
+                if(i==0||i==1||i==5){
+                  power.elDisabled=true;
+                }
+                else{
+                  power.elDisabled=false;
+                }
+              });
+              break;
+          }
+        })
+      }
+      //系统管理员只能添加运维人员和物业主管
+      else{
+        this.household=false;
+        this.personService.getData('/village/findAllVillages').subscribe(res=>{
+          this.allvillage=res.villageList;
+        })
+        this.powerList.forEach((power,i)=>{
+          if(i==1||i==2||i==3||i==4){
+            power.elDisabled=true;
+          }
+          else{
+            power.elDisabled=false;
+          }
+        })
       }
       this.personService.getData('/house/findAllHouseByVillage?villageName='+this.addObject.villageName).subscribe(res=>{
         console.log(res);
@@ -324,9 +350,14 @@ export class PersonComponent implements OnInit {
     if(this.household){
       this.formdata.append('villageName',this.addObject.villageName);
       this.formdata.append('houseId',this.roomRes['id']);
+      this.formdata.append('ownerName',this.roomRes['ownerName']);
+    }
+    else if(this.selectPower!=1){
+      this.addObject.villageName=this.selectVillage.province+this.selectVillage.city+this.selectVillage.region+'-'+this.selectVillage.village;
+      this.formdata.append('villageName',this.addObject.villageName);
+      this.formdata.append('ownerName',this.addObject.ownerName);
     }
     else{
-      this.addObject.villageName=this.selectVillage.province+this.selectVillage.city+this.selectVillage.region+'-'+this.selectVillage.village;
       this.formdata.append('villageName',this.addObject.villageName);
       this.formdata.append('ownerName',this.addObject.ownerName);
     }
@@ -413,16 +444,23 @@ export class PersonComponent implements OnInit {
   
   //根据人员类型进行不同的显示
   powerCheck(e):void{
+    this.selectPower=e;
     this.renter=false;
     this.household=true;
+    if(e==='0'||e==='5'){
+      this.household=false;
+    }
+    if(e==='1'){
+      this.household=false;
+      this.personService.getData('/village/findVillageByName?villageName='+localStorage.getItem('plotSign')).subscribe(res=>{
+        console.log(res);
+        if(res){
+          this.addObject.ownerName=res.village.propertyComName;
+        }
+      })
+    }
     if(e==='4'){
      this.renter=true;
-    }
-    if(e==='0'||e==='1'||e==='5'){
-     this.household=false;
-      this.personService.getData('/village/findAllVillages').subscribe(res=>{
-        this.allvillage=res.villageList;
-      })
     }
     else{
      this.renter=false;

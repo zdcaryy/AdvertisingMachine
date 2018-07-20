@@ -57,6 +57,10 @@ export class VillageComponent implements OnInit {
   addBuildInfo:object;
   // 头部地区选择，保存当前所在的地区
   nowArea:object;
+  // 当前小区的所有房屋信息
+  houseInfo:any;
+  // 添加房屋信息
+  addHouseInfo:any;
 
   ngOnInit() {
     this.initAll();
@@ -104,8 +108,10 @@ export class VillageComponent implements OnInit {
     this.animeState = false;
     this.modalType = '';
     this.viewVillage = false;
+    this.houseInfo = [];
     this.initAdd();
     this.initAddBuild();
+    this.initAddHouse();
   }
 
   //获取所有小区列表
@@ -140,7 +146,14 @@ export class VillageComponent implements OnInit {
   getOperateEvent(e){
     console.log(e);
     if(e.field=='operate'&&e.option=='删除'){this.delOne(e.data)};
-    if(e.field=='operate'&&e.option=='查看'){this.viewVillage=true;this.viewInfo=e.data};
+    if(e.field=='operate'&&e.option=='查看'){
+      this.viewVillage=true;
+      this.viewInfo=e.data;
+      this.adService.getData('/house/findAllHouseByVillage?villageName='+e.data.address+'-'+e.data.name).subscribe(res=>{
+        console.log(res);
+        this.houseInfo = res.houseList;
+      });
+    };
   }
   // 表格的事件
   getSelectedList(e){
@@ -300,8 +313,10 @@ export class VillageComponent implements OnInit {
     }
   }
   addBuild(){
-    let repeat = this.viewInfo.buildings.filter(item=>{return this.addBuildInfo['serialNum']==item['serialNum']});
-    if(repeat.length){alert('已存在该楼栋！');return};
+    if(this.viewInfo.buildings){
+      let repeat = this.viewInfo.buildings.filter(item=>{return this.addBuildInfo['serialNum']==item['serialNum']});
+      if(repeat.length){alert('已存在该楼栋！');return};
+    }
 
     if(!this.addBuildInfo['priceTag']){delete this.addBuildInfo['priceTag']};
     this.adService.postFormData('/village/saveBuilding',this.addBuildInfo).subscribe(res=>{
@@ -328,6 +343,28 @@ export class VillageComponent implements OnInit {
     this.modifyInfo.buildings.splice(index,1);
     console.log( this.modifyInfo)
     this.modify();
+  }
+
+  // 新增房屋信息
+  initAddHouse(){
+    // console.log(this.viewInfo)
+    this.addHouseInfo = {
+      villageName:'',
+      serialNum:'',
+      unit:'',
+      floorNum:'',
+      roomNumber:'',
+      ownerName:'',
+      phoneNumber:''
+    }
+    if(this.viewInfo){this.addHouseInfo['villageName']=this.viewInfo.address+'-'+this.viewInfo.name};
+  }
+
+  addHouse(){
+    console.log(this.addHouseInfo);
+    this.adService.postFormData('/house/addHouse',this.addHouseInfo).subscribe(res=>{
+      console.log(res);
+    });
   }
 
 }

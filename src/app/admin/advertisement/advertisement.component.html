@@ -132,8 +132,18 @@
 						<span class="modal_oper" (click)="ifNewType=!ifNewType;addAD.category=null">{{ifNewType?'选择分类':'添加分类'}}</span>
 					</span>
 				</p>
-				<p class="modal_row"><span class="row_left">生效日期：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.validateDate"></span>
-				<p class="modal_row"><span class="row_left">失效日期：</span><span class="row_right"><input type="text" [(ngModel)]="addAD.expiredDate"></span>
+				<p class="modal_row">
+					<span class="row_left">生效日期：</span>
+					<span class="row_right">
+						<!-- <input type="text" [(ngModel)]="addAD.validateDate"> -->
+						<TimePick [(dateTime)]="addAD.validateDate"></TimePick>
+					</span>
+				<p class="modal_row">
+					<span class="row_left">失效日期：</span>
+					<span class="row_right">
+						<!-- <input type="text" [(ngModel)]="addAD.expiredDate"> -->
+						<TimePick [(dateTime)]="addAD.expiredDate"></TimePick>
+					</span>
 					<!-- <el-date-picker (modelChange)="handle($event)" (clear-click)="handle($event)"></el-date-picker> -->
 				</p>
 				<p class="modal_row">

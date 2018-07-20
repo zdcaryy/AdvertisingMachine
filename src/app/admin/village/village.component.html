@@ -67,6 +67,17 @@
 				<p class="modal_row"><span class="row_left">物业费：</span><span class="row_right"><input type="text" [(ngModel)]="addBuildInfo.priceTag"></span></p>
 				<p class="modal_foot"><span class="modal_btn" (click)="addBuild()">添加</span></p>
 			</div>
+			<!--    添加房屋信息    -->
+			<div *ngSwitchCase="'houseAdd'">
+				<p class="modal_title">添加房屋信息</p>
+				<p class="modal_row"><span class="row_left">楼栋：</span><span class="row_right"><input type="text" [(ngModel)]="addHouseInfo.serialNum"></span></p>
+				<p class="modal_row"><span class="row_left">单元：</span><span class="row_right"><input type="text" [(ngModel)]="addHouseInfo.unit"></span></p>
+				<p class="modal_row"><span class="row_left">楼层：</span><span class="row_right"><input type="text" [(ngModel)]="addHouseInfo.floorNum"></span></p>
+				<p class="modal_row"><span class="row_left">房号：</span><span class="row_right"><input type="text" [(ngModel)]="addHouseInfo.roomNumber"></span></p>
+				<p class="modal_row"><span class="row_left">户主名：</span><span class="row_right"><input type="text" [(ngModel)]="addHouseInfo.ownerName"></span></p>
+				<p class="modal_row"><span class="row_left">户主电话：</span><span class="row_right"><input type="text" [(ngModel)]="addHouseInfo.phoneNumber"></span></p>
+				<p class="modal_foot"><span class="modal_btn" (click)="addHouse()">添加</span></p>
+			</div>
 			
 		</div>
 	</div>
@@ -118,6 +129,35 @@
 					</td>
 				</tr>
 			</table>
+
+			<table class="text_center">
+				<tr>
+					<th colspan="2">房屋信息</th>
+					<th colspan="7" class="view_oper text_right"><span class="el-icon-plus underline" (click)="showModal=true;modalType='houseAdd';initAddHouse()">新增信息</span></th>
+				</tr>
+				<tr>
+					<td>楼栋</td>
+					<td>单元</td>
+					<td>楼层</td>
+					<td>房号</td>
+					<td>户主</td>
+					<td>户主电话</td>
+					<td>操作</td>
+				</tr>
+				<tr *ngIf="!houseInfo||houseInfo.length==0">
+					<td colspan="7">暂无房屋信息</td>
+				</tr>
+				<tr *ngFor="let h of houseInfo">
+					<td>{{h.serialNum}}</td>
+					<td>{{h.unit}}</td>
+					<td>{{h.floorNum}}</td>
+					<td>{{h.roomNumber}}</td>
+					<td>{{h.ownerName}}</td>
+					<td>{{h.phoneNumber}}</td>
+					<td>操作</td>
+				</tr>
+			</table>
+
 		</div>
 	</div>
 

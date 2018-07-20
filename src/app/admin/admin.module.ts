@@ -25,6 +25,7 @@ import { AreaselectComponent } from './shared/areaselect/areaselect.component';
 import { AccountComponent } from './account/account.component';
 
 import { UserLevelPipe } from './pipe/user-level.pipe';
+import { TimepickComponent } from './shared/timepick/timepick.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { UserLevelPipe } from './pipe/user-level.pipe';
     PersonComponent, 
     AreaselectComponent,
     AccountComponent,
-    UserLevelPipe
+    UserLevelPipe,
+    TimepickComponent
   ],
   providers: [
     AdminService,

@@ -1,0 +1,22 @@
+
+<table cellpadding="0" cellspacing="0" border="0">
+	<tr>
+		<td>
+			<input type="tel" #year (focus)="init()" 
+									(input)="year.value.length>4?year.value=year.value.substr(0,4):'';" 
+									(change)="year.value.length==0?year.value=getYear():'';date.y=year.value;emitDate()" [value]="date.y"><span>年</span>
+		</td>
+		<td>
+			<input type="tel" maxVal="12" minVal="1" maxLen="2" #mon (focus)="init()" (blur)="date.M=mon.value;emitDate()" [value]="date.M"><span>月</span>
+		</td>
+		<td>
+			<input type="tel" maxVal="31" minVal="1" maxLen="2" #day (focus)="init()" (blur)="date.d=day.value;emitDate()" [value]="date.d"><span>日</span>
+		</td>
+		<td>
+			<input type="tel" maxVal="23" minVal="0" maxLen="2" #hour (focus)="init()" (blur)="date.h=hour.value;emitDate()" [value]="date.h"><span>时</span>
+		</td>
+		<td>
+			<input type="tel" maxVal="59" minVal="0" maxLen="2" #min (focus)="init()" (blur)="date.m=min.value;emitDate()" [value]="date.m"><span>分</span>
+		</td>
+	</tr>
+</table>

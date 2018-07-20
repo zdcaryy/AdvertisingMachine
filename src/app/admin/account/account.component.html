@@ -48,12 +48,13 @@
 					<span class="row_right">
 						<table class="labelInput">
 							<tr>
-								<td><input type="text" [(ngModel)]="addInfo['serialNum']"><span>栋</span></td>
-								<td><input type="text" [(ngModel)]="addInfo['unit']"><span>单元</span></td>
-								<td><input type="text" [(ngModel)]="addInfo['floorNum']"><span>楼</span></td>
-								<td><input type="text" [(ngModel)]="addInfo['roomNumber']"><span>号</span></td>
+								<td><input type="text" (change)="getOwner()" [(ngModel)]="addInfo['serialNum']"><span>栋</span></td>
+								<td><input type="text" (change)="getOwner()" [(ngModel)]="addInfo['unit']"><span>单元</span></td>
+								<td><input type="text" (change)="getOwner()" [(ngModel)]="addInfo['floorNum']"><span>楼</span></td>
+								<td><input type="text" (change)="getOwner()" [(ngModel)]="addInfo['roomNumber']"><span>号</span></td>
 							</tr>
 						</table>
+						<span *ngIf="addInfo.ownerName">户主：{{addInfo.ownerName}}</span>
 					</span>
 				</p>
 				<p class="modal_row">
@@ -145,40 +146,45 @@
 
 	<!--    查看信息    -->
 	<div id="viewInfo" *ngIf="viewbox">
-		<div class="contentBox">
 			<div class="backTo" (click)="viewbox=false"><span class="el-icon-arrow-left underline">返回列表</span></div>
-			<table class="text_left noborder">
+		<div class="contentBox" *ngIf=viewInfo.house>
+			<table class="text_left ">
 				<tr>
 					<th>个人信息</th>
 				</tr>
 				<tr>
-					<td>姓名：{{viewInfo.name}}</td>
-					<td>电话：{{viewInfo.phoneNumber}}</td>
+					<td width="50%">姓名：{{viewInfo.name}}</td>
+					<td width="50%">电话：{{viewInfo.phoneNumber}}</td>
 				</tr>
 				<tr>
 					<td>类型：{{typeList[viewInfo.type]}}</td>
-					<td>照片：{{'zhaopian'}}</td>
+					<td>照片：
+						<span *ngIf="viewInfo.imgFeatures;else noImg">已上传 <span style="color: #19A5A0" class="underline" (click)="showPic(viewInfo.imgFeatures)">查看</span></span>
+						<ng-template #noImg><span>未上传</span></ng-template>
+					</td>
 				</tr>
 			</table>
+
 			<table class="text_left">
 				<tr>
 					<th>房屋信息</th>
 				</tr>
 				<tr>
-					<td colspan="2">户主：{{viewInfo.house.ownerName}}</td>
-					<td colspan="2">电话：{{viewInfo.house.phoneNumber}}</td>
+					<td colspan="2" width="50%">户主：{{viewInfo.house.ownerName}}</td>
+					<td colspan="2" width="50%">电话：{{viewInfo.house.phoneNumber}}</td>
 				</tr>
 				<tr>
 					<td colspan="2">小区：{{viewInfo.house.villageName.split('-')[1]}}</td>
 					<td colspan="2">地址：{{viewInfo.house.villageName.split('-')[0]}}</td>
 				</tr>
 				<tr>
-					<td>楼栋：{{viewInfo.house.serialNum}}栋</td>
-					<td>单元：{{viewInfo.house.unit}}单元</td>
-					<td>楼层：{{viewInfo.house.floorNum}}楼</td>
-					<td>房间：{{viewInfo.house.roomNumber}}号</td>
+					<td width="25%">楼栋：{{viewInfo.house.serialNum}}栋</td>
+					<td width="25%">单元：{{viewInfo.house.unit}}单元</td>
+					<td width="25%">楼层：{{viewInfo.house.floorNum}}楼</td>
+					<td width="25%">房间：{{viewInfo.house.roomNumber}}号</td>
 				</tr>
 			</table>
+
 			<table class="text_center">
 				<tr>
 					<th>成员信息</th>
@@ -194,8 +200,8 @@
 					<td>{{fam.phoneNumber}}</td>
 					<td [style.color]="fam.tag==0?'#FFC800':fam.tag==1?'#19A5A0':'#d73e3e'">{{tagList[fam.tag]}}</td>
 					<td style="width: 5%;white-space: nowrap;">
-						<span style="cursor: pointer;color: #19A5A0" class="underline" (click)="showModal=true;modalType='modifyFamily';modifyFamilyInfo=fam;">修改</span><br>
-						<span style="cursor: pointer;color: #d73e3e" class="underline" >删除</span>
+						<span style="color: #19A5A0" class="underline" (click)="showModal=true;modalType='modifyFamily';modifyFamilyInfo=fam;">修改</span><br>
+						<span style="color: #d73e3e" class="underline" >删除</span>
 					</td>
 				</tr>
 				<tr>
@@ -205,4 +211,7 @@
 		</div>
 	</div>
 
+	<div class="viewImg" *ngIf="viewImg" (click)="viewImg=false">
+		<img [src]="imgUrl" alt="" (click)="$event.stopPropagation()">
+	</div>
 </div>

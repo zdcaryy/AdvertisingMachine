@@ -1,0 +1,36 @@
+table{
+	width: 280px;
+	border-collapse: collapse;
+	display: inline-block;
+	vertical-align: middle;
+}
+td{
+	position: relative;
+	white-space: nowrap;
+	overflow: hidden;
+	border: 0;
+	border: 1px solid #d0d0d0;
+}
+input{
+	outline: none;
+	box-shadow: none;
+	border: 0;
+	box-sizing: border-box;
+	width: 100%;
+	text-align: center;
+	padding-right: 18px;
+}
+span,input{
+	color: #5a5e66;
+}
+span{
+	cursor: default;
+	display: inline-block;
+	padding: 1px 3px;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background-color: #efefef;
+	font-size: 12px;
+}

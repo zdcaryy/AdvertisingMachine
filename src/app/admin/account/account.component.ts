@@ -44,6 +44,10 @@ export class AccountComponent implements OnInit {
   modifyFamilyInfo:any;
   // 查看的信息
   viewInfo:any;
+  // 控制显示图片预览
+  viewImg:boolean;
+  features:any[];
+  imgUrl:any;
 
   ngOnInit() {
   	console.log(window.localStorage);
@@ -57,6 +61,9 @@ export class AccountComponent implements OnInit {
     this.addFamilyInfo={};
     this.modifyFamilyInfo={};
     this.viewInfo = {};
+    this.viewImg = false;
+    this.features = [];
+    this.imgUrl = '';
     this.getVillage();
   }
 
@@ -103,8 +110,16 @@ export class AccountComponent implements OnInit {
   //添加新信息
   initAdd(){
     this.addInfo = {
+      villageName:'',
       name:this.commonInfo.name,
-      phoneNumber:this.commonInfo.phoneNumber
+      phoneNumber:this.commonInfo.phoneNumber,
+      ownerName:'',
+      houseId:'',
+      date:'',
+      serialNum:'',
+      unit:'',
+      floorNum:'',
+      roomNumber:''
     }
   }
   getAddFace(e){
@@ -113,11 +128,21 @@ export class AccountComponent implements OnInit {
     this.addInfo['img'] = e.files[0];
 
   }
+  // 输入房间号，获取户主信息
+  getOwner(){
+    console.log(this.addInfo.villageName.length,this.addInfo.serialNum.length,this.addInfo.unit.length,this.addInfo.floorNum.length ,this.addInfo.roomNumber.length)
+    if(!this.addInfo.villageName.length || !this.addInfo.serialNum.length || !this.addInfo.unit.length || !this.addInfo.floorNum.length || !this.addInfo.roomNumber.length){return}
+    this.adService.getData('/house/findByHouseInfo?villageName='+this.addInfo.villageName+'&serialNum='+this.addInfo.serialNum+'&unit='+this.addInfo.unit+'&floorNum='+this.addInfo.floorNum+'&roomNumber='+this.addInfo.roomNumber).subscribe(res=>{
+      console.log(res);
+      this.addInfo['houseId'] = res.id;
+      this.addInfo['ownerName'] = res.ownerName;
+    });
+  }
   addNew(){
     this.addInfo['ownerPhoneNumber'] = this.commonInfo.phoneNumber;
     this.addInfo['type'] = 2;
-    this.addInfo['ownerName'] = this.addInfo['name'];
     console.log(this.addInfo);
+    // if(1){return}
     let formdata = new FormData();
     for(let k in this.addInfo){
       formdata.append(k,this.addInfo[k]);
@@ -129,10 +154,19 @@ export class AccountComponent implements OnInit {
 
   // 查看房屋(小区)信息
   getFamily(house){
+    console.log(this.viewInfo)
     let url = '/person/findByHouse?villageName='+house.villageName+'&serialNum='+house.house.serialNum+'&unit='+house.house.unit+'&floorNum='+house.house.floorNum+'&roomNumber='+house.house.roomNumber;
     this.adService.getData(url).subscribe(res=>{
       this.viewInfo['family'] = res;
     });
+  }
+
+  // 查看已上传的照片
+  showPic(features){
+    this.viewImg = true;
+    // console.log(features);
+    this.features = features;
+    this.imgUrl = features[0].imgUrl;
   }
 
   // 添加成员
