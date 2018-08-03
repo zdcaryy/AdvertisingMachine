@@ -42,11 +42,12 @@ export class PersonComponent implements OnInit {
   datas=[];//存放最终需要上传的文件
   renter:boolean=false;//用于判断是否是租客
   formdata;
-  faceTag:boolean;//用于人脸信息是否上传的判断
+  faceTag:boolean=false;//用于人脸信息是否上传的判断
   viewPerson:boolean=false;//用于显示查看人员信息界面
   household:boolean=true;//用于判断人员类型为住户或是工作人员
   selectPower=null;//选择的人员类别
   allvillage=[];//所有的小区信息;
+  initVillage=null;//用于修改中初始化小区信息
   selectVillage=null;//选择的小区信息
   
   /*******用于房间信息的选择********/
@@ -112,6 +113,7 @@ export class PersonComponent implements OnInit {
         this.viewPerson=true;
         console.log(e.data);
         this.modifyObject=JSON.parse(JSON.stringify(e.data));
+        this.photoJudge(this.modifyObject);
         this.modifyObject['date']=this.timestampToTime(this.modifyObject['date']);
         this.modifyObject['expiredDate']=this.timestampToTime(this.modifyObject['expiredDate']);
         break;
@@ -242,7 +244,7 @@ export class PersonComponent implements OnInit {
       this.personService.getData('/person/findAll/?villageName='+localStorage.getItem('plotSign')).subscribe(res=>{
         let that=this;
         this.bodys = res.map(function (item) {
-          item['date']=that.timestampToTime(item.date)
+          item['date']=that.timestampToTime(item.date);
           item['operate'] =  ['查看','删除'];
           return item;
         });
@@ -251,8 +253,9 @@ export class PersonComponent implements OnInit {
     else{
       this.personService.getData('/person/findAll').subscribe(res=>{
         let that=this;
+        res=res.filter(item=>item.type==0||item.type==5);
         this.bodys = res.map(function (item) {
-          item['date']=that.timestampToTime(item.date)
+          item['date']=that.timestampToTime(item.date);
           item['operate'] =  ['查看','删除'];
           return item;
         });
@@ -271,6 +274,7 @@ export class PersonComponent implements OnInit {
   addDialogShow(){
     if(!this.dialog){
       this.dialog=true;
+      this.photoJudge(this.modifyObject);
       this.addObject.villageName=localStorage.getItem('plotSign');
       //判断当前登陆的账号的权限，不同权限可添加不同的人员身份
       if(this.addObject.villageName){
@@ -326,7 +330,7 @@ export class PersonComponent implements OnInit {
             this.roomPick[k]=null;
           }
         }
-      })
+      });
       $('#add_person').fadeIn();
     }
   }
@@ -393,18 +397,62 @@ export class PersonComponent implements OnInit {
   modifyDialogShow(){
     if(!this.dialog){
       this.dialog=true;
+      if(localStorage.getItem('plotSign')){
+        this.personService.getData('/person/getUserLevelByVillage?villageName='+localStorage.getItem('plotSign')).subscribe(res=>{
+          switch(res.level){
+            //物业主管
+            case 0:
+              this.powerList.forEach((power,i)=>{
+                if(i==0||i==5){
+                  power.elDisabled=true;
+                }
+                else{
+                  power.elDisabled=false;
+                }
+              });
+              break;
+            //物业员工
+            case 1:
+              this.household=true;
+              this.powerList.forEach((power,i)=>{
+                if(i==0||i==1||i==5){
+                  power.elDisabled=true;
+                }
+                else{
+                  power.elDisabled=false;
+                }
+              });
+              break;
+          }
+        })
+      }
+      //系统管理员只能添加运维人员和物业主管
+      else{
+        this.household=false;
+        this.personService.getData('/village/findAllVillages').subscribe(res=>{
+          this.allvillage=res.villageList;
+        });
+        this.powerList.forEach((power,i)=>{
+          if(i==1||i==2||i==3||i==4){
+            power.elDisabled=true;
+          }
+          else{
+            power.elDisabled=false;
+          }
+        });
+      }
+      
       this.modifyObject['type']+='';
       this.roomPick.serial=this.modifyObject['house']['serialNum'];
       this.roomPick.unit=this.modifyObject['house']['unit'];
       this.roomPick.floor=this.modifyObject['house']['floorNum'];
       this.roomPick.room=this.modifyObject['house']['roomNumber'];
-      console.log(this.modifyObject);
       this.personService.getData('/house/findAllHouseByVillage?villageName='+this.modifyObject['villageName']).subscribe(res=>{
+        console.log(res);
         if(res.status==0&&res.houseList.length!=0){
           this.allHouseList=res.houseList;
           this.getSerialList();
           this.initHouse();//初始化
-          console.log(this.roomRes);
         }
       });
       $('#modify_person').fadeIn();
@@ -559,9 +607,27 @@ export class PersonComponent implements OnInit {
   selectPosition(e):void{
     console.log(e);
     this.selectVillage=e;
+    this.addObject.villageName=this.selectVillage.province+this.selectVillage.city+this.selectVillage.region+'-'+this.selectVillage.village;
+    if(this.selectVillage.village){
+      this.photoJudge(this.addObject);
+    }
     let t=this.allvillage.filter(v=>v['province']==e.province&&v['city']==e.city&&v['region']==e.region&&v['name']==e.village)[0];
     if(t){
       this.addObject.ownerName=t.propertyComName;
     }
+  }
+  
+  //判断人脸特征是否已经上传
+  photoJudge(object):void{
+    let data={villageName:object.villageName,name:object.name,phoneNumber:object.phoneNumber};
+    this.personService.postFormData('/person/getImageFeatures',data).subscribe(res=>{
+      console.log(res);
+      if(!res){
+        this.faceTag=false;
+      }
+      else{
+        this.faceTag=true;
+      }
+    })
   }
 }

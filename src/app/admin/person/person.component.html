@@ -36,13 +36,13 @@
       <div class="form-item">
         <label>姓名：</label>
         <span class="form-check">
-           <input type="text" name="name" [(ngModel)]="addObject.name" #name=ngModel pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required [class.border-red]="name.invalid&&name.touched">
+           <input type="text" name="name" [(ngModel)]="addObject.name" #name=ngModel pattern="^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$" required [class.border-red]="name.invalid&&name.touched" (change)="tel.valid&&name.valid?photoJudge(addObject):0;">
             <span style="color:red;margin-right:100px;">*</span>
             <span *ngIf="name.invalid&&name.touched" class="form-notice">请输入汉字姓名</span>
         </span>
         <label>联系电话：</label>
         <span class="form-check">
-           <input type="text" name="phoneNumber" [(ngModel)]="addObject.phoneNumber" #tel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required [class.border-red]="tel.invalid&&tel.touched">
+           <input type="text" name="phoneNumber" [(ngModel)]="addObject.phoneNumber" #tel="ngModel" pattern="^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$" required [class.border-red]="tel.invalid&&tel.touched" (change)="tel.valid&&name.valid?photoJudge(addObject):0;">
             <span style="color:red;">*</span>
            <span *ngIf="tel.invalid&&tel.touched" class="form-notice">手机号格式有误</span>
         </span>
@@ -59,13 +59,14 @@
         </el-select>
         <span style="color:red;margin-right:100px;">*</span>
         <label>人脸特征数据：</label>
-        <div class="upload-container">
+        <span *ngIf="faceTag">已上传</span>
+        <div class="upload-container" *ngIf="!faceTag">
           <input type="file" name="img" id="fileToUpload" class="fileupload" multiple="multiple" accept="image/*" (change)="getUpLoad($event)"/>
         </div>
-        <label for="fileToUpload" style="color:#119C9D;">选择照片</label>
-        <a href="javascript:;"(click)="photoDialogShow();">预览</a>
+        <label for="fileToUpload" style="color:#119C9D;" *ngIf="!faceTag">选择照片</label>
+        <a href="javascript:;"(click)="photoDialogShow();" *ngIf="!faceTag">预览</a>
       </div>
-      <div class="img-list" *ngIf="photosUrls.length">
+      <div class="img-list" *ngIf="photosUrls.length&&!faceTag">
         <div  *ngFor="let photo of photosUrls;">
           <ul>
             <li class="photo-name">{{photo.name}}</li>
@@ -162,7 +163,7 @@
       <div class="form-item" *ngIf="!household">
         <label>所属公司</label>：
         <span *ngIf="selectPower==0||selectPower==1">{{addObject.ownerName}}</span>
-        <input type="text" name="company" *ngIf="selectPower==5">
+        <input type="text" #company *ngIf="selectPower==5" (change)="addObject.ownerName=company.value">
       </div>
       <!--选择服务的小区------针对工作人员end-->
 
@@ -232,12 +233,13 @@
            <span *ngIf="modifytel.invalid&&modifytel.touched" class="form-notice">手机号格式有误</span>
         </span>
       </div>
-      <div class="form-item">
+      <div class="form-item my-select">
         <label>类型：</label>
         <el-select [model]="modifyObject.type" placeholder="请选择" (modelChange)="powerCheck($event)" size="mini">
           <el-option *ngFor="let item of powerList"
                      [label]="item.label"
-                     [value]="item.value">
+                     [value]="item.value"
+                     [elDisabled]="item.elDisabled">
           </el-option>
         </el-select>
         <span style="color:red;margin-right:100px;">*</span>
@@ -261,7 +263,7 @@
         <i class="el-icon-circle-close" style="font-size: 30px;position: absolute;top: -10px;right: -10px;color: rgb(200,200,200);" (click)="photoDialogHidden()"></i>
       </div>
 
-      <div class="form-item house-pick">
+      <div class="form-item house-pick" *ngIf="household">
         <label>选择房间：</label>
         <el-select [(model)]="roomPick.serial" placeholder="--楼栋--" (modelChange)="getUnitList();" size="mini">
           <el-option *ngFor="let item of serialList"
@@ -289,7 +291,7 @@
         </el-select>
       </div>
 
-      <div class="form-item">
+      <div class="form-item" *ngIf="household">
         <label>房间：</label>
         <table width="500" class="house-table" *ngIf="modifyObject.house">
           <tr>
@@ -306,7 +308,7 @@
             <td>房间：{{roomRes.roomNumber}}</td>
           </tr>
         </table>
-        <div class="form-item">
+        <div class="form-item" *ngIf="household">
           <label>入住日期：</label>
           <el-date-picker
             (modelChange)="handle3($event)"
@@ -315,7 +317,7 @@
             [model]="modifyObject.date"
           ></el-date-picker>
         </div>
-        <div class="form-item">
+        <div class="form-item" *ngIf="household">
           <label>失效日期：</label>
           <el-date-picker
             (modelChange)="handle4($event)"
@@ -327,6 +329,26 @@
           <span style="color:red;">*</span>
         </div>
       </div>
+      <!--选择服务的小区------针对工作人员start-->
+      <div class="form-item" *ngIf="!household&&selectPower!=1">
+        <label>选择小区</label>：
+        <selectVillage
+          (handle)="selectPosition($event);"
+          [allVillage]="allvillage"
+          [showLevel]="4"
+          [init]="initVillage"
+        ></selectVillage>
+      </div>
+      <div class="form-item" *ngIf="!household&&selectPower==1">
+        <label>小区信息</label>：
+        <span>{{modifyObject.villageName}}</span>
+      </div>
+      <div class="form-item" *ngIf="!household">
+        <label>所属公司</label>：
+        <span *ngIf="selectPower==0||selectPower==1">{{addObject.ownerName}}</span>
+        <input type="text" #modifyCompany *ngIf="selectPower==5" (change)="modifyObject.ownerName=modifyCompany.value">
+      </div>
+      <!--选择服务的小区------针对工作人员end-->
       <div class="operation2">
         <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="modifyPerson();">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>
         <button class="useful-btn btn" style="margin-top:100px;margin-right:0;" (click)="addPerson(f);">&nbsp;&nbsp;审核&nbsp;&nbsp;</button>

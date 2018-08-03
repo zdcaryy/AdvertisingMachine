@@ -7,7 +7,7 @@ export class AdverService {
 
   constructor(private http:HttpClient) { }
 
-  private adUrl = "http://192.168.31.214:9062";
+  private adUrl = "http://192.168.31.41:9062";
 
   getData(key:string):Observable<any>{
     // return this.http.post<any>(this.sdkUrl+key,data,this.httpOptions);
@@ -75,8 +75,8 @@ export class AdverService {
   dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','),
     	  mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), 
-        n = bstr.length, 
+        bstr = atob(arr[1]),
+        n = bstr.length,
         u8arr = new Uint8Array(n);
     while(n--){
       u8arr[n] = bstr.charCodeAt(n);
