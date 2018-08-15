@@ -21,8 +21,8 @@ export class AdmachineService {
       headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'})
     };
     data['access_token'] = localStorage.getItem('access_token');
-    var str = '';
-    for(var i in data){
+    let str = '';
+    for(let i in data){
       if(str.length>0){str += `&${i}=${data[i]}`}else{str += `${i}=${data[i]}`}
     }
     return this.http.post<any>(this.adMachineUrl+key,str,httpOptions);

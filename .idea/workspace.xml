@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c72915e3-10fc-4822-a491-866d37237a9c" name="默认的" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.html" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.html" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/person/person.component.ts" afterPath="$PROJECT_DIR$/src/app/admin/person/person.component.ts" />
       <change beforePath="$PROJECT_DIR$/src/app/admin/server/admachine.service.ts" afterPath="$PROJECT_DIR$/src/app/admin/server/admachine.service.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin/server/adver.service.ts" afterPath="$PROJECT_DIR$/src/app/admin/server/adver.service.ts" />
-      <change beforePath="$PROJECT_DIR$/src/environments/environment.ts" afterPath="$PROJECT_DIR$/src/environments/environment.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -49,7 +46,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -62,6 +58,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -109,7 +106,8 @@
       <workItem from="1531960109640" duration="42000" />
       <workItem from="1531992980526" duration="46000" />
       <workItem from="1532074513248" duration="114000" />
-      <workItem from="1533289076131" duration="7000" />
+      <workItem from="1533289076131" duration="109000" />
+      <workItem from="1534325200257" duration="14000" />
     </task>
     <task id="LOCAL-00001" summary="zdc-2018/6/4">
       <created>1528105094280</created>
@@ -195,11 +193,18 @@
       <option name="project" value="LOCAL" />
       <updated>1532074561210</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="2018/08/03 人员管理----人员信息修改的bug">
+      <created>1533289130151</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1533289130151</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1406000" />
+    <option name="totallyTimeSpent" value="1522000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="194" y="160" width="1333" height="864" extended-state="0" />
@@ -244,7 +249,8 @@
     <MESSAGE value="人员信息修改、查看" />
     <MESSAGE value="2018/07/19" />
     <MESSAGE value="2018/07/20 人员管理----权限功能实现" />
-    <option name="LAST_COMMIT_MESSAGE" value="2018/07/20 人员管理----权限功能实现" />
+    <MESSAGE value="2018/08/03 人员管理----人员信息修改的bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="2018/08/03 人员管理----人员信息修改的bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />

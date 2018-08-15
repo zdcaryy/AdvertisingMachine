@@ -556,7 +556,7 @@ export class PersonComponent implements OnInit {
       if($.inArray(item.roomNumber,this.roomList)===-1&&item.serialNum===this.roomPick.serial&&item.unit===this.roomPick.unit&&item.floorNum===this.roomPick.floor){
         this.roomList.push(item.roomNumber);
       }
-    })
+    });
     this.roomList.sort(this.compare);
     this.roomPick.room=this.roomList[0];
     this.getHouseConfig();
@@ -585,7 +585,7 @@ export class PersonComponent implements OnInit {
       if($.inArray(item.roomNumber,this.roomList)===-1&&item.serialNum===this.roomPick.serial&&item.unit===this.roomPick.unit&&item.floorNum===this.roomPick.floor){
         this.roomList.push(item.roomNumber);
       }
-    })
+    });
     this.unitList.sort(this.compare);
     this.floorList.sort(this.compare);
     this.roomList.sort(this.compare);
